@@ -1,5 +1,6 @@
 <!-- *** Suspend all database add/edit/delete capabilities
      *** Changed to "Mark as plain text" to disable XML
+     *** Select "Mark as XML" (right click on file) to undo
 -->
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"

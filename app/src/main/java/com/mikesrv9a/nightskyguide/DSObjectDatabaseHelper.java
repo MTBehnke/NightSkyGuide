@@ -1,8 +1,6 @@
-package com.mikesrv9a.nightskyguide;
+// SQLiteOpenHelper subclass that defines the app's database
 
-/**
- *  SQLiteOpenHelper subclass that defines the app's database
- */
+package com.mikesrv9a.nightskyguide;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

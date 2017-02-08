@@ -13,11 +13,10 @@ import java.lang.String;
 
 
 public class MainActivity extends AppCompatActivity
-    implements DSObjectsFragment.DSObjectsFragmentListener
+    implements DSObjectsFragment.DSObjectsFragmentListener {
     /*,   *** *** Suspend all database add/edit/delete capabilities
     DetailFragment.DetailFragmentListener,
     AddEditFragment.AddEditFragmentListener*/
-    {
 
     // key for storing a dsObject's Uri in a Bundle passed to a fragment
     public static final String DSOBJECT_URI = "dsobject_uri";

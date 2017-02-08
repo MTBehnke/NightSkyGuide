@@ -95,7 +95,6 @@ public class DSObjectContentProvider extends ContentProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         return 0; }
-
 }
 
 /*  *** Suspend all database add/edit/delete capabilities

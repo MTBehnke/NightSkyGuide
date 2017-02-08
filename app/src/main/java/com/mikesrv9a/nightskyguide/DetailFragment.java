@@ -118,7 +118,6 @@ public class DetailFragment extends Fragment
         inflater.inflate(R.menu.fragment_details_menu, menu);
     }
 
-
 /*  *** Suspend all database add/edit/delete capabilities
     // handle menu item selections
     @Override
