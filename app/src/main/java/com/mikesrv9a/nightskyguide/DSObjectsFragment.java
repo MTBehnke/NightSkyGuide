@@ -75,7 +75,6 @@ public class DSObjectsFragment extends Fragment
         // improves performance if RecyclerView's layout size never changes
         recyclerView.setHasFixedSize(true);
 
-
 /*  *** Suspend all database add/edit/delete capabilities
         // get the FloatingActionButton and configure its listener
         FloatingActionButton addButton =

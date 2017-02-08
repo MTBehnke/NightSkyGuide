@@ -313,5 +313,4 @@ public class AddEditFragment extends Fragment
     public void onLoaderReset(Loader<Cursor> loader) {}
 }
 
-
 */

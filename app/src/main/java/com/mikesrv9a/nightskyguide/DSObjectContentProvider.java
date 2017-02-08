@@ -97,6 +97,7 @@ public class DSObjectContentProvider extends ContentProvider {
         return 0; }
 }
 
+
 /*  *** Suspend all database add/edit/delete capabilities
     // insert a new dsObject in the database
     @Override

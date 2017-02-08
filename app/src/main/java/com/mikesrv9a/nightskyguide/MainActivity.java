@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.lang.String;
 
-
 public class MainActivity extends AppCompatActivity
     implements DSObjectsFragment.DSObjectsFragmentListener {
     /*,   *** *** Suspend all database add/edit/delete capabilities

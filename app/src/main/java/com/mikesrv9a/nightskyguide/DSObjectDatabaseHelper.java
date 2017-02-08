@@ -42,5 +42,4 @@ class DSObjectDatabaseHelper extends SQLiteOpenHelper{
 // normally defines how to upgrade the database when the schema changes
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
-
 }

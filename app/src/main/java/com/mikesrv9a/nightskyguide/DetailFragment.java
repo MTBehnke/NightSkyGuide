@@ -42,7 +42,6 @@ public class DetailFragment extends Fragment
 /*  *** Suspend all database add/edit/delete capabilities
     private DetailFragmentListener listener; // MainActivity
 */
-
     private Uri dsObjectUri;  // Uri of selected dsObject
 
     private TextView objectIdTextView;  // displays dsObject's ID
