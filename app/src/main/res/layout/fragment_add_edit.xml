@@ -1,3 +1,6 @@
+<!-- *** Suspend all database add/edit/delete capabilities
+     *** Changed to "Mark as plain text" to disable XML
+-->
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

@@ -1,3 +1,5 @@
+/*  *** Suspend all database add/edit/delete capabilities
+
 // Fragment for adding a new DSObject or editing an existing one
 
 package com.mikesrv9a.nightskyguide;
@@ -310,3 +312,5 @@ public class AddEditFragment extends Fragment
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {}
 }
+
+*/

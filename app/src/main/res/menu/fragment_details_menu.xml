@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+<!-- *** Suspend all database add/edit/delete capabilities
     <item
         android:id="@+id/action_edit"
         android:icon="@drawable/ic_mode_edit_24dp"
@@ -16,5 +17,6 @@
         android:orderInCategory="2"
         android:title="@string/menuitem_delete"
         app:showAsAction="always" />
+-->
 
 </menu>

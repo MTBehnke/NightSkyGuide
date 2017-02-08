@@ -27,8 +27,10 @@ public class DSObjectsFragment extends Fragment
         // called when dsObject is selected
         void onDSObjectSelected(Uri dsObjectUri);
 
+/*    *** Suspend all database add/edit/delete capabilities
         // called when add button is pressed
         void onAddDSObject();
+*/
     }
 
     private static final int DSOBJECTS_LOADER = 0;  // identifies Loader
@@ -73,6 +75,7 @@ public class DSObjectsFragment extends Fragment
         // improves performance if RecyclerView's layout size never changes
         recyclerView.setHasFixedSize(true);
 
+/*  *** Suspend all database add/edit/delete capabilities
         // get the FloatingActionButton and configure its listener
         FloatingActionButton addButton =
                 (FloatingActionButton) view.findViewById(R.id.addButton);
@@ -84,7 +87,7 @@ public class DSObjectsFragment extends Fragment
                         listener.onAddDSObject();
                     }
                 }
-        );
+        );  */
 
         return view;
     }

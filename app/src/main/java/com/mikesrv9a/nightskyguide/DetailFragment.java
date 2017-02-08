@@ -27,6 +27,7 @@ import com.mikesrv9a.nightskyguide.DatabaseDescription.DSObject;
 public class DetailFragment extends Fragment
     implements LoaderManager.LoaderCallbacks<Cursor> {
 
+/*  *** Suspend all database add/edit/delete capabilities
     // callback methods implemented by MainActivity
     public interface DetailFragmentListener {
         void onDSObjectDeleted(); // called when a dsObject is deleted
@@ -34,10 +35,14 @@ public class DetailFragment extends Fragment
         // pass Uri of dsObject to edit to the DetailFragmentListener
         void onEditDSObject(Uri dsObjectUri);
     }
+*/
 
     private static final int DSOBJECT_LOADER = 0;  // identifies the Loader
 
+/*  *** Suspend all database add/edit/delete capabilities
     private DetailFragmentListener listener; // MainActivity
+*/
+
     private Uri dsObjectUri;  // Uri of selected dsObject
 
     private TextView objectIdTextView;  // displays dsObject's ID
@@ -53,6 +58,7 @@ public class DetailFragment extends Fragment
     private TextView oithTextView; // displays dsObject's OITH pages
     private TextView observedTextView; // displays dsObject's Observed status
 
+/*  *** Suspend all database add/edit/delete capabilities
     // set DetailFragmentListener when fragment attached
     @Override
     public void onAttach(Context context) {
@@ -66,6 +72,7 @@ public class DetailFragment extends Fragment
         super.onDetach();
         listener = null;
     }
+*/
 
     // called when DetailFragmentListener's view needs to be created
     @Override
@@ -111,6 +118,8 @@ public class DetailFragment extends Fragment
         inflater.inflate(R.menu.fragment_details_menu, menu);
     }
 
+
+/*  *** Suspend all database add/edit/delete capabilities
     // handle menu item selections
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -165,6 +174,7 @@ public class DetailFragment extends Fragment
                 return builder.create();  // return the AlertDialog
             }
         };
+*/
 
     // called by LoaderManager to create a Loader
     @Override

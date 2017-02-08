@@ -13,9 +13,11 @@ import java.lang.String;
 
 
 public class MainActivity extends AppCompatActivity
-    implements DSObjectsFragment.DSObjectsFragmentListener,
+    implements DSObjectsFragment.DSObjectsFragmentListener
+    /*,   *** *** Suspend all database add/edit/delete capabilities
     DetailFragment.DetailFragmentListener,
-    AddEditFragment.AddEditFragmentListener {
+    AddEditFragment.AddEditFragmentListener*/
+    {
 
     // key for storing a dsObject's Uri in a Bundle passed to a fragment
     public static final String DSOBJECT_URI = "dsobject_uri";
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+/*  *** Suspend all database add/edit/delete capabilities
     // display AddEditFragment to add a new dsObject
     @Override
     public void onAddDSObject() {
@@ -68,6 +71,7 @@ public class MainActivity extends AppCompatActivity
         else  // tablet
             displayAddEditFragment(R.id.rightPaneContainer, null);
     }
+*/
 
     // display a dsObject
     private void displayDSObject(Uri dsObjectUri, int viewID) {
@@ -86,6 +90,7 @@ public class MainActivity extends AppCompatActivity
         transaction.commit();  // causes DetailFragment to display
     }
 
+/*  *** Suspend all database add/edit/delete capabilities
     // display fragment for adding a new or editing an existing dsObject
     private void displayAddEditFragment(int viewID, Uri dsObjectUri) {
         AddEditFragment addEditFragment = new AddEditFragment();
@@ -138,4 +143,5 @@ public class MainActivity extends AppCompatActivity
             displayDSObject(dsObjectUri, R.id.rightPaneContainer);
         }
     }
+*/
 }

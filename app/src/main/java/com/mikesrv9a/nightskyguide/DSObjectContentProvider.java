@@ -56,7 +56,7 @@ public class DSObjectContentProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection,
                         String selection, String[] selectionArgs, String sortOrder) {
 
-        // create SQLiteQueryBuilder for querying doObjects table
+        // create SQLiteQueryBuilder for querying dsObjects table
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setTables(DSObject.TABLE_NAME);
 
@@ -65,14 +65,14 @@ public class DSObjectContentProvider extends ContentProvider {
                 queryBuilder.appendWhere(
                         DSObject._ID + "=" + uri.getLastPathSegment());
                 break;
-            case DSOBJECTS:  // all doObjects will be selected
+            case DSOBJECTS:  // all dsObjects will be selected
                 break;
             default:
                 throw new UnsupportedOperationException(
                         getContext().getString(R.string.invalid_query_uri) + uri);
         }
 
-        // execute the query to selection one or all dsObjects
+        // execute the query to select one or all dsObjects
         Cursor cursor = queryBuilder.query(dbHelper.getReadableDatabase(),
                 projection, selection, selectionArgs, null, null, sortOrder);
 
@@ -81,6 +81,24 @@ public class DSObjectContentProvider extends ContentProvider {
         return cursor;
     }
 
+    /*  These three added as required methods:  Not used in the app, so return null/0  */
+    @Override
+    public Uri insert(Uri uri, ContentValues values) {
+        return null;
+    }
+
+    @Override
+    public int update(Uri uri, ContentValues values, String selection,
+                      String[] selectionArgs) {
+        return 0; }
+
+    @Override
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
+        return 0; }
+
+}
+
+/*  *** Suspend all database add/edit/delete capabilities
     // insert a new dsObject in the database
     @Override
     public Uri insert(Uri uri, ContentValues values) {
@@ -165,3 +183,4 @@ public class DSObjectContentProvider extends ContentProvider {
         return numberOfRowsDeleted;
     }
 }
+*/

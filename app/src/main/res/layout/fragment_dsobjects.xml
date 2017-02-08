@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+<!--*** Suspend all database add/edit/delete capabilities
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/addButton"
         android:layout_width="wrap_content"
@@ -15,4 +16,5 @@
         android:layout_gravity="top|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_add_24dp"/>
+-->
 </FrameLayout>

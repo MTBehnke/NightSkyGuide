@@ -22,7 +22,7 @@ class DSObjectDatabaseHelper extends SQLiteOpenHelper{
     // creates the dsObjects table when the database is created
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // SQL for creating the dsObjeects table
+        // SQL for creating the dsObjects table
         final String CREATE_DSOBJECTS_TABLE =
             "CREATE TABLE " + DSObject.TABLE_NAME + "(" +
                 DSObject._ID + " integer primary key, " +
