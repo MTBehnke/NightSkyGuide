@@ -22,27 +22,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.mikesrv9a.nightskyguide.DatabaseDescription.DSObject;
+import com.mikesrv9a.nightskyguide.DatabaseDescription.DSObjectDB;
 
 public class DetailFragment extends Fragment
     implements LoaderManager.LoaderCallbacks<Cursor> {
 
-/*  *** Suspend all database add/edit/delete capabilities
-    // callback methods implemented by MainActivity
-    public interface DetailFragmentListener {
-        void onDSObjectDeleted(); // called when a dsObject is deleted
+    private static final int DSOBJECTDB_LOADER = 0;  // identifies the Loader
 
-        // pass Uri of dsObject to edit to the DetailFragmentListener
-        void onEditDSObject(Uri dsObjectUri);
-    }
-*/
-
-    private static final int DSOBJECT_LOADER = 0;  // identifies the Loader
-
-/*  *** Suspend all database add/edit/delete capabilities
-    private DetailFragmentListener listener; // MainActivity
-*/
-    private Uri dsObjectUri;  // Uri of selected dsObject
+    private Uri dsObjectDBUri;  // Uri of selected dsObject
 
     private TextView objectIdTextView;  // displays dsObject's ID
     private TextView typeTextView; // displays dsObject's type
@@ -57,22 +44,6 @@ public class DetailFragment extends Fragment
     private TextView oithTextView; // displays dsObject's OITH pages
     private TextView observedTextView; // displays dsObject's Observed status
 
-/*  *** Suspend all database add/edit/delete capabilities
-    // set DetailFragmentListener when fragment attached
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        listener = (DetailFragmentListener) context;
-    }
-
-    // remove DetailFragmentListener when fragment detached
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        listener = null;
-    }
-*/
-
     // called when DetailFragmentListener's view needs to be created
     @Override
     public View onCreateView(
@@ -85,7 +56,7 @@ public class DetailFragment extends Fragment
         Bundle arguments = getArguments();
 
         if (arguments != null)
-            dsObjectUri = arguments.getParcelable(MainActivity.DSOBJECT_URI);
+            dsObjectDBUri = arguments.getParcelable(MainActivity.DSOBJECTDB_URI);
 
         // inflate DetailFragment's layout
         View view =
@@ -106,7 +77,7 @@ public class DetailFragment extends Fragment
         observedTextView = (TextView) view.findViewById(R.id.observedTextView);
 
         // load the dsObject
-        getLoaderManager().initLoader(DSOBJECT_LOADER, null, this);
+        getLoaderManager().initLoader(DSOBJECTDB_LOADER, null, this);
         return view;
     }
 
@@ -117,63 +88,6 @@ public class DetailFragment extends Fragment
         inflater.inflate(R.menu.fragment_details_menu, menu);
     }
 
-/*  *** Suspend all database add/edit/delete capabilities
-    // handle menu item selections
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_edit:
-                listener.onEditDSObject(dsObjectUri); // pass Uri to listener
-                return true;
-            case R.id.action_delete:
-                deleteDSObject();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    // delete a dsObject
-    private void deleteDSObject() {
-        // use FragmentManager to display the confirmDelete DialogFragment
-        confirmDelete.show(getFragmentManager(), "confirm delete");
-    }
-
-    // DialogFragment to confirm deletion of dsObject
-    private final DialogFragment confirmDelete =
-            new DialogFragment() {
-            // create an AlertDialog and return it
-            @Override
-            public Dialog onCreateDialog(Bundle bundle) {
-                // create a new AlertDialog Builder
-                AlertDialog.Builder builder =
-                        new AlertDialog.Builder(getActivity());
-
-                builder.setTitle(R.string.confirm_title);
-                builder.setMessage(R.string.confirm_message);
-
-                // provide an OK button that simply dismisses the dialog
-                builder.setPositiveButton(R.string.button_delete,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(
-                                    DialogInterface dialog, int button) {
-
-                                // use Activity's ContentResolver to invoke
-                                // delete on the DSObjectContentProvider
-                                getActivity().getContentResolver().delete(
-                                        dsObjectUri, null, null);
-                                listener.onDSObjectDeleted(); // notify Listener
-                            }
-                        }
-                );
-
-                builder.setNegativeButton(R.string.button_cancel, null);
-                return builder.create();  // return the AlertDialog
-            }
-        };
-*/
-
     // called by LoaderManager to create a Loader
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -182,9 +96,9 @@ public class DetailFragment extends Fragment
         CursorLoader cursorLoader;
 
         switch (id) {
-            case DSOBJECT_LOADER:
+            case DSOBJECTDB_LOADER:
                 cursorLoader = new CursorLoader(getActivity(),
-                    dsObjectUri, // Uri of dsObject to display
+                    dsObjectDBUri, // Uri of dsObject to display
                     null, // null projection returns all rows
                     null, // null selection returns all columns
                     null, // no selection arguments
@@ -204,18 +118,18 @@ public class DetailFragment extends Fragment
         // if the dsObject exists in the database, display its data
         if (data != null && data.moveToFirst()) {
             // get the column index for each data item
-            int objectIdIndex = data.getColumnIndex(DSObject.DSO_OBJECTID);
-            int typeIndex = data.getColumnIndex(DSObject.DSO_TYPE);
-            int magIndex = data.getColumnIndex(DSObject.DSO_MAG);
-            int sizeIndex = data.getColumnIndex(DSObject.DSO_SIZE);
-            int distIndex = data.getColumnIndex(DSObject.DSO_DIST);
-            int raIndex = data.getColumnIndex(DSObject.DSO_RA);
-            int decIndex = data.getColumnIndex(DSObject.DSO_DEC);
-            int constIndex = data.getColumnIndex(DSObject.DSO_CONST);
-            int nameIndex = data.getColumnIndex(DSObject.DSO_NAME);
-            int psaIndex = data.getColumnIndex(DSObject.DSO_PSA);
-            int oithIndex = data.getColumnIndex(DSObject.DSO_OITH);
-            int observedIndex = data.getColumnIndex(DSObject.DSO_OBSERVED);
+            int objectIdIndex = data.getColumnIndex(DSObjectDB.DSO_OBJECTID);
+            int typeIndex = data.getColumnIndex(DSObjectDB.DSO_TYPE);
+            int magIndex = data.getColumnIndex(DSObjectDB.DSO_MAG);
+            int sizeIndex = data.getColumnIndex(DSObjectDB.DSO_SIZE);
+            int distIndex = data.getColumnIndex(DSObjectDB.DSO_DIST);
+            int raIndex = data.getColumnIndex(DSObjectDB.DSO_RA);
+            int decIndex = data.getColumnIndex(DSObjectDB.DSO_DEC);
+            int constIndex = data.getColumnIndex(DSObjectDB.DSO_CONST);
+            int nameIndex = data.getColumnIndex(DSObjectDB.DSO_NAME);
+            int psaIndex = data.getColumnIndex(DSObjectDB.DSO_PSA);
+            int oithIndex = data.getColumnIndex(DSObjectDB.DSO_OITH);
+            int observedIndex = data.getColumnIndex(DSObjectDB.DSO_OBSERVED);
 
             // fill TextViews with the retrieved data
             objectIdTextView.setText(data.getString(objectIdIndex));

@@ -2,7 +2,7 @@ package com.mikesrv9a.nightskyguide;
 
 /**
  * Describes the table names and column names for this app's database,
- * and other informatiion required by the ContentProvider
+ * and other information required by the ContentProvider
  */
 
 import android.content.ContentUris;
@@ -17,7 +17,7 @@ public class DatabaseDescription {
     private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     // nested class defines contents of the dsObjects table
-    public static final class DSObject implements BaseColumns {
+    public static final class DSObjectDB implements BaseColumns {
         // table's name
         public static final String TABLE_NAME = "dsObjects";
 

@@ -6,7 +6,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.mikesrv9a.nightskyguide.DatabaseDescription.DSObject;
+import com.mikesrv9a.nightskyguide.DatabaseDescription.DSObjectDB;
 
 class DSObjectDatabaseHelper extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "DSObjects.db";
@@ -21,22 +21,22 @@ class DSObjectDatabaseHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         // SQL for creating the dsObjects table
-        final String CREATE_DSOBJECTS_TABLE =
-            "CREATE TABLE " + DSObject.TABLE_NAME + "(" +
-                DSObject._ID + " integer primary key, " +
-                DSObject.DSO_OBJECTID + " TEXT, " +
-                DSObject.DSO_TYPE + " TEXT, " +
-                DSObject.DSO_MAG + " REAL, " +
-                DSObject.DSO_SIZE + " TEXT, " +
-                DSObject.DSO_DIST + " TEXT, " +
-                DSObject.DSO_RA + " REAL, " +
-                DSObject.DSO_DEC + " REAL, " +
-                DSObject.DSO_CONST + " TEXT, " +
-                DSObject.DSO_NAME + " TEXT, " +
-                DSObject.DSO_PSA + " TEXT, " +
-                DSObject.DSO_OITH + " TEXT, " +
-                DSObject.DSO_OBSERVED + " INTEGER);";
-        db.execSQL(CREATE_DSOBJECTS_TABLE);  // create the table
+        final String CREATE_DSOBJECTSDB_TABLE =
+            "CREATE TABLE " + DSObjectDB.TABLE_NAME + "(" +
+                DSObjectDB._ID + " integer primary key, " +
+                DSObjectDB.DSO_OBJECTID + " TEXT, " +
+                DSObjectDB.DSO_TYPE + " TEXT, " +
+                DSObjectDB.DSO_MAG + " REAL, " +
+                DSObjectDB.DSO_SIZE + " TEXT, " +
+                DSObjectDB.DSO_DIST + " TEXT, " +
+                DSObjectDB.DSO_RA + " REAL, " +
+                DSObjectDB.DSO_DEC + " REAL, " +
+                DSObjectDB.DSO_CONST + " TEXT, " +
+                DSObjectDB.DSO_NAME + " TEXT, " +
+                DSObjectDB.DSO_PSA + " TEXT, " +
+                DSObjectDB.DSO_OITH + " TEXT, " +
+                DSObjectDB.DSO_OBSERVED + " INTEGER);";
+        db.execSQL(CREATE_DSOBJECTSDB_TABLE);  // create the table
     }
 
 // normally defines how to upgrade the database when the schema changes

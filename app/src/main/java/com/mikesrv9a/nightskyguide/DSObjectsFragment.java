@@ -6,7 +6,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -17,7 +19,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mikesrv9a.nightskyguide.DatabaseDescription.DSObject;
+import com.mikesrv9a.nightskyguide.DatabaseDescription.DSObjectDB;
+
+import java.util.ArrayList;
 
 public class DSObjectsFragment extends Fragment
     implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -26,25 +30,24 @@ public class DSObjectsFragment extends Fragment
     public interface DSObjectsFragmentListener {
         // called when dsObject is selected
         void onDSObjectSelected(Uri dsObjectUri);
-
-/*    *** Suspend all database add/edit/delete capabilities
-        // called when add button is pressed
-        void onAddDSObject();
-*/
     }
 
     private static final int DSOBJECTS_LOADER = 0;  // identifies Loader
 
+    public ArrayList<DSObject> dsObjectsArrayList = new ArrayList<>();
+
+    DSObjectsAdapter dsObjectsAdapter;  // adapter for recyclerView
+
     // used to inform the MainActivity when a dsObject is selected
     private DSObjectsFragmentListener listener;
 
-    private DSObjectsAdapter dsObjectsAdapter;  // adapter for recyclerView
+
 
     // configures this fragment's GUI
     @Override
     public View onCreateView(
-        LayoutInflater inflater, ViewGroup container,
-        Bundle savedInstanceState) {
+            LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         setHasOptionsMenu(true);  // fragment has menu items to display
 
@@ -59,35 +62,14 @@ public class DSObjectsFragment extends Fragment
                 new LinearLayoutManager(getActivity().getBaseContext()));
 
         // create recyclerView's adapter and item click listener
-        dsObjectsAdapter = new DSObjectsAdapter(
-                new DSObjectsAdapter.DSObjectClickListener() {
-                    @Override
-                    public void onClick(Uri dsObjectUri) {
-                        listener.onDSObjectSelected(dsObjectUri);
-                    }
-                }
-        );
-        recyclerView.setAdapter(dsObjectsAdapter);
+        DSObjectsAdapter adapter = new DSObjectsAdapter(dsObjectsArrayList);
+        recyclerView.setAdapter(adapter);
 
         // attach a custom ItemDecorator to draw dividers between list items
         recyclerView.addItemDecoration(new ItemDivider(getContext()));
 
         // improves performance if RecyclerView's layout size never changes
-        recyclerView.setHasFixedSize(true);
-
-/*  *** Suspend all database add/edit/delete capabilities
-        // get the FloatingActionButton and configure its listener
-        FloatingActionButton addButton =
-                (FloatingActionButton) view.findViewById(R.id.addButton);
-        addButton.setOnClickListener(
-                new View.OnClickListener() {
-                    // displays the AddEditFragment when FAB is touched
-                    @Override
-                    public void onClick(View view) {
-                        listener.onAddDSObject();
-                    }
-                }
-        );  */
+        //recyclerView.setHasFixedSize(true);
 
         return view;
     }
@@ -126,11 +108,11 @@ public class DSObjectsFragment extends Fragment
         switch (id) {
             case DSOBJECTS_LOADER:
                 return new CursorLoader(getActivity(),
-                    DSObject.CONTENT_URI,  // Uri of dsObjects table
-                    null,  // null projection returns all columns
-                    null,  // null selection returns all rows
-                    null,  // no selection arguments
-                    DSObject.DSO_OBJECTID + " COLLATE NOCASE ASC");  // sort order
+                        DSObjectDB.CONTENT_URI,  // Uri of dsObjects table
+                        null,  // null projection returns all columns
+                        null,  // null selection returns all rows
+                        null,  // no selection arguments
+                        DSObjectDB.DSO_OBJECTID + " COLLATE NOCASE ASC");  // sort order
             default:
                 return null;
         }
@@ -139,12 +121,48 @@ public class DSObjectsFragment extends Fragment
     // called by LoaderManager when loading completes
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        dsObjectsAdapter.swapCursor(data);
+        //dsObjectsAdapter.swapCursor(data);  // this exposes data from the cursor to adapter - not required when switch to arraylist
+
+        // creates dsObjectArrayList and creates/populates with DSObject objects
+        //ArrayList<DSObject> dsObjectsArrayList = new ArrayList<>();
+        if (data != null && data.getCount() > 0) {
+            data.moveToFirst();
+            int objectIdCol = data.getColumnIndex("object");
+            int typeCol = data.getColumnIndex("type");
+            int magCol = data.getColumnIndex("mag");
+            int sizeCol = data.getColumnIndex("size");
+            int distCol = data.getColumnIndex("distance");
+            int raCol = data.getColumnIndex("ra");
+            int decCol = data.getColumnIndex("dec");
+            int constCol = data.getColumnIndex("const");
+            int nameCol = data.getColumnIndex("name");
+            int psaCol = data.getColumnIndex("psa");
+            int oithCol = data.getColumnIndex("oith");
+            int observedCol = data.getColumnIndex("observed");
+            while (!data.isAfterLast()) {
+                String dsoObjectID = data.getString(objectIdCol);
+                String dsoType = data.getString(typeCol);
+                Double dsoMag = data.getDouble(magCol);
+                String dsoSize = data.getString(sizeCol);
+                String dsoDist = data.getString(distCol);
+                Double dsoRA = data.getDouble(raCol);
+                Double dsoDec = data.getDouble(decCol);
+                String dsoConst = data.getString(constCol);
+                String dsoName = data.getString(nameCol);
+                String dsoPSA = data.getString(psaCol);
+                String dsoOITH = data.getString(oithCol);
+                Integer dsoObserved = data.getInt(observedCol);
+                DSObject dsObject = new DSObject(dsoObjectID, dsoType, dsoMag, dsoSize, dsoDist,
+                        dsoRA, dsoDec, dsoConst, dsoName, dsoPSA, dsoOITH, dsoObserved);
+                dsObjectsArrayList.add(dsObject);
+                data.moveToNext();
+            }
+        }
     }
 
     // called by LoaderManager when the Loader is being reset
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        dsObjectsAdapter.swapCursor(null);
+        //dsObjectsAdapter.swapCursor(null);
     }
 }
