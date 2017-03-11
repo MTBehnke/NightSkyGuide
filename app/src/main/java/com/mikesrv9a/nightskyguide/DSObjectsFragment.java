@@ -41,8 +41,6 @@ public class DSObjectsFragment extends Fragment
     // used to inform the MainActivity when a dsObject is selected
     private DSObjectsFragmentListener listener;
 
-
-
     // configures this fragment's GUI
     @Override
     public View onCreateView(
@@ -121,10 +119,7 @@ public class DSObjectsFragment extends Fragment
     // called by LoaderManager when loading completes
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        //dsObjectsAdapter.swapCursor(data);  // this exposes data from the cursor to adapter - not required when switch to arraylist
-
-        // creates dsObjectArrayList and creates/populates with DSObject objects
-        //ArrayList<DSObject> dsObjectsArrayList = new ArrayList<>();
+        //  creates DSObject objects and adds to dsObjectArrayList
         if (data != null && data.getCount() > 0) {
             data.moveToFirst();
             int objectIdCol = data.getColumnIndex("object");
@@ -163,6 +158,5 @@ public class DSObjectsFragment extends Fragment
     // called by LoaderManager when the Loader is being reset
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        //dsObjectsAdapter.swapCursor(null);
     }
 }

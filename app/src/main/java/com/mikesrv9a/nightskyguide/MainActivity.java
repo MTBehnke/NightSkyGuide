@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity
 
     private DSObjectsFragment dsObjectsFragment; // displays dsObject list
 
-
     // display DSObjectFragment when MainActivity first loads
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,6 @@ public class MainActivity extends AppCompatActivity
                             findFragmentById(R.id.dsObjectsFragment);
         }
     }
-
 
     // display DSObjectFragment for selected dsObject
     @Override
