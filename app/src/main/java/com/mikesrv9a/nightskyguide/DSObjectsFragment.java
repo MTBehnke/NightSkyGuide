@@ -4,11 +4,7 @@ package com.mikesrv9a.nightskyguide;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -35,7 +31,6 @@ public class DSObjectsFragment extends Fragment
     private static final int DSOBJECTS_LOADER = 0;  // identifies Loader
 
     public ArrayList<DSObject> dsObjectsArrayList = new ArrayList<>();
-    //DSObjectsClickAdapter dsObjectsClickAdapter;  // adapter for recyclerView
 
     // used to inform the MainActivity when a dsObject is selected
     DSObjectsFragmentListener listener;
@@ -100,11 +95,6 @@ public class DSObjectsFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(DSOBJECTS_LOADER, null, this);
     }
-
-    /* called from MainActivity when other Fragment's update database
-    public void updateDSObjectList() {
-        dsObjectsClickAdapter.notifyDataSetChanged();
-    } */
 
     // called by LoaderManager to create Loader
     @Override

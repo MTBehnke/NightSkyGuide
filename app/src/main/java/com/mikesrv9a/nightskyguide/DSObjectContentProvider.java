@@ -6,13 +6,10 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
-import com.mikesrv9a.nightskyguide.DatabaseDescription;
 import com.mikesrv9a.nightskyguide.DatabaseDescription.DSObjectDB;
-import com.mikesrv9a.nightskyguide.DSObjectDatabaseHelper;
 
 public class DSObjectContentProvider extends ContentProvider {
     // used to access the database

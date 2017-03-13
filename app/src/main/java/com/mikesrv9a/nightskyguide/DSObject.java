@@ -1,13 +1,9 @@
 package com.mikesrv9a.nightskyguide;
 
-import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.renderscript.Double2;
-import android.support.v7.app.AppCompatActivity;
 
-/**
- * Creates arraylist of DSObjects and updates sky position, etc.
+/** Creates DSObjects and updates sky position, etc.
  */
 
 public class DSObject implements Parcelable {
@@ -106,4 +102,29 @@ public class DSObject implements Parcelable {
         parcel.writeDouble(dsoAlt);
         parcel.writeDouble(dsoAz);
     }
+
+    // required method, not used
+    protected DSObject(Parcel in) {
+        dsoObjectID = in.readString();
+        dsoType = in.readString();
+        dsoSize = in.readString();
+        dsoDist = in.readString();
+        dsoConst = in.readString();
+        dsoName = in.readString();
+        dsoPSA = in.readString();
+        dsoOITH = in.readString();
+    }
+
+    // required method, not used
+    public static final Creator<DSObject> CREATOR = new Creator<DSObject>() {
+        @Override
+        public DSObject createFromParcel(Parcel in) {
+            return new DSObject(in);
+        }
+
+        @Override
+        public DSObject[] newArray(int size) {
+            return new DSObject[size];
+        }
+    };
 }

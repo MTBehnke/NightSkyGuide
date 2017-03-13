@@ -2,35 +2,17 @@
 
 package com.mikesrv9a.nightskyguide;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.mikesrv9a.nightskyguide.DatabaseDescription.DSObjectDB;
-
 public class DetailFragment extends Fragment {
-    //implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    //private static final int DSOBJECTDB_LOADER = 0;  // identifies the Loader
-
-    private int position;  // array list item
     private DSObject dsObject;  // dsObject to display
 
     private TextView objectIdTextView;  // displays dsObject's ID
@@ -46,17 +28,16 @@ public class DetailFragment extends Fragment {
     private TextView oithTextView; // displays dsObject's OITH pages
     private TextView observedTextView; // displays dsObject's Observed status
 
-    // called when DetailFragmentListener's view needs to be created
+    // called when DetailFragment's view needs to be created
     @Override
     public View onCreateView(
         LayoutInflater inflater, ViewGroup container,
         Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        setHasOptionsMenu(true);  // this fragment has menu items to display
+        setHasOptionsMenu(false);  // this fragment has no menu items to display
 
-        // get Bundle of arguments then extract the dsObject's Uri
+        // get Bundle of arguments then extract the dsObject
         Bundle arguments = getArguments();
-
         if (arguments != null)
             dsObject = arguments.getParcelable("dsObjectArrayListItem");
 
@@ -78,6 +59,7 @@ public class DetailFragment extends Fragment {
         oithTextView = (TextView) view.findViewById(R.id.oithTextView);
         observedTextView = (TextView) view.findViewById(R.id.observedTextView);
 
+        // set the TextViews
         objectIdTextView.setText(dsObject.getDsoObjectID());
         typeTextView.setText(dsObject.getDsoType());
         magTextView.setText(Double.toString(dsObject.getDsoMag()));
@@ -93,7 +75,7 @@ public class DetailFragment extends Fragment {
         return view;
     }
 
-    // display this fragment's menu items
+    // display this fragment's menu items (note - none currently)
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
