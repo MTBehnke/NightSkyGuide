@@ -1,6 +1,8 @@
 package com.mikesrv9a.nightskyguide;
 
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.renderscript.Double2;
 import android.support.v7.app.AppCompatActivity;
 
@@ -8,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
  * Creates arraylist of DSObjects and updates sky position, etc.
  */
 
-public class DSObject {
+public class DSObject implements Parcelable {
 
     String dsoObjectID;     // DSO Object ID (e.g. M31)
     String dsoType;         // DSO Type (e.g. SG = Spiral Galaxy)
@@ -76,10 +78,32 @@ public class DSObject {
     public Double getDsoAz() {return dsoAz;}
 
     // setter methods
-    public void setDsoAlt(Double alt) {dsoAlt = alt; return;}
+    public void setDsoAlt(Double alt) {dsoAlt = alt;}
 
-    public void setDsoAz(Double az) {dsoAz = az; return;}
+    public void setDsoAz(Double az) {dsoAz = az;}
 
-    public void setDsoObserved(Integer observed) {dsoObserved = observed; return;}
+    public void setDsoObserved(Integer observed) {dsoObserved = observed;}
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(dsoObjectID);
+        parcel.writeString(dsoType);
+        parcel.writeDouble(dsoMag);
+        parcel.writeString(dsoSize);
+        parcel.writeString(dsoDist);
+        parcel.writeDouble(dsoRA);
+        parcel.writeDouble(dsoDec);
+        parcel.writeString(dsoConst);
+        parcel.writeString(dsoName);
+        parcel.writeString(dsoPSA);
+        parcel.writeString(dsoOITH);
+        parcel.writeInt(dsoObserved);
+        parcel.writeDouble(dsoAlt);
+        parcel.writeDouble(dsoAz);
+    }
 }

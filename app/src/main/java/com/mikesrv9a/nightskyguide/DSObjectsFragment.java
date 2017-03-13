@@ -29,7 +29,7 @@ public class DSObjectsFragment extends Fragment
     // callback method implemented by MainActivity
     public interface DSObjectsFragmentListener {
         // called when dsObject is selected
-        void onDSObjectSelected(int dsObjectSelected);
+        void onDSObjectSelected(DSObject dsObjectSelected);
     }
 
     private static final int DSOBJECTS_LOADER = 0;  // identifies Loader
@@ -64,8 +64,9 @@ public class DSObjectsFragment extends Fragment
             @Override
             public void onEntryClick(View view, int position) {
                 // stuff that will happen when a list item is clicked
-
-                listener.onDSObjectSelected(position);
+                //listener.onDSObjectSelected(position);  Original working version
+                DSObject DSObjectSelected = dsObjectsArrayList.get(position);
+                listener.onDSObjectSelected(DSObjectSelected);
             }
         });
         recyclerView.setAdapter(clickAdapter);

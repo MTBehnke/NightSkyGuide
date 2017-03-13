@@ -2,6 +2,7 @@ package com.mikesrv9a.nightskyguide;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.CursorLoader;
 import android.support.v7.app.AppCompatActivity;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity
 
         // display DSObjectFragment for selected dsObject
     @Override
-    public void onDSObjectSelected(int dsObjectSelected) {
+    public void onDSObjectSelected(DSObject dsObjectSelected) {
         if (findViewById(R.id.fragmentContainer) != null)  // phone
             displayDSObject(dsObjectSelected, R.id.fragmentContainer);
         else {  // tablet
@@ -59,12 +60,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     // display a dsObject
-    private void displayDSObject(int dsObjectSelected, int viewID) {
+    private void displayDSObject(DSObject dsObjectSelected, int viewID) {
         DetailFragment detailFragment = new DetailFragment();
 
-        // specify dsObject's Uri as an argument to the DSObjectFragment
+        // specify dsObject as an argument to the DetailFragment
         Bundle arguments = new Bundle();
-        arguments.putInt("dsObjectArrayListItem", dsObjectSelected);
+        arguments.putParcelable("dsObjectArrayListItem", dsObjectSelected);
         detailFragment.setArguments(arguments);
 
 

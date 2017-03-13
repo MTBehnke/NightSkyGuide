@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -30,6 +31,7 @@ public class DetailFragment extends Fragment {
     //private static final int DSOBJECTDB_LOADER = 0;  // identifies the Loader
 
     private int position;  // array list item
+    private DSObject dsObject;  // dsObject to display
 
     private TextView objectIdTextView;  // displays dsObject's ID
     private TextView typeTextView; // displays dsObject's type
@@ -56,8 +58,7 @@ public class DetailFragment extends Fragment {
         Bundle arguments = getArguments();
 
         if (arguments != null)
-            position = arguments.getInt("dsObjectArrayListItem");
-
+            dsObject = arguments.getParcelable("dsObjectArrayListItem");
 
         // inflate DetailFragment's layout
         View view =
@@ -77,19 +78,18 @@ public class DetailFragment extends Fragment {
         oithTextView = (TextView) view.findViewById(R.id.oithTextView);
         observedTextView = (TextView) view.findViewById(R.id.observedTextView);
 
-        String positionString = Integer.toString(position);   // test
-        objectIdTextView.setText(positionString);             // test
-        //DSObject object = DSObjectsFragment.dsObjectsArrayList.get(position);
-        /*
-        String r1c1Text = object.getDsoObjectID();
-        String r1c2Text = object.getDsoConst();
-        String r1c3Text = Double.toString(object.getDsoMag());
-        String r1c4Text = Integer.toString((int)Math.round(object.getDsoRA()))+"°";
-        String r2c1Text = object.getDsoName();
-        String r2c2Text = object.getDsoType();
-        String r2c3Text = object.getDsoSize();
-        String r2c4Text = Integer.toString((int)Math.round(object.getDsoDec()))+"°";
-        */
+        objectIdTextView.setText(dsObject.getDsoObjectID());
+        typeTextView.setText(dsObject.getDsoType());
+        magTextView.setText(Double.toString(dsObject.getDsoMag()));
+        sizeTextView.setText(dsObject.getDsoSize());
+        distTextView.setText(dsObject.getDsoDist());
+        raTextView.setText(Double.toString(dsObject.getDsoRA()));
+        decTextView.setText(Double.toString(dsObject.getDsoDec()));
+        constTextView.setText(dsObject.getDsoConst());
+        nameTextView.setText(dsObject.getDsoName());
+        psaTextView.setText(dsObject.getDsoPSA());
+        oithTextView.setText(dsObject.getDsoOITH());
+        observedTextView.setText(Integer.toString(dsObject.getDsoObserved()));
         return view;
     }
 
