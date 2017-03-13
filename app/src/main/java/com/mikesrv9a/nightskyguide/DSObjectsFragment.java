@@ -29,17 +29,16 @@ public class DSObjectsFragment extends Fragment
     // callback method implemented by MainActivity
     public interface DSObjectsFragmentListener {
         // called when dsObject is selected
-        void onDSObjectSelected(Uri dsObjectUri);
+        void onDSObjectSelected(int dsObjectSelected);
     }
 
     private static final int DSOBJECTS_LOADER = 0;  // identifies Loader
 
     public ArrayList<DSObject> dsObjectsArrayList = new ArrayList<>();
-
-    DSObjectsAdapter dsObjectsAdapter;  // adapter for recyclerView
+    //DSObjectsClickAdapter dsObjectsClickAdapter;  // adapter for recyclerView
 
     // used to inform the MainActivity when a dsObject is selected
-    private DSObjectsFragmentListener listener;
+    DSObjectsFragmentListener listener;
 
     // configures this fragment's GUI
     @Override
@@ -60,13 +59,21 @@ public class DSObjectsFragment extends Fragment
                 new LinearLayoutManager(getActivity().getBaseContext()));
 
         // create recyclerView's adapter and item click listener
-        DSObjectsAdapter adapter = new DSObjectsAdapter(dsObjectsArrayList);
-        recyclerView.setAdapter(adapter);
+        DSObjectsClickAdapter clickAdapter = new DSObjectsClickAdapter(dsObjectsArrayList);
+        clickAdapter.setOnEntryClickListener(new DSObjectsClickAdapter.onEntryClickListener() {
+            @Override
+            public void onEntryClick(View view, int position) {
+                // stuff that will happen when a list item is clicked
+
+                listener.onDSObjectSelected(position);
+            }
+        });
+        recyclerView.setAdapter(clickAdapter);
 
         // attach a custom ItemDecorator to draw dividers between list items
         recyclerView.addItemDecoration(new ItemDivider(getContext()));
 
-        // improves performance if RecyclerView's layout size never changes
+        // improves performance if RecyclerView's layout size never changes (temp disabled)
         //recyclerView.setHasFixedSize(true);
 
         return view;
@@ -93,10 +100,10 @@ public class DSObjectsFragment extends Fragment
         getLoaderManager().initLoader(DSOBJECTS_LOADER, null, this);
     }
 
-    // called from MainActivity when other Fragment's update database
+    /* called from MainActivity when other Fragment's update database
     public void updateDSObjectList() {
-        dsObjectsAdapter.notifyDataSetChanged();
-    }
+        dsObjectsClickAdapter.notifyDataSetChanged();
+    } */
 
     // called by LoaderManager to create Loader
     @Override

@@ -47,11 +47,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    // display DSObjectFragment for selected dsObject
+        // display DSObjectFragment for selected dsObject
     @Override
-    public void onDSObjectSelected(Uri dsObjectUri) {
+    public void onDSObjectSelected(int dsObjectSelected) {
         if (findViewById(R.id.fragmentContainer) != null)  // phone
-            displayDSObject(dsObjectUri, R.id.fragmentContainer);
+            displayDSObject(dsObjectSelected, R.id.fragmentContainer);
         else {  // tablet
             // removes top of back stack
             getSupportFragmentManager().popBackStack();
@@ -59,13 +59,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     // display a dsObject
-    private void displayDSObject(Uri dsObjectUri, int viewID) {
+    private void displayDSObject(int dsObjectSelected, int viewID) {
         DetailFragment detailFragment = new DetailFragment();
 
         // specify dsObject's Uri as an argument to the DSObjectFragment
         Bundle arguments = new Bundle();
-        arguments.putParcelable(DSOBJECTDB_URI, dsObjectUri);
+        arguments.putInt("dsObjectArrayListItem", dsObjectSelected);
         detailFragment.setArguments(arguments);
+
 
         // use a FragmentTransaction to display the DetailFragment
         FragmentTransaction transaction =

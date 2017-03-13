@@ -24,12 +24,12 @@ import android.widget.TextView;
 
 import com.mikesrv9a.nightskyguide.DatabaseDescription.DSObjectDB;
 
-public class DetailFragment extends Fragment
-    implements LoaderManager.LoaderCallbacks<Cursor> {
+public class DetailFragment extends Fragment {
+    //implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int DSOBJECTDB_LOADER = 0;  // identifies the Loader
+    //private static final int DSOBJECTDB_LOADER = 0;  // identifies the Loader
 
-    private Uri dsObjectDBUri;  // Uri of selected dsObject
+    private int position;  // array list item
 
     private TextView objectIdTextView;  // displays dsObject's ID
     private TextView typeTextView; // displays dsObject's type
@@ -56,7 +56,8 @@ public class DetailFragment extends Fragment
         Bundle arguments = getArguments();
 
         if (arguments != null)
-            dsObjectDBUri = arguments.getParcelable(MainActivity.DSOBJECTDB_URI);
+            position = arguments.getInt("dsObjectArrayListItem");
+
 
         // inflate DetailFragment's layout
         View view =
@@ -76,8 +77,19 @@ public class DetailFragment extends Fragment
         oithTextView = (TextView) view.findViewById(R.id.oithTextView);
         observedTextView = (TextView) view.findViewById(R.id.observedTextView);
 
-        // load the dsObject
-        getLoaderManager().initLoader(DSOBJECTDB_LOADER, null, this);
+        String positionString = Integer.toString(position);   // test
+        objectIdTextView.setText(positionString);             // test
+        //DSObject object = DSObjectsFragment.dsObjectsArrayList.get(position);
+        /*
+        String r1c1Text = object.getDsoObjectID();
+        String r1c2Text = object.getDsoConst();
+        String r1c3Text = Double.toString(object.getDsoMag());
+        String r1c4Text = Integer.toString((int)Math.round(object.getDsoRA()))+"°";
+        String r2c1Text = object.getDsoName();
+        String r2c2Text = object.getDsoType();
+        String r2c3Text = object.getDsoSize();
+        String r2c4Text = Integer.toString((int)Math.round(object.getDsoDec()))+"°";
+        */
         return view;
     }
 
@@ -87,69 +99,4 @@ public class DetailFragment extends Fragment
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_details_menu, menu);
     }
-
-    // called by LoaderManager to create a Loader
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        // create an appropriate CursorLoader based on the id argument;
-        // only one Loader in this fragment, so the switch is unnecessary
-        CursorLoader cursorLoader;
-
-        switch (id) {
-            case DSOBJECTDB_LOADER:
-                cursorLoader = new CursorLoader(getActivity(),
-                    dsObjectDBUri, // Uri of dsObject to display
-                    null, // null projection returns all rows
-                    null, // null selection returns all columns
-                    null, // no selection arguments
-                    null);  // sort order
-                break;
-            default:
-                cursorLoader = null;
-                break;
-        }
-
-        return cursorLoader;
-    }
-
-    // called by LoaderManager when loading completes
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        // if the dsObject exists in the database, display its data
-        if (data != null && data.moveToFirst()) {
-            // get the column index for each data item
-            int objectIdIndex = data.getColumnIndex(DSObjectDB.DSO_OBJECTID);
-            int typeIndex = data.getColumnIndex(DSObjectDB.DSO_TYPE);
-            int magIndex = data.getColumnIndex(DSObjectDB.DSO_MAG);
-            int sizeIndex = data.getColumnIndex(DSObjectDB.DSO_SIZE);
-            int distIndex = data.getColumnIndex(DSObjectDB.DSO_DIST);
-            int raIndex = data.getColumnIndex(DSObjectDB.DSO_RA);
-            int decIndex = data.getColumnIndex(DSObjectDB.DSO_DEC);
-            int constIndex = data.getColumnIndex(DSObjectDB.DSO_CONST);
-            int nameIndex = data.getColumnIndex(DSObjectDB.DSO_NAME);
-            int psaIndex = data.getColumnIndex(DSObjectDB.DSO_PSA);
-            int oithIndex = data.getColumnIndex(DSObjectDB.DSO_OITH);
-            int observedIndex = data.getColumnIndex(DSObjectDB.DSO_OBSERVED);
-
-            // fill TextViews with the retrieved data
-            objectIdTextView.setText(data.getString(objectIdIndex));
-            typeTextView.setText(data.getString(typeIndex));
-            magTextView.setText(Double.toString(data.getDouble(magIndex)));
-            sizeTextView.setText(data.getString(sizeIndex));
-            distTextView.setText(data.getString(distIndex));
-            raTextView.setText(Double.toString(data.getDouble(raIndex)));
-            decTextView.setText(Double.toString(data.getDouble(decIndex)));
-            constTextView.setText(data.getString(constIndex));
-            nameTextView.setText(data.getString(nameIndex));
-            psaTextView.setText(data.getString(psaIndex));
-            oithTextView.setText(data.getString(oithIndex));
-            observedTextView.setText(Integer.toString(data.getInt(observedIndex)));
-
-        }
-    }
-
-    // called by LoaderManager when the Loader is being reset
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {}
-
 }
