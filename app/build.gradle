@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "com.mikesrv9a.nightskyguide"
         minSdkVersion 19
@@ -32,4 +32,6 @@ dependencies {
     compile 'com.android.support:design:24.2.1'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:recyclerview-v7:25.1.0'
+    compile 'joda-time:joda-time:2.3'
+    compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
 }

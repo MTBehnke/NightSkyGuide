@@ -1,3 +1,4 @@
+/*
 // ContentProvider subclass for manipulating the app's database
 
 package com.mikesrv9a.nightskyguide;
@@ -78,7 +79,7 @@ public class DSObjectContentProvider extends ContentProvider {
         return cursor;
     }
 
-    /*  These three added as required methods:  Not used in the app, so return null/0  */
+    //  These three added as required methods:  Not used in the app, so return null/0
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         return null;
@@ -93,3 +94,4 @@ public class DSObjectContentProvider extends ContentProvider {
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         return 0; }
 }
+*/

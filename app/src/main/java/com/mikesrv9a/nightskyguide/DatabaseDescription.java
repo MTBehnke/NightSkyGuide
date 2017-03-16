@@ -1,9 +1,11 @@
+/*  disable
+
 package com.mikesrv9a.nightskyguide;
 
-/**
- * Describes the table names and column names for this app's database,
- * and other information required by the ContentProvider
- */
+
+// * Describes the table names and column names for this app's database,
+// * and other information required by the ContentProvider
+//
 
 import android.content.ContentUris;
 import android.provider.BaseColumns;
@@ -45,7 +47,4 @@ public class DatabaseDescription {
         }
     }
 }
-
-
-
-
+*/

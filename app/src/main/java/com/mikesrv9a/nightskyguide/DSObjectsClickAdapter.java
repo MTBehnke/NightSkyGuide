@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class DSObjectsClickAdapter
@@ -79,11 +80,13 @@ public class DSObjectsClickAdapter
         String r1c1Text = object.getDsoObjectID();
         String r1c2Text = object.getDsoConst();
         String r1c3Text = Double.toString(object.getDsoMag());
-        String r1c4Text = Integer.toString((int) Math.round(object.getDsoRA())) + "°";
+        String r1c4Text = Integer.toString((int) Math.round(object.getDsoAlt())) + "°";
+        //String r1c4Text = Double.toString(object.getDsoAlt());
         String r2c1Text = object.getDsoName();
         String r2c2Text = object.getDsoType();
         String r2c3Text = object.getDsoSize();
-        String r2c4Text = Integer.toString((int) Math.round(object.getDsoDec())) + "°";
+        String r2c4Text = Integer.toString((int) Math.round(object.getDsoAz())) + "°";
+        //String r2c4Text = Double.toString(object.getDsoAz());
 
         holder.textViewR1C1.setText(r1c1Text);
         holder.textViewR1C2.setText(r1c2Text);

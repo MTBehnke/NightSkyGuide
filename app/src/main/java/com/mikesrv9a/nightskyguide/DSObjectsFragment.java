@@ -5,22 +5,17 @@ package com.mikesrv9a.nightskyguide;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mikesrv9a.nightskyguide.DatabaseDescription.DSObjectDB;
-
 import java.util.ArrayList;
 
-public class DSObjectsFragment extends Fragment
-    implements LoaderManager.LoaderCallbacks<Cursor> {
+public class DSObjectsFragment extends Fragment {
 
     // callback method implemented by MainActivity
     public interface DSObjectsFragmentListener {
@@ -28,12 +23,16 @@ public class DSObjectsFragment extends Fragment
         void onDSObjectSelected(DSObject dsObjectSelected);
     }
 
-    private static final int DSOBJECTS_LOADER = 0;  // identifies Loader
+    Cursor data;
+    DSObjectDatabaseHelper dsObjectsDB;
 
     public ArrayList<DSObject> dsObjectsArrayList = new ArrayList<>();
 
     // used to inform the MainActivity when a dsObject is selected
     DSObjectsFragmentListener listener;
+
+    // handler to update dsoAlt and dsoAz for all DSObjects on regular interval
+    Handler handler = new Handler();
 
     // configures this fragment's GUI
     @Override
@@ -72,8 +71,31 @@ public class DSObjectsFragment extends Fragment
         // improves performance if RecyclerView's layout size never changes (temp disabled)
         //recyclerView.setHasFixedSize(true);
 
+        // initiate handler to update dsoAlt and dsoAz for all DSObjects
+        handler.post(updateAltAz);
+
         return view;
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        handler.removeCallbacks(updateAltAz);
+    }
+
+    private final Runnable updateAltAz = new Runnable() {
+        public void run() {
+            try {
+                for (int counter = 0; counter < dsObjectsArrayList.size(); counter++){
+                    dsObjectsArrayList.get(counter).setDsoAltAz();
+                }
+                handler.postDelayed(this,10000);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
 
     // set DSObjectsFragmentListener when fragment attached
     @Override
@@ -89,34 +111,15 @@ public class DSObjectsFragment extends Fragment
         listener = null;
     }
 
-    // initialize a Loader when this fragment's activity is created
+    // load database and create dsObjectsArrayList
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(DSOBJECTS_LOADER, null, this);
-    }
+        Context context = getActivity();
+        dsObjectsDB = new DSObjectDatabaseHelper(context);
+        dsObjectsDB.forceDatabaseReload(context);           // *** ELIMINATE FROM FINAL
+        data = dsObjectsDB.getDSObjects();
 
-    // called by LoaderManager to create Loader
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        // create an appropriate CursorLoader based on the id argument;
-        // only one Loader in this fragment, so the switch is unnecessary
-        switch (id) {
-            case DSOBJECTS_LOADER:
-                return new CursorLoader(getActivity(),
-                        DSObjectDB.CONTENT_URI,  // Uri of dsObjects table
-                        null,  // null projection returns all columns
-                        null,  // null selection returns all rows
-                        null,  // no selection arguments
-                        DSObjectDB.DSO_OBJECTID + " COLLATE NOCASE ASC");  // sort order
-            default:
-                return null;
-        }
-    }
-
-    // called by LoaderManager when loading completes
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         //  creates DSObject objects and adds to dsObjectArrayList
         if (data != null && data.getCount() > 0) {
             data.moveToFirst();
@@ -147,14 +150,10 @@ public class DSObjectsFragment extends Fragment
                 Integer dsoObserved = data.getInt(observedCol);
                 DSObject dsObject = new DSObject(dsoObjectID, dsoType, dsoMag, dsoSize, dsoDist,
                         dsoRA, dsoDec, dsoConst, dsoName, dsoPSA, dsoOITH, dsoObserved);
+                dsObject.setDsoAltAz();
                 dsObjectsArrayList.add(dsObject);
                 data.moveToNext();
             }
         }
-    }
-
-    // called by LoaderManager when the Loader is being reset
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
     }
 }

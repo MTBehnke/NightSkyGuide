@@ -3,10 +3,13 @@ package com.mikesrv9a.nightskyguide;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+
 /** Creates DSObjects and updates sky position, etc.
  */
 
-public class DSObject implements Parcelable {
+class DSObject implements Parcelable {
 
     String dsoObjectID;     // DSO Object ID (e.g. M31)
     String dsoType;         // DSO Type (e.g. SG = Spiral Galaxy)
@@ -25,7 +28,7 @@ public class DSObject implements Parcelable {
 
 
     // DSObject constructor
-    public DSObject (String id, String type, Double mag, String size, String dist,
+    DSObject (String id, String type, Double mag, String size, String dist,
                      Double ra, Double dec, String cons, String name, String psa,
                      String oith, Integer observed) {
         dsoObjectID = id;
@@ -45,38 +48,51 @@ public class DSObject implements Parcelable {
     }
 
     // getter methods
-    public String getDsoObjectID() {return dsoObjectID;}
+    String getDsoObjectID() {return dsoObjectID;}
 
-    public String getDsoType() {return dsoType;}
+    String getDsoType() {return dsoType;}
 
-    public Double getDsoMag() {return dsoMag;}
+    Double getDsoMag() {return dsoMag;}
 
-    public String getDsoSize()  {return dsoSize;}
+    String getDsoSize()  {return dsoSize;}
 
-    public String getDsoDist() {return dsoDist;}
+    String getDsoDist() {return dsoDist;}
 
-    public Double getDsoRA() {return dsoRA;}
+    Double getDsoRA() {return dsoRA;}
 
-    public Double getDsoDec() {return dsoDec;}
+    Double getDsoDec() {return dsoDec;}
 
-    public String getDsoConst() {return dsoConst;}
+    String getDsoConst() {return dsoConst;}
 
-    public String getDsoName() {return dsoName;}
+    String getDsoName() {return dsoName;}
 
-    public String getDsoPSA() {return dsoPSA;}
+    String getDsoPSA() {return dsoPSA;}
 
-    public String getDsoOITH() {return dsoOITH;}
+    String getDsoOITH() {return dsoOITH;}
 
-    public Integer getDsoObserved() {return dsoObserved;}
+    Integer getDsoObserved() {return dsoObserved;}
 
-    public Double getDsoAlt() {return dsoAlt;}
+    Double getDsoAlt() {return dsoAlt;}
 
-    public Double getDsoAz() {return dsoAz;}
+    Double getDsoAz() {return dsoAz;}
 
     // setter methods
-    public void setDsoAlt(Double alt) {dsoAlt = alt;}
+    public void setDsoAltAz() {
+        // Temporary variables for DateTime and userLat/userLong
+        // Create Joda DateTime instance and set date to desired time
+        DateTime dateCal = new DateTime(DateTimeZone.UTC);
+        // set user location
+        double userLat = 45 + (13 + 59.88/60)/60;
+        double userLong = -93 + (17 + 28.84/60)/60;
 
-    public void setDsoAz(Double az) {dsoAz = az;}
+        // Calculate Alt and Az
+        double daysSinceJ2000 = AstroCalc.daysSinceJ2000((dateCal.getMillis()));
+        double greenwichST = AstroCalc.greenwichST(daysSinceJ2000);
+        double localST = AstroCalc.localST(greenwichST, userLong);
+        double hourAngle = AstroCalc.hourAngle(localST, dsoRA);
+        dsoAlt = AstroCalc.dsoAlt(dsoDec, userLat, hourAngle);
+        dsoAz = AstroCalc.dsoAz(dsoDec, userLat, hourAngle, dsoAlt);
+    }
 
     public void setDsoObserved(Integer observed) {dsoObserved = observed;}
 
@@ -104,7 +120,7 @@ public class DSObject implements Parcelable {
     }
 
     // required method, not used
-    protected DSObject(Parcel in) {
+    private DSObject(Parcel in) {
         dsoObjectID = in.readString();
         dsoType = in.readString();
         dsoSize = in.readString();

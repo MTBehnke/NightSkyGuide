@@ -1,22 +1,60 @@
-// SQLiteOpenHelper subclass that defines the app's database
+// SQLiteAssetHelper subclass that defines the app's database
 
 package com.mikesrv9a.nightskyguide;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteQueryBuilder;
 
-import com.mikesrv9a.nightskyguide.DatabaseDescription.DSObjectDB;
+import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
-class DSObjectDatabaseHelper extends SQLiteOpenHelper{
+public class DSObjectDatabaseHelper extends SQLiteAssetHelper{
     private static final String DATABASE_NAME = "DSObjects.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // constructor
     public DSObjectDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    public Cursor getDSObjects() {
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+        String [] sqlSelect = {
+                "_id",
+                "object",
+                "type",
+                "mag",
+                "size",
+                "distance",
+                "ra",
+                "dec",
+                "const",
+                "name",
+                "psa",
+                "oith",
+                "observed"
+        };
+        String sqlTables = "dsObjects";
+
+        qb.setTables(sqlTables);
+        Cursor c = qb.query(db, sqlSelect, null, null, null, null, null);
+        c.moveToFirst();
+        return c;
+    }
+
+    public static void forceDatabaseReload(Context context) {
+        DSObjectDatabaseHelper dbHelper = new DSObjectDatabaseHelper(context);
+        dbHelper.setForcedUpgrade(DATABASE_VERSION);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.setVersion(-1);
+        db.close();
+        db = dbHelper.getWritableDatabase();
+    }
+
+    /*
     // creates the dsObjects table when the database is created
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -42,4 +80,5 @@ class DSObjectDatabaseHelper extends SQLiteOpenHelper{
 // normally defines how to upgrade the database when the schema changes
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
+    */
 }

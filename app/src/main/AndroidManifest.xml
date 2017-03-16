@@ -21,13 +21,6 @@
             </intent-filter>
         </activity>
 
-        <provider
-            android:name=".DSObjectContentProvider"
-            android:authorities="com.mikesrv9a.nightskyguide"
-            android:enabled="true"
-            android:exported="false">
-        </provider>
-
     </application>
 
 </manifest>
