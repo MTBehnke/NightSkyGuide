@@ -49,12 +49,3 @@ Program Rules of the Astronomical League, such as:
 >in the future.
 >
 >https://www.astroleague.org/al/obsclubs/messier/mess.html
-
-Original code was adapted from the Address Book App from Chapter 9
-of Android 6 for Programmers, An App-Driven Approach, Third Edition.
-Reuse of code from the book is copyrighted by Deitel & Associates, Inc.
-and is licensed under a Creative Commons Attribution 3.0 Unported 
-License.  Note, the original code was for an address book app and
-substantial portions of that code has been deleted and/or modified.
-Remaining components are parts of the database functions, and the
-general structure of the main activity, fragments, and resource files.
