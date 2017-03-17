@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Astronomy Field Guide</string>
+    <string name="app_name">Messier Catalogue Field Guide</string>
     <string name="action_settings">Settings</string>
     <string name="invalid_query_uri">Invalid query Uri:</string>
     <string name="insert_failed">Insert failed: s</string>

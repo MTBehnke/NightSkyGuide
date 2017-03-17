@@ -7,13 +7,17 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class DSObjectsFragment extends Fragment {
 
@@ -34,6 +38,8 @@ public class DSObjectsFragment extends Fragment {
     // handler to update dsoAlt and dsoAz for all DSObjects on regular interval
     Handler handler = new Handler();
 
+    DSObjectsClickAdapter clickAdapter;
+
     // configures this fragment's GUI
     @Override
     public View onCreateView(
@@ -53,12 +59,11 @@ public class DSObjectsFragment extends Fragment {
                 new LinearLayoutManager(getActivity().getBaseContext()));
 
         // create recyclerView's adapter and item click listener
-        DSObjectsClickAdapter clickAdapter = new DSObjectsClickAdapter(dsObjectsArrayList);
+        clickAdapter = new DSObjectsClickAdapter(dsObjectsArrayList);
         clickAdapter.setOnEntryClickListener(new DSObjectsClickAdapter.onEntryClickListener() {
             @Override
             public void onEntryClick(View view, int position) {
                 // stuff that will happen when a list item is clicked
-                //listener.onDSObjectSelected(position);  Original working version
                 DSObject DSObjectSelected = dsObjectsArrayList.get(position);
                 listener.onDSObjectSelected(DSObjectSelected);
             }
@@ -80,18 +85,29 @@ public class DSObjectsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        handler.removeCallbacks(updateAltAz);
+        //handler.removeCallbacks(updateAltAz);
+        dsObjectsDB.close();
+        data.close();
+        dsObjectsArrayList.clear();
     }
 
-    private final Runnable updateAltAz = new Runnable() {
+    private Runnable updateAltAz = new Runnable() {
         public void run() {
             try {
                 for (int counter = 0; counter < dsObjectsArrayList.size(); counter++){
                     dsObjectsArrayList.get(counter).setDsoAltAz();
                 }
-                handler.postDelayed(this,10000);
+                Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
+                    @Override
+                    public int compare(DSObject dsObject, DSObject t1) {
+                        return Double.compare(dsObject.getDsoSortAlt(), t1.getDsoSortAlt());
+                    }
+                });
+                clickAdapter.notifyDataSetChanged();
+                handler.postDelayed(this,5000);
             }
             catch (Exception e) {
+                Toast.makeText(getActivity(),"error", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         }
@@ -117,7 +133,7 @@ public class DSObjectsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         Context context = getActivity();
         dsObjectsDB = new DSObjectDatabaseHelper(context);
-        dsObjectsDB.forceDatabaseReload(context);           // *** ELIMINATE FROM FINAL
+        //dsObjectsDB.forceDatabaseReload(context);           // *** ELIMINATE FROM FINAL VERSION
         data = dsObjectsDB.getDSObjects();
 
         //  creates DSObject objects and adds to dsObjectArrayList
@@ -154,6 +170,12 @@ public class DSObjectsFragment extends Fragment {
                 dsObjectsArrayList.add(dsObject);
                 data.moveToNext();
             }
+            Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
+                @Override
+                public int compare(DSObject dsObject, DSObject t1) {
+                    return Double.compare(dsObject.getDsoSortAlt(), t1.getDsoSortAlt());
+                }
+            });
         }
     }
 }

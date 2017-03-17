@@ -45,6 +45,7 @@ public class DSObjectDatabaseHelper extends SQLiteAssetHelper{
         return c;
     }
 
+    // only used to refresh database - not normal function for app
     public static void forceDatabaseReload(Context context) {
         DSObjectDatabaseHelper dbHelper = new DSObjectDatabaseHelper(context);
         dbHelper.setForcedUpgrade(DATABASE_VERSION);
@@ -53,32 +54,4 @@ public class DSObjectDatabaseHelper extends SQLiteAssetHelper{
         db.close();
         db = dbHelper.getWritableDatabase();
     }
-
-    /*
-    // creates the dsObjects table when the database is created
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        // SQL for creating the dsObjects table
-        final String CREATE_DSOBJECTSDB_TABLE =
-            "CREATE TABLE " + DSObjectDB.TABLE_NAME + "(" +
-                DSObjectDB._ID + " integer primary key, " +
-                DSObjectDB.DSO_OBJECTID + " TEXT, " +
-                DSObjectDB.DSO_TYPE + " TEXT, " +
-                DSObjectDB.DSO_MAG + " REAL, " +
-                DSObjectDB.DSO_SIZE + " TEXT, " +
-                DSObjectDB.DSO_DIST + " TEXT, " +
-                DSObjectDB.DSO_RA + " REAL, " +
-                DSObjectDB.DSO_DEC + " REAL, " +
-                DSObjectDB.DSO_CONST + " TEXT, " +
-                DSObjectDB.DSO_NAME + " TEXT, " +
-                DSObjectDB.DSO_PSA + " TEXT, " +
-                DSObjectDB.DSO_OITH + " TEXT, " +
-                DSObjectDB.DSO_OBSERVED + " INTEGER);";
-        db.execSQL(CREATE_DSOBJECTSDB_TABLE);  // create the table
-    }
-
-// normally defines how to upgrade the database when the schema changes
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
-    */
 }

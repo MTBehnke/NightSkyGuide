@@ -2,6 +2,7 @@ package com.mikesrv9a.nightskyguide;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.renderscript.Double2;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -25,6 +26,7 @@ class DSObject implements Parcelable {
     Integer dsoObserved;    // DSO Observed (not observed = 0, observed = tbd)
     Double dsoAlt;          // DSO current altitude in sky (ddd.ddd)
     Double dsoAz;           // DSO current azimuth in sky (ddd.ddd)
+    Double dsoSortAlt;      // used to sort DSOs in viewing order (setting on horizon = 0 deg)
 
 
     // DSObject constructor
@@ -45,6 +47,7 @@ class DSObject implements Parcelable {
         dsoObserved = observed;
         dsoAlt = 0.0;
         dsoAz = 0.0;
+        dsoSortAlt = 0.0;
     }
 
     // getter methods
@@ -76,6 +79,8 @@ class DSObject implements Parcelable {
 
     Double getDsoAz() {return dsoAz;}
 
+    Double getDsoSortAlt() {return dsoSortAlt;}
+
     // setter methods
     public void setDsoAltAz() {
         // Temporary variables for DateTime and userLat/userLong
@@ -92,6 +97,10 @@ class DSObject implements Parcelable {
         double hourAngle = AstroCalc.hourAngle(localST, dsoRA);
         dsoAlt = AstroCalc.dsoAlt(dsoDec, userLat, hourAngle);
         dsoAz = AstroCalc.dsoAz(dsoDec, userLat, hourAngle, dsoAlt);
+        if (dsoAz >= 180) {
+            if (dsoAlt >=1) {dsoSortAlt = dsoAlt;}   // if alt<1° then consider set
+            else {dsoSortAlt = 360 + dsoAlt;}}
+        else {dsoSortAlt = 180 - dsoAlt;}
     }
 
     public void setDsoObserved(Integer observed) {dsoObserved = observed;}

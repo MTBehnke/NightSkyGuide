@@ -77,10 +77,14 @@ public class DSObjectsClickAdapter
     @Override
     public void onBindViewHolder(DSObjectsClickViewHolder holder, int position) {
         DSObject object = dsObjectsArrayList.get(position);
+        String arrow;
+        if(object.getDsoAz()>= 180){arrow = "▼";}
+                else {arrow = "▲";}
         String r1c1Text = object.getDsoObjectID();
         String r1c2Text = object.getDsoConst();
         String r1c3Text = Double.toString(object.getDsoMag());
-        String r1c4Text = Integer.toString((int) Math.round(object.getDsoAlt())) + "°";
+        String r1c4Text = Integer.toString((int) Math.round(object.getDsoAlt())) + "°" + arrow;
+
         //String r1c4Text = Double.toString(object.getDsoAlt());
         String r2c1Text = object.getDsoName();
         String r2c2Text = object.getDsoType();
@@ -92,10 +96,10 @@ public class DSObjectsClickAdapter
         holder.textViewR1C2.setText(r1c2Text);
         holder.textViewR1C3.setText(r1c3Text);
         holder.textViewR1C4.setText(r1c4Text);
-        holder.textViewR2C1.setText(r2c1Text);  // initially RA, change to altitude
+        holder.textViewR2C1.setText(r2c1Text);
         holder.textViewR2C2.setText(r2c2Text);
         holder.textViewR2C3.setText(r2c3Text);
-        holder.textViewR2C4.setText(r2c4Text);  // initially Dec, change to azimuth
+        holder.textViewR2C4.setText(r2c4Text);
     }
 
     @Override
@@ -112,4 +116,5 @@ public class DSObjectsClickAdapter
     public void setOnEntryClickListener(onEntryClickListener onEntryClickListener) {
         dsObjectOnEntryClickListener = onEntryClickListener;
     }
+
 }
