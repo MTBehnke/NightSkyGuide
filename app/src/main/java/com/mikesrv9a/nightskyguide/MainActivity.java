@@ -21,11 +21,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // NOTE - tablet layout not working ***
-        // if layout contains fragmentContainer, the phone layout is in use;
-        // create and display a DSObjectsFragment
-        if (savedInstanceState == null &&
-                findViewById(R.id.fragmentContainer) != null) {
+        if (savedInstanceState == null) {
             // create DSObjectsFragment
             dsObjectsFragment = new DSObjectsFragment();
 
@@ -34,22 +30,13 @@ public class MainActivity extends AppCompatActivity
                     getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.fragmentContainer, dsObjectsFragment);
             transaction.commit();  // display DSObjectsFragment
-        } else {
-            dsObjectsFragment =
-                    (DSObjectsFragment) getSupportFragmentManager().
-                            findFragmentById(R.id.dsObjectsFragment);
         }
     }
 
         // display DSObjectFragment for selected dsObject
     @Override
     public void onDSObjectSelected(DSObject dsObjectSelected) {
-        if (findViewById(R.id.fragmentContainer) != null)  // phone
-            displayDSObject(dsObjectSelected, R.id.fragmentContainer);
-        else {  // tablet
-            // removes top of back stack
-            getSupportFragmentManager().popBackStack();
-        }
+        displayDSObject(dsObjectSelected, R.id.fragmentContainer);
     }
 
     // display a dsObject

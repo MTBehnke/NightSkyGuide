@@ -306,14 +306,16 @@
             android:id="@+id/Section5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/Section4">
+            android:layout_below="@id/Section4"
+            android:paddingTop="12dp">
 
             <ImageView
                 android:id="@+id/constImageView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/hint_const">
-            </ImageView>
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/hint_const"
+                android:scaleType="fitCenter" />
 
         </RelativeLayout>
 
