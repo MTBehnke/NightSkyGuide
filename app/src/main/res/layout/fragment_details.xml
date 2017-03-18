@@ -1,219 +1,294 @@
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    >
 
-    <GridLayout
+    <!-- Section 1 -->
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnCount="2"
         android:useDefaultMargins="true">
 
-        <TextView
-        android:id="@+id/objectIdLabelTextView"
-        android:text="@string/label_objectid"
-        android:layout_row="0"
-        android:layout_column="0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/DSObjectLabelTextView" />
-
-        <TextView
-            android:id="@+id/objectIdTextView"
-            android:layout_row="0"
-            android:layout_column="1"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/Section1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/DSObjectTextView"/>
+            android:background="@color/colorAccent">
+
+            <TextView
+                android:id="@+id/objectIdTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/divider_margin"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/nameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/objectIdTextView"
+                android:gravity="center_vertical"
+                android:padding="@dimen/divider_margin"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <!-- Section 2 -->
+        <LinearLayout
+            android:id="@+id/Section2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/Section1">
+
+            <RelativeLayout
+                android:id="@+id/Section2L"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4">
+
+                <TextView
+                    android:id="@+id/typeLabelTextView"
+                    style="@style/DSObjectLabelTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_type" />
+
+                <TextView
+                    android:id="@+id/magLabelTextView"
+                    style="@style/DSObjectLabelTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/typeLabelTextView"
+                    android:text="@string/label_mag" />
+
+                <TextView
+                    android:id="@+id/sizeLabelTextView"
+                    style="@style/DSObjectLabelTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/magLabelTextView"
+                    android:text="@string/label_size" />
+
+                <TextView
+                    android:id="@+id/distLabelTextView"
+                    style="@style/DSObjectLabelTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/sizeLabelTextView"
+                    android:text="@string/label_dist" />
+
+                <TextView
+                    android:id="@+id/psaLabelTextView"
+                    style="@style/DSObjectLabelTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/distLabelTextView"
+                    android:text="@string/label_psa" />
+
+                <TextView
+                    android:id="@+id/oithLabelTextView"
+                    style="@style/DSObjectLabelTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="12dp"
+                    android:layout_below="@id/psaLabelTextView"
+                    android:text="@string/label_oith" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/Section2R"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6">
+
+                <TextView
+                    android:id="@+id/typeTextView"
+                    style="@style/DSObjectTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/magTextView"
+                    style="@style/DSObjectTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/typeTextView" />
+
+                <TextView
+                    android:id="@+id/sizeTextView"
+                    style="@style/DSObjectTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/magTextView" />
+
+                <TextView
+                    android:id="@+id/distTextView"
+                    style="@style/DSObjectTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/sizeTextView" />
+
+                <TextView
+                    android:id="@+id/psaTextView"
+                    style="@style/DSObjectTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/distTextView" />
+
+                <TextView
+                    android:id="@+id/oithTextView"
+                    style="@style/DSObjectTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/psaTextView" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!-- Divider line -->
+        <TextView
+            android:id="@+id/line"
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/Section2"
+            android:background="@android:color/darker_gray"
+            android:gravity="bottom"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp" />
+
+        <!-- Section 3 -->
+        <LinearLayout
+            android:id="@+id/Section3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/line">
+
+            <RelativeLayout
+                android:id="@+id/Section3L"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4">
+
+                <TextView
+                    android:id="@+id/constLabelTextView"
+                    style="@style/DSObjectLabelTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_const" />
+
+                <TextView
+                    android:id="@+id/raLabelTextView"
+                    style="@style/DSObjectLabelTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/constLabelTextView"
+                    android:text="@string/label_RA" />
+
+                <TextView
+                    android:id="@+id/decLabelTextView"
+                    style="@style/DSObjectLabelTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/raLabelTextView"
+                    android:text="@string/label_dec" />
+
+                <TextView
+                    android:id="@+id/altLabelTextView"
+                    style="@style/DSObjectLabelTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/decLabelTextView"
+                    android:text="@string/label_alt" />
+
+                <TextView
+                    android:id="@+id/azLabelTextView"
+                    style="@style/DSObjectLabelTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="12dp"
+                    android:layout_below="@id/altLabelTextView"
+                    android:text="@string/label_az" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/Section3R"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6">
+
+                <TextView
+                    android:id="@+id/constTextView"
+                    style="@style/DSObjectTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/raTextView"
+                    style="@style/DSObjectTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/constTextView" />
+
+                <TextView
+                    android:id="@+id/decTextView"
+                    style="@style/DSObjectTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/raTextView" />
+
+                <TextView
+                    android:id="@+id/altTextView"
+                    style="@style/DSObjectTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/decTextView" />
+
+                <TextView
+                    android:id="@+id/azTextView"
+                    style="@style/DSObjectTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/altTextView" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/typeLabelTextView"
-            android:text="@string/label_type"
-            android:layout_row="1"
-            android:layout_column="0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DSObjectLabelTextView" />
+            android:id="@+id/line2"
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/Section3"
+            android:background="@android:color/darker_gray"
+            android:gravity="bottom"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp" />
 
-        <TextView
-            android:id="@+id/typeTextView"
-            android:layout_row="1"
-            android:layout_column="1"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/Section4"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/DSObjectTextView"/>
+            android:layout_below="@id/line2">
 
-        <TextView
-            android:id="@+id/magLabelTextView"
-            android:text="@string/label_mag"
-            android:layout_row="2"
-            android:layout_column="0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DSObjectLabelTextView" />
+            <ImageView
+                android:id="@+id/constImageView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"></ImageView>
 
-        <TextView
-            android:id="@+id/magTextView"
-            android:layout_row="2"
-            android:layout_column="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DSObjectTextView"/>
+        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/sizeLabelTextView"
-            android:text="@string/label_size"
-            android:layout_row="3"
-            android:layout_column="0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DSObjectLabelTextView" />
-
-        <TextView
-            android:id="@+id/sizeTextView"
-            android:layout_row="3"
-            android:layout_column="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DSObjectTextView"/>
-
-        <TextView
-            android:id="@+id/distLabelTextView"
-            android:text="@string/label_dist"
-            android:layout_row="4"
-            android:layout_column="0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DSObjectLabelTextView" />
-
-        <TextView
-            android:id="@+id/distTextView"
-            android:layout_row="4"
-            android:layout_column="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DSObjectTextView"/>
-
-        <TextView
-            android:id="@+id/raLabelTextView"
-            android:text="@string/label_RA"
-            android:layout_row="5"
-            android:layout_column="0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DSObjectLabelTextView" />
-
-        <TextView
-            android:id="@+id/raTextView"
-            android:layout_row="5"
-            android:layout_column="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DSObjectTextView"/>
-
-        <TextView
-            android:id="@+id/decLabelTextView"
-            android:text="@string/label_dec"
-            android:layout_row="6"
-            android:layout_column="0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DSObjectLabelTextView" />
-
-        <TextView
-            android:id="@+id/decTextView"
-            android:layout_row="6"
-            android:layout_column="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DSObjectTextView"/>
-
-        <TextView
-            android:id="@+id/constLabelTextView"
-            android:text="@string/label_const"
-            android:layout_row="7"
-            android:layout_column="0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DSObjectLabelTextView" />
-
-        <TextView
-            android:id="@+id/constTextView"
-            android:layout_row="7"
-            android:layout_column="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DSObjectTextView"/>
-
-        <TextView
-            android:id="@+id/nameLabelTextView"
-            android:text="@string/label_name"
-            android:layout_row="8"
-            android:layout_column="0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DSObjectLabelTextView" />
-
-        <TextView
-            android:id="@+id/nameTextView"
-            android:layout_row="8"
-            android:layout_column="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DSObjectTextView"/>
-
-        <TextView
-            android:id="@+id/psaLabelTextView"
-            android:text="@string/label_psa"
-            android:layout_row="9"
-            android:layout_column="0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DSObjectLabelTextView" />
-
-        <TextView
-            android:id="@+id/psaTextView"
-            android:layout_row="9"
-            android:layout_column="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DSObjectTextView"/>
-
-        <TextView
-            android:id="@+id/oithLabelTextView"
-            android:text="@string/label_oith"
-            android:layout_row="10"
-            android:layout_column="0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DSObjectLabelTextView" />
-
-        <TextView
-            android:id="@+id/oithTextView"
-            android:layout_row="10"
-            android:layout_column="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DSObjectTextView"/>
-
-        <TextView
-            android:id="@+id/observedLabelTextView"
-            android:text="@string/label_observed"
-            android:layout_row="11"
-            android:layout_column="0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DSObjectLabelTextView" />
-
-        <TextView
-            android:id="@+id/observedTextView"
-            android:layout_row="11"
-            android:layout_column="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DSObjectTextView"/>
-
-    </GridLayout>
+    </RelativeLayout>
 
 </ScrollView>

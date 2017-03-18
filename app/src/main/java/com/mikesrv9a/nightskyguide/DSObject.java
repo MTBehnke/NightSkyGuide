@@ -98,7 +98,7 @@ class DSObject implements Parcelable {
         dsoAlt = AstroCalc.dsoAlt(dsoDec, userLat, hourAngle);
         dsoAz = AstroCalc.dsoAz(dsoDec, userLat, hourAngle, dsoAlt);
         if (dsoAz >= 180) {
-            if (dsoAlt >=1) {dsoSortAlt = dsoAlt;}   // if alt<1° then consider set
+            if (dsoAlt >=0.5) {dsoSortAlt = dsoAlt;}   // if alt<0.5° then consider set
             else {dsoSortAlt = 360 + dsoAlt;}}
         else {dsoSortAlt = 180 - dsoAlt;}
     }

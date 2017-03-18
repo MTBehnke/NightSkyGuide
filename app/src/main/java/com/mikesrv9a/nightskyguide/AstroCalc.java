@@ -68,7 +68,7 @@ public class AstroCalc {
         int deg = (int) dd;
         int min = (int) ((dd-deg)*60.0);
         long sec =  Math.round ((dd-deg-(min/60.0))*3600);
-        return deg + "° " + min + "' " + sec + "\"";
+        return deg + "° " + Math.abs(min) + "' " + Math.abs(sec) + "\"";
     }
 
     // convert degrees from double format to hms string format
@@ -79,4 +79,40 @@ public class AstroCalc {
         long sec =  Math.round ((dd-hour-(min/60.0))*3600);
         return hour + "h " + min + "m " + sec + "s";
     }
+
+    public static String getConstName (String abbr) {
+        String[] constAbbrs = {"AND","AQR","AUR","CAP","CAS","CET","CMA","CNC","COM","CVN",
+                "CYG","DRA","GEM","HER","HYA","LEO","LEP","LYR","MON","OPH","ORI","PEG","PER","PSC",
+                "PUP","SCO","SCT","SER","SGE","SGR","TAU","TRI","UMA","VIR","VUL"};
+        String[] constNames = {"Andromeda","Aquarius","Auriga","Capricornus","Cassiopeia",
+                "Cetus","Canis Major","Cancer","Coma Berenices","Canes Venatici","Cygnus","Draco",
+                "Gemini","Hercules","Hydra","Leo","Lepus","Lyra","Monoceros","Ophiuchus","Orion",
+                "Pegasus","Perseus","Pisces","Puppis","Scorpius","Scutum","Serpens","Sagitta",
+                "Sagittarius","Taurus","Triangulum","Ursa Major","Virgo","Vulpecula"};
+        String constName = "";
+        for (int i=0; i<constAbbrs.length;i++) {
+            if(constAbbrs[i].equals(abbr)) {
+                constName = constNames[i];
+                break;
+            }
+        }
+        return constName;
+    }
+
+    public static String getDSOType (String abbr) {
+        String[] typeAbbrs = {"AST","C/N","EG","EN","ER","GC","IG","OC","PN","RN","SG","SNR"};
+        String[] typeNames = {"Asterism","Cluster w/ Nebulosity","Elliptical Galaxy",
+                "Emission Nebula","Emission/Reflection Nebula","Globular Cluster",
+                "Irregular Galaxy","Open Cluster","Planetary Nebula","Reflection Nebula"
+                ,"Spiral Galaxy","Supernova Remnant"};
+        String typeName = "";
+        for (int i=0; i<typeAbbrs.length;i++) {
+            if(typeAbbrs[i].equals(abbr)) {
+                typeName = typeNames[i];
+                break;
+            }
+        }
+        return typeName;
+    }
+
 }

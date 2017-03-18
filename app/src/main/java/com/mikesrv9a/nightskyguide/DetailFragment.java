@@ -2,14 +2,21 @@
 
 package com.mikesrv9a.nightskyguide;
 
+import android.graphics.drawable.Drawable;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.InputStream;
 
 public class DetailFragment extends Fragment {
 
@@ -26,7 +33,9 @@ public class DetailFragment extends Fragment {
     private TextView nameTextView; // displays dsObject's Common Name
     private TextView psaTextView; // displays dsObject's PSA pages
     private TextView oithTextView; // displays dsObject's OITH pages
-    private TextView observedTextView; // displays dsObject's Observed status
+    private TextView altTextView; // displays dsObject's altitude
+    private TextView azTextView; // displays dsObject's azimuth
+    private ImageView constImageView; // displays dsObject's constellation image
 
     // called when DetailFragment's view needs to be created
     @Override
@@ -57,23 +66,48 @@ public class DetailFragment extends Fragment {
         nameTextView = (TextView) view.findViewById(R.id.nameTextView);
         psaTextView = (TextView) view.findViewById(R.id.psaTextView);
         oithTextView = (TextView) view.findViewById(R.id.oithTextView);
-        observedTextView = (TextView) view.findViewById(R.id.observedTextView);
+        altTextView = (TextView) view.findViewById(R.id.altTextView);
+        azTextView = (TextView) view.findViewById(R.id.azTextView);
+        constImageView = (ImageView) view.findViewById(R.id.constImageView);
 
         // set the TextViews
         objectIdTextView.setText(dsObject.getDsoObjectID());
-        typeTextView.setText(dsObject.getDsoType());
+        String typeAbbr = dsObject.getDsoType();
+        typeTextView.setText(AstroCalc.getDSOType(typeAbbr));
         magTextView.setText(Double.toString(dsObject.getDsoMag()));
         sizeTextView.setText(dsObject.getDsoSize());
         distTextView.setText(dsObject.getDsoDist());
-        raTextView.setText(Double.toString(dsObject.getDsoRA()));
-        decTextView.setText(Double.toString(dsObject.getDsoDec()));
-        constTextView.setText(dsObject.getDsoConst());
+        raTextView.setText(AstroCalc.convertDDToHMS(dsObject.getDsoRA()));
+        decTextView.setText(AstroCalc.convertDDToDMS(dsObject.getDsoDec()));
+        String constAbbr = dsObject.getDsoConst();
+        constTextView.setText(AstroCalc.getConstName(constAbbr));
         nameTextView.setText(dsObject.getDsoName());
         psaTextView.setText(dsObject.getDsoPSA());
         oithTextView.setText(dsObject.getDsoOITH());
-        observedTextView.setText(Integer.toString(dsObject.getDsoObserved()));
+        altTextView.setText((Integer.toString((int)Math.round(dsObject.getDsoAlt()))) + "°");
+        azTextView.setText((Integer.toString((int)Math.round(dsObject.getDsoAz()))) + "°");
+
+        loadConstImage();
+
         return view;
     }
+
+
+    // load constellation image
+    private void loadConstImage() {
+        try {
+            // get input stream
+            InputStream ims = getActivity().getAssets().open("images/AND.gif");
+            Drawable constImg = Drawable.createFromStream(ims, null);
+            constImageView.setImageDrawable(constImg);
+            ims.close();
+        } catch (Exception e) {
+            Toast.makeText(getActivity(),"error", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
+
 
     // display this fragment's menu items (note - none currently)
     @Override

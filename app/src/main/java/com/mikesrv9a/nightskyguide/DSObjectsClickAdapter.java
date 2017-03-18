@@ -2,6 +2,7 @@
 
 package com.mikesrv9a.nightskyguide;
 
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,11 +79,14 @@ public class DSObjectsClickAdapter
     public void onBindViewHolder(DSObjectsClickViewHolder holder, int position) {
         DSObject object = dsObjectsArrayList.get(position);
         String arrow;
+        String magIcon;
         if(object.getDsoAz()>= 180){arrow = "▼";}
                 else {arrow = "▲";}
+        if(object.getDsoMag()<=7.0){magIcon = " ●";}
+                else {magIcon = "";}
         String r1c1Text = object.getDsoObjectID();
         String r1c2Text = object.getDsoConst();
-        String r1c3Text = Double.toString(object.getDsoMag());
+        String r1c3Text = Double.toString(object.getDsoMag()) + magIcon;
         String r1c4Text = Integer.toString((int) Math.round(object.getDsoAlt())) + "°" + arrow;
 
         //String r1c4Text = Double.toString(object.getDsoAlt());
