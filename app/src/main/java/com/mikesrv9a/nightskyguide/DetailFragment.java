@@ -2,6 +2,10 @@
 
 package com.mikesrv9a.nightskyguide;
 
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.nfc.Tag;
 import android.os.Bundle;
@@ -35,7 +39,10 @@ public class DetailFragment extends Fragment {
     private TextView oithTextView; // displays dsObject's OITH pages
     private TextView altTextView; // displays dsObject's altitude
     private TextView azTextView; // displays dsObject's azimuth
+
     private ImageView constImageView; // displays dsObject's constellation image
+    private Bitmap constImage;
+
 
     // called when DetailFragment's view needs to be created
     @Override
@@ -68,7 +75,7 @@ public class DetailFragment extends Fragment {
         oithTextView = (TextView) view.findViewById(R.id.oithTextView);
         altTextView = (TextView) view.findViewById(R.id.altTextView);
         azTextView = (TextView) view.findViewById(R.id.azTextView);
-        constImageView = (ImageView) view.findViewById(R.id.constImageView);
+
 
         // set the TextViews
         objectIdTextView.setText(dsObject.getDsoObjectID());
@@ -87,27 +94,31 @@ public class DetailFragment extends Fragment {
         altTextView.setText((Integer.toString((int)Math.round(dsObject.getDsoAlt()))) + "°");
         azTextView.setText((Integer.toString((int)Math.round(dsObject.getDsoAz()))) + "°");
 
-        loadConstImage();
+        // display constellation image
+        String constName = "images/" + dsObject.getDsoConst() + ".gif";
+        constImageView = (ImageView) view.findViewById(R.id.constImageView);
+        Bitmap bm = loadConstImage(constName);   // display constellation .gif on detail screen
+        constImageView.setImageBitmap(bm);
 
         return view;
     }
 
 
     // load constellation image
-    private void loadConstImage() {
+    private Bitmap loadConstImage(String filename) {
         try {
             // get input stream
-            InputStream ims = getActivity().getAssets().open("images/AND.gif");
-            Drawable constImg = Drawable.createFromStream(ims, null);
-            constImageView.setImageDrawable(constImg);
+            InputStream ims = getActivity().getAssets().open(filename);
+            //Drawable constImg = Drawable.createFromStream(ims, null);
+            Bitmap constImage = BitmapFactory.decodeStream(ims);
             ims.close();
+            return constImage;
         } catch (Exception e) {
             Toast.makeText(getActivity(),"error", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
+        return constImage;
     }
-
-
 
     // display this fragment's menu items (note - none currently)
     @Override
