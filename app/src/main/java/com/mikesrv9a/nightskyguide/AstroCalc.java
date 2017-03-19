@@ -68,7 +68,8 @@ public class AstroCalc {
         int deg = (int) dd;
         int min = (int) ((dd-deg)*60.0);
         long sec =  Math.round ((dd-deg-(min/60.0))*3600);
-        return deg + "° " + Math.abs(min) + "' " + Math.abs(sec) + "\"";
+        return deg + "° " + String.format("%02d",Math.abs(min)) + "' " +
+                String.format("%02d",Math.abs(sec)) + "\"";
     }
 
     // convert degrees from double format to hms string format
@@ -77,7 +78,8 @@ public class AstroCalc {
         int hour = (int) dd;
         int min = (int) ((dd-hour)*60.0);
         long sec =  Math.round ((dd-hour-(min/60.0))*3600);
-        return hour + "h " + min + "m " + sec + "s";
+        return hour + "h " + String.format("%02d",min) + "m " +
+                String.format("%02d",sec) + "s";
     }
 
     public static String getConstName (String abbr) {

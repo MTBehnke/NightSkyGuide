@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Messier Catalogue Field Guide</string>
+    <string name="app_name">Messier Field Guide</string>
     <string name="action_settings">Settings</string>
     <string name="invalid_query_uri">Invalid query Uri:</string>
     <string name="insert_failed">Insert failed: s</string>
@@ -8,6 +8,8 @@
     <string name="invalid_delete_uri">Invalid delete Uri:</string>
     <string name="menuitem_edit">Edit</string>
     <string name="menuitem_delete">Delete</string>
+    <string name="menuitem_location">Update Location</string>
+    <string name="menuitem_info">App Info</string>
     <string name="hint_objectid_required">Object ID (Required)</string>
     <string name="hint_type">Type</string>
     <string name="hint_mag">Magnitude</string>
@@ -25,13 +27,15 @@
     <string name="label_mag">Magnitude:</string>
     <string name="label_size">Size (arcmins):</string>
     <string name="label_dist">Distance:</string>
-    <string name="label_RA">Right Ascension:</string>
-    <string name="label_dec">Declination:</string>
+    <string name="label_RA">RA:</string>
+    <string name="label_dec">DEC:</string>
     <string name="label_const">Constellation:</string>
     <string name="label_name">Common Name:</string>
     <string name="label_psa">PSA Pages:</string>
     <string name="label_oith">OITH Pages:</string>
     <string name="label_observed">Observed:</string>
-    <string name="label_alt">Altitude</string>
-    <string name="label_az">Azimuth</string>
+    <string name="label_alt">Altitude:</string>
+    <string name="label_az">Azimuth:</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_app_info">AppInfoActivity</string>
 </resources>

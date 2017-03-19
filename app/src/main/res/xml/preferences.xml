@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:defaultValue="44.1971"
+        android:key="edit_text_pref_lat"
+        android:selectAllOnFocus="true"
+        android:singleLine="false"
+        android:summary="Latitude"
+        android:persistent="true"
+        android:title="Latitude (dd.dddd)" />
+
+    <EditTextPreference
+        android:defaultValue="-92.8623"
+        android:key="edit_text_pref_long"
+        android:selectAllOnFocus="true"
+        android:singleLine="false"
+        android:summary="Longitude (+E/-W)"
+        android:persistent="true"
+        android:title="Longitude (dd.dddd)" />
+
+</PreferenceScreen>

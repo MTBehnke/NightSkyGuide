@@ -1,8 +1,12 @@
 package com.mikesrv9a.nightskyguide;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 
 import org.joda.time.DateTime;
@@ -33,7 +37,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-        // display DSObjectFragment for selected dsObject
+    // display DSObjectFragment for selected dsObject
     @Override
     public void onDSObjectSelected(DSObject dsObjectSelected) {
         displayDSObject(dsObjectSelected, R.id.fragmentContainer);

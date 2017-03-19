@@ -16,6 +16,7 @@ public class DSObjectDatabaseHelper extends SQLiteAssetHelper{
     // constructor
     public DSObjectDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        setForcedUpgrade(DATABASE_VERSION);
     }
 
     public Cursor getDSObjects() {
@@ -52,6 +53,6 @@ public class DSObjectDatabaseHelper extends SQLiteAssetHelper{
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.setVersion(-1);
         db.close();
-        db = dbHelper.getWritableDatabase();
+        dbHelper.getWritableDatabase();
     }
 }

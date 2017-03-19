@@ -3,6 +3,7 @@
 package com.mikesrv9a.nightskyguide;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,9 @@ import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -104,7 +108,7 @@ public class DSObjectsFragment extends Fragment {
                     }
                 });
                 clickAdapter.notifyDataSetChanged();
-                handler.postDelayed(this,5000);
+                handler.postDelayed(this,60000);
             }
             catch (Exception e) {
                 Toast.makeText(getActivity(),"error", Toast.LENGTH_SHORT).show();
@@ -178,4 +182,28 @@ public class DSObjectsFragment extends Fragment {
             });
         }
     }
+
+    // display this fragment's menu items
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_dsobjects_menu, menu);
+    }
+
+    // display selected menu item
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.app_info:
+                Intent i = new Intent(getActivity(),AppInfoActivity.class);
+                startActivity(i);
+                return true;
+            case R.id.location_edit:
+                Toast.makeText(getActivity(),"location edit", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }

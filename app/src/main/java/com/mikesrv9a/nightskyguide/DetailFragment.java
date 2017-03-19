@@ -120,10 +120,4 @@ public class DetailFragment extends Fragment {
         return constImage;
     }
 
-    // display this fragment's menu items (note - none currently)
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_details_menu, menu);
-    }
 }
