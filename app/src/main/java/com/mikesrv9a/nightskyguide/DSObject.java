@@ -1,7 +1,10 @@
 package com.mikesrv9a.nightskyguide;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.renderscript.Double2;
 
 import org.joda.time.DateTime;
@@ -82,13 +85,14 @@ class DSObject implements Parcelable {
     Double getDsoSortAlt() {return dsoSortAlt;}
 
     // setter methods
-    public void setDsoAltAz() {
+    public void setDsoAltAz(Double userLat, Double userLong) {
         // Temporary variables for DateTime and userLat/userLong
         // Create Joda DateTime instance and set date to desired time
         DateTime dateCal = new DateTime(DateTimeZone.UTC);
         // set user location
-        double userLat = 45 + (13 + 59.88/60)/60;
-        double userLong = -93 + (17 + 28.84/60)/60;
+        //double userLat = 45 + (13 + 59.88/60)/60;
+        //double userLong = -93 + (17 + 28.84/60)/60;
+
 
         // Calculate Alt and Az
         double daysSinceJ2000 = AstroCalc.daysSinceJ2000((dateCal.getMillis()));

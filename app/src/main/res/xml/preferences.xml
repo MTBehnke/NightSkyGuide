@@ -3,20 +3,20 @@
 
     <EditTextPreference
         android:defaultValue="44.1971"
+        android:inputType="number|numberDecimal"
         android:key="edit_text_pref_lat"
         android:selectAllOnFocus="true"
         android:singleLine="false"
-        android:summary="Latitude"
         android:persistent="true"
-        android:title="Latitude (dd.dddd)" />
+        android:title="Latitude (dd.dddd):" />
 
     <EditTextPreference
         android:defaultValue="-92.8623"
+        android:inputType="number|numberDecimal|numberSigned"
         android:key="edit_text_pref_long"
         android:selectAllOnFocus="true"
         android:singleLine="false"
-        android:summary="Longitude (+E/-W)"
         android:persistent="true"
-        android:title="Longitude (dd.dddd)" />
+        android:title="Longitude +E/-W (dd.dddd):" />
 
 </PreferenceScreen>

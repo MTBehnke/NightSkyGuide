@@ -4,9 +4,12 @@ package com.mikesrv9a.nightskyguide;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +27,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class DSObjectsFragment extends Fragment {
+
 
     // callback method implemented by MainActivity
     public interface DSObjectsFragmentListener {
@@ -43,6 +47,9 @@ public class DSObjectsFragment extends Fragment {
     Handler handler = new Handler();
 
     DSObjectsClickAdapter clickAdapter;
+
+    public double userLat;
+    public double userLong;
 
     // configures this fragment's GUI
     @Override
@@ -98,8 +105,9 @@ public class DSObjectsFragment extends Fragment {
     private Runnable updateAltAz = new Runnable() {
         public void run() {
             try {
+                setUserLocation();
                 for (int counter = 0; counter < dsObjectsArrayList.size(); counter++){
-                    dsObjectsArrayList.get(counter).setDsoAltAz();
+                    dsObjectsArrayList.get(counter).setDsoAltAz(userLat,userLong);
                 }
                 Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
                     @Override
@@ -155,6 +163,7 @@ public class DSObjectsFragment extends Fragment {
             int psaCol = data.getColumnIndex("psa");
             int oithCol = data.getColumnIndex("oith");
             int observedCol = data.getColumnIndex("observed");
+            setUserLocation();
             while (!data.isAfterLast()) {
                 String dsoObjectID = data.getString(objectIdCol);
                 String dsoType = data.getString(typeCol);
@@ -170,7 +179,7 @@ public class DSObjectsFragment extends Fragment {
                 Integer dsoObserved = data.getInt(observedCol);
                 DSObject dsObject = new DSObject(dsoObjectID, dsoType, dsoMag, dsoSize, dsoDist,
                         dsoRA, dsoDec, dsoConst, dsoName, dsoPSA, dsoOITH, dsoObserved);
-                dsObject.setDsoAltAz();
+                dsObject.setDsoAltAz(userLat, userLong);
                 dsObjectsArrayList.add(dsObject);
                 data.moveToNext();
             }
@@ -195,15 +204,40 @@ public class DSObjectsFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.app_info:
-                Intent i = new Intent(getActivity(),AppInfoActivity.class);
-                startActivity(i);
+                Intent info = new Intent(getActivity(),AppInfoActivity.class);
+                startActivity(info);
                 return true;
             case R.id.location_edit:
-                Toast.makeText(getActivity(),"location edit", Toast.LENGTH_SHORT).show();
+                Intent loc = new Intent(getActivity(),SettingsActivity.class);
+                startActivity(loc);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    // update list on resume - primarily if user changed location
+    @Override
+    public void onResume() {
+        super.onResume();
+        setUserLocation();
+        for (int counter = 0; counter < dsObjectsArrayList.size(); counter++){
+            dsObjectsArrayList.get(counter).setDsoAltAz(userLat,userLong);
+        }
+        Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
+            @Override
+            public int compare(DSObject dsObject, DSObject t1) {
+                return Double.compare(dsObject.getDsoSortAlt(), t1.getDsoSortAlt());
+            }
+        });
+        clickAdapter.notifyDataSetChanged();
+    }
+
+    // update user latitude and longitude from preferences
+    public void setUserLocation() {
+        Context context = getActivity();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        userLat = Double.valueOf(preferences.getString("edit_text_pref_lat", ""));
+        userLong = Double.valueOf(preferences.getString("edit_text_pref_long", ""));
+    }
 }

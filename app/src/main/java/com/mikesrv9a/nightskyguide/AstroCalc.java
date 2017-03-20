@@ -68,6 +68,8 @@ public class AstroCalc {
         int deg = (int) dd;
         int min = (int) ((dd-deg)*60.0);
         long sec =  Math.round ((dd-deg-(min/60.0))*3600);
+        if(sec == 60) {sec = 0; min++;if (min == 60) {min = 0; deg ++;
+            if (deg == 360) {deg = 0;}}}
         return deg + "° " + String.format("%02d",Math.abs(min)) + "' " +
                 String.format("%02d",Math.abs(sec)) + "\"";
     }
@@ -78,6 +80,8 @@ public class AstroCalc {
         int hour = (int) dd;
         int min = (int) ((dd-hour)*60.0);
         long sec =  Math.round ((dd-hour-(min/60.0))*3600);
+        if(sec == 60) {sec = 0; min++;if (min == 60) {min = 0; hour ++;
+            if (hour == 24) {hour = 0;}}}
         return hour + "h " + String.format("%02d",min) + "m " +
                 String.format("%02d",sec) + "s";
     }
