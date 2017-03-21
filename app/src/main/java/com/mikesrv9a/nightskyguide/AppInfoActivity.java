@@ -22,7 +22,7 @@ public class AppInfoActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         TextView appInfo = (TextView)findViewById(R.id.app_info_text);
-        String infoText = "Messier Field Guide v0.1 (beta)\n" +
+        String infoText = "Messier Field Guide v0.1.2 (beta)\n" +
                 "Copyright Michael Behnke 2017\n\n" +
                 "The main page displays each of the 110 Messier Object's, including:\n" +
                 "∙ DSO ID\n∙ Common Name\n"+

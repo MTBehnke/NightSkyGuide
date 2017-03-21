@@ -232,6 +232,14 @@ public class DSObjectsFragment extends Fragment {
             }
         });
         clickAdapter.notifyDataSetChanged();
+        handler.postDelayed(updateAltAz,60000);
+    }
+
+    // stop runnable on pause
+    @Override
+    public void onPause() {
+        super.onPause();
+        handler.removeCallbacks(updateAltAz);
     }
 
     // update user latitude and longitude from preferences
