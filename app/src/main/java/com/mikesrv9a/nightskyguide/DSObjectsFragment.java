@@ -50,6 +50,7 @@ public class DSObjectsFragment extends Fragment {
 
     public double userLat;
     public double userLong;
+    public String userLatString;
 
     // configures this fragment's GUI
     @Override
@@ -237,7 +238,7 @@ public class DSObjectsFragment extends Fragment {
     public void setUserLocation() {
         Context context = getActivity();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        userLat = Double.valueOf(preferences.getString("edit_text_pref_lat", ""));
-        userLong = Double.valueOf(preferences.getString("edit_text_pref_long", ""));
+        userLat = Double.parseDouble(preferences.getString("edit_text_pref_lat", ""));
+        userLong = Double.parseDouble(preferences.getString("edit_text_pref_long", ""));
     }
 }

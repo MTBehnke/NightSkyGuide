@@ -1,6 +1,7 @@
 package com.mikesrv9a.nightskyguide;
 
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -25,6 +26,10 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // set default values in the app's SharedPreferences if never changed
+        // note - does not reset preferences back to default values if previously changed
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
         if (savedInstanceState == null) {
             // create DSObjectsFragment
             dsObjectsFragment = new DSObjectsFragment();
@@ -37,7 +42,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    // display DSObjectFragment for selected dsObject
+     // display DSObjectFragment for selected dsObject
     @Override
     public void onDSObjectSelected(DSObject dsObjectSelected) {
         displayDSObject(dsObjectSelected, R.id.fragmentContainer);

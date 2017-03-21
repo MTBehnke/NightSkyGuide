@@ -38,4 +38,6 @@
     <string name="label_az">Azimuth:</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_app_info">AppInfoActivity</string>
+    <string name="default_latitude">44.1971</string>
+    <string name="default_longitude">-92.8623</string>
 </resources>

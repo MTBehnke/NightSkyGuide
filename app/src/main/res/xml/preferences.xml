@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <EditTextPreference
-        android:defaultValue="44.1971"
+        android:defaultValue="@string/default_latitude"
         android:inputType="number|numberDecimal"
         android:key="edit_text_pref_lat"
         android:selectAllOnFocus="true"
@@ -11,7 +11,7 @@
         android:title="Latitude (dd.dddd):" />
 
     <EditTextPreference
-        android:defaultValue="-92.8623"
+        android:defaultValue="@string/default_longitude"
         android:inputType="number|numberDecimal|numberSigned"
         android:key="edit_text_pref_long"
         android:selectAllOnFocus="true"
