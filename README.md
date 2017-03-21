@@ -11,7 +11,7 @@ Initial version - for use during Messier Marathon
 
 •	Include list of all 110 Messier objects including info
 
-•	App calculates current Alt and Az (verify if ok w/ program rules)
+•	App calculates current Alt and Az.
 
 •	Allows user to filter list based on magnitude (ease of observing)
 
@@ -49,3 +49,7 @@ Program Rules of the Astronomical League, such as:
 >in the future.
 >
 >https://www.astroleague.org/al/obsclubs/messier/mess.html
+
+Update: Scott Kranz, the Messier Program Coordinator for the
+Astronomical League confirmed that this app does not conflict
+with the Messier Program rules.
