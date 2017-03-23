@@ -39,6 +39,8 @@ public class DetailFragment extends Fragment {
     private TextView oithTextView; // displays dsObject's OITH pages
     private TextView altTextView; // displays dsObject's altitude
     private TextView azTextView; // displays dsObject's azimuth
+    private TextView riseTextView;  // displays dsObject's rise time
+    private TextView setTextView;  // displays  dsObject's set time
 
     private ImageView constImageView; // displays dsObject's constellation image
     private Bitmap constImage;
@@ -75,6 +77,8 @@ public class DetailFragment extends Fragment {
         oithTextView = (TextView) view.findViewById(R.id.oithTextView);
         altTextView = (TextView) view.findViewById(R.id.altTextView);
         azTextView = (TextView) view.findViewById(R.id.azTextView);
+        riseTextView = (TextView) view.findViewById(R.id.riseTextView);
+        setTextView = (TextView) view.findViewById(R.id.setTextView);
 
 
         // set the TextViews
@@ -93,6 +97,8 @@ public class DetailFragment extends Fragment {
         oithTextView.setText(dsObject.getDsoOITH());
         altTextView.setText((Integer.toString((int)Math.round(dsObject.getDsoAlt()))) + "°");
         azTextView.setText((Integer.toString((int)Math.round(dsObject.getDsoAz()))) + "°");
+        riseTextView.setText(dsObject.getDsoRiseTimeStr());
+        setTextView.setText(dsObject.getDsoSetTimeStr());
 
         // display constellation image
         String constName = "images/" + dsObject.getDsoConst() + ".gif";

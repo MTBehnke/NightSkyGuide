@@ -100,6 +100,7 @@
                     android:layout_below="@id/psaLabelTextView"
                     android:text="@string/label_oith" />
 
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -191,15 +192,31 @@
                     style="@style/DSObjectLabelTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/raLabelTextView"
+                    android:layout_below="@+id/raLabelTextView"
                     android:text="@string/label_dec" />
+
+                <TextView
+                    android:id="@+id/riseLabelTextView"
+                    style="@style/DSObjectLabelTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/decLabelTextView"
+                    android:text="@string/label_rise" />
+
+                <TextView
+                    android:id="@+id/setLabelTextView"
+                    style="@style/DSObjectLabelTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/riseLabelTextView"
+                    android:text="@string/label_set" />
 
                 <TextView
                     android:id="@+id/altLabelTextView"
                     style="@style/DSObjectLabelTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/decLabelTextView"
+                    android:layout_below="@id/setLabelTextView"
                     android:text="@string/label_alt" />
 
                 <TextView
@@ -233,11 +250,25 @@
                     android:layout_below="@id/raTextView" />
 
                 <TextView
+                    android:id="@+id/riseTextView"
+                    style="@style/DSObjectTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/decTextView"/>
+
+                <TextView
+                    android:id="@+id/setTextView"
+                    style="@style/DSObjectTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/riseTextView" />
+
+                <TextView
                     android:id="@+id/altTextView"
                     style="@style/DSObjectTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/decTextView" />
+                    android:layout_below="@id/setTextView" />
 
                 <TextView
                     android:id="@+id/azTextView"

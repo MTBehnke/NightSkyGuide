@@ -2,6 +2,7 @@ package com.mikesrv9a.nightskyguide;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.icu.text.SimpleDateFormat;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
@@ -9,6 +10,8 @@ import android.renderscript.Double2;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /** Creates DSObjects and updates sky position, etc.
  */
@@ -30,6 +33,9 @@ class DSObject implements Parcelable {
     Double dsoAlt;          // DSO current altitude in sky (ddd.ddd)
     Double dsoAz;           // DSO current azimuth in sky (ddd.ddd)
     Double dsoSortAlt;      // used to sort DSOs in viewing order (setting on horizon = 0 deg)
+    Double dsoOnHorizCosHA; // used to calculate rise/set times for each object
+    String dsoRiseTimeStr;
+    String dsoSetTimeStr;
 
 
     // DSObject constructor
@@ -51,6 +57,7 @@ class DSObject implements Parcelable {
         dsoAlt = 0.0;
         dsoAz = 0.0;
         dsoSortAlt = 0.0;
+        dsoOnHorizCosHA = 0.0;
     }
 
     // getter methods
@@ -84,21 +91,41 @@ class DSObject implements Parcelable {
 
     Double getDsoSortAlt() {return dsoSortAlt;}
 
+    Double getDsoOnHorizCosHA() {return dsoOnHorizCosHA;}
+
+    String getDsoRiseTimeStr() {return dsoRiseTimeStr;}
+
+    String getDsoSetTimeStr() {return dsoSetTimeStr;}
+
     // setter methods
     public void setDsoAltAz(Double userLat, Double userLong) {
         // Temporary variables for DateTime and userLat/userLong
         // Create Joda DateTime instance and set date to desired time
         DateTime dateCal = new DateTime(DateTimeZone.UTC);
-        // set user location
-        //double userLat = 45 + (13 + 59.88/60)/60;
-        //double userLong = -93 + (17 + 28.84/60)/60;
-
-
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("M/d hh:mm a");
         // Calculate Alt and Az
         double daysSinceJ2000 = AstroCalc.daysSinceJ2000((dateCal.getMillis()));
         double greenwichST = AstroCalc.greenwichST(daysSinceJ2000);
         double localST = AstroCalc.localST(greenwichST, userLong);
         double hourAngle = AstroCalc.hourAngle(localST, dsoRA);
+        dsoOnHorizCosHA = AstroCalc.dsoOnHorizCosHA(dsoDec, userLat);
+        // calculate rise and set times - work in progress
+        if (dsoOnHorizCosHA < -1) {
+                dsoRiseTimeStr="Circumpolar: never";
+                dsoSetTimeStr="sets below horizon";}
+            else if (dsoOnHorizCosHA > 1) {
+                dsoRiseTimeStr="This DSO never rises";
+                dsoSetTimeStr="at this latitude";}
+            else {                            // 86164.1 is number of seconds in sidereal day
+                int riseOffset = (int) ((localST - dsoRA + Math.toDegrees(
+                        Math.acos(dsoOnHorizCosHA))) * 86164.1/360);
+                int setOffset = (int) ((-localST + dsoRA + Math.toDegrees(
+                        Math.acos(dsoOnHorizCosHA))) * 86164.1/360);
+                dsoRiseTimeStr = dateCal.minusSeconds(riseOffset).
+                        withZone(DateTimeZone.getDefault()).toString(dtf);
+                dsoSetTimeStr = dateCal.plusSeconds(setOffset).
+                        withZone(DateTimeZone.getDefault()).toString(dtf);
+            }
         dsoAlt = AstroCalc.dsoAlt(dsoDec, userLat, hourAngle);
         dsoAz = AstroCalc.dsoAz(dsoDec, userLat, hourAngle, dsoAlt);
         if (dsoAz >= 180) {
@@ -107,7 +134,7 @@ class DSObject implements Parcelable {
         else {dsoSortAlt = 180 - dsoAlt;}
     }
 
-    public void setDsoObserved(Integer observed) {dsoObserved = observed;}
+    //public void setDsoObserved(Integer observed) {dsoObserved = observed;}
 
     @Override
     public int describeContents() {
@@ -130,6 +157,9 @@ class DSObject implements Parcelable {
         parcel.writeInt(dsoObserved);
         parcel.writeDouble(dsoAlt);
         parcel.writeDouble(dsoAz);
+        parcel.writeDouble(dsoOnHorizCosHA);
+        parcel.writeString(dsoRiseTimeStr);
+        parcel.writeString(dsoSetTimeStr);
     }
 
     // required method, not used
@@ -142,6 +172,8 @@ class DSObject implements Parcelable {
         dsoName = in.readString();
         dsoPSA = in.readString();
         dsoOITH = in.readString();
+        dsoRiseTimeStr = in.readString();
+        dsoSetTimeStr = in.readString();
     }
 
     // required method, not used

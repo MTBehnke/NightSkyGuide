@@ -8,6 +8,8 @@ package com.mikesrv9a.nightskyguide;
 // Additional info at https://en.wikipedia.org/wiki/Sidereal_time
 // Additional info at http://www.stargazing.net/kepler/altaz.html
 
+import org.joda.time.DateTime;
+
 public class AstroCalc {
 
     // return days since J2000.0, input = millis since Unix/Java epoch
@@ -61,6 +63,16 @@ public class AstroCalc {
         else
             {az = 360 - Math.toDegrees(Math.acos(cosAz));}
         return az;
+    }
+
+    // return Cos(HA) when altitude = 0° to calc rise/set times - in Radians
+    // if Cos(HA) < -1, then object is circumpolar
+    // if Cos(HA) > 1, then object never rises (at this latitude)
+    public static Double dsoOnHorizCosHA(double dec, double lat) {
+        double CosHA = -((Math.sin(Math.toRadians(dec))) *
+                (Math.sin(Math.toRadians(lat)))) / ((Math.cos(Math.toRadians(dec)))
+                * Math.cos(Math.toRadians(lat)));
+        return CosHA;
     }
 
     // convert degrees from double format to dms string format
@@ -120,5 +132,4 @@ public class AstroCalc {
         }
         return typeName;
     }
-
 }
