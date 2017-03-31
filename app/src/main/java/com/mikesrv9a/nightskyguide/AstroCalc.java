@@ -119,8 +119,8 @@ public class AstroCalc {
 
     public static String getDSOType (String abbr) {
         String[] typeAbbrs = {"AST","C/N","EG","EN","ER","GC","IG","OC","PN","RN","SG","SNR"};
-        String[] typeNames = {"Asterism","Cluster w/ Nebulosity","Elliptical Galaxy",
-                "Emission Nebula","Emission/Reflection Nebula","Globular Cluster",
+        String[] typeNames = {"Asterism","Cluster w/Nebulosity","Elliptical Galaxy",
+                "Emission Nebula","Em./Refl. Nebula","Globular Cluster",
                 "Irregular Galaxy","Open Cluster","Planetary Nebula","Reflection Nebula"
                 ,"Spiral Galaxy","Supernova Remnant"};
         String typeName = "";

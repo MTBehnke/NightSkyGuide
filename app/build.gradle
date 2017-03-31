@@ -30,7 +30,7 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
-    compile 'com.android.support:recyclerview-v7:25.1.0'
+    compile 'com.android.support:recyclerview-v7:24.1.0'
     compile 'joda-time:joda-time:2.3'
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
