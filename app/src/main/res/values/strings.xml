@@ -51,4 +51,6 @@
     <string name="hint_power">Power/Magnification</string>
     <string name="hint_filter">Filter</string>
     <string name="hint_notes">Observation Notes</string>
+    <string name="pref_show_observed">Display previously observed</string>
+    <string name="pref_display_below_horizon">Display objects below horizon</string>
 </resources>

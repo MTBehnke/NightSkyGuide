@@ -1,22 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <EditTextPreference
-        android:defaultValue="@string/default_latitude"
-        android:inputType="number|numberDecimal"
-        android:key="edit_text_pref_lat"
-        android:selectAllOnFocus="true"
-        android:singleLine="false"
-        android:persistent="true"
-        android:title="Latitude (dd.dddd):" />
+    <PreferenceCategory
+        android:title="Viewing Location">
 
-    <EditTextPreference
-        android:defaultValue="@string/default_longitude"
-        android:inputType="number|numberDecimal|numberSigned"
-        android:key="edit_text_pref_long"
-        android:selectAllOnFocus="true"
-        android:singleLine="false"
-        android:persistent="true"
-        android:title="Longitude +E/-W (dd.dddd):" />
+        <EditTextPreference
+            android:defaultValue="@string/default_latitude"
+            android:inputType="number|numberDecimal"
+            android:key="edit_text_pref_lat"
+            android:selectAllOnFocus="true"
+            android:singleLine="false"
+            android:persistent="true"
+            android:title="Latitude (dd.dddd):" />
+
+        <EditTextPreference
+            android:defaultValue="@string/default_longitude"
+            android:inputType="number|numberDecimal|numberSigned"
+            android:key="edit_text_pref_long"
+            android:selectAllOnFocus="true"
+            android:singleLine="false"
+            android:persistent="true"
+            android:title="Longitude +E/-W (dd.dddd):" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Display Options">
+
+        <SwitchPreference
+            android:key="pref_show_observed"
+            android:summaryOff="No"
+            android:summaryOn="Yes"
+            android:title="@string/pref_show_observed" />
+
+        <SwitchPreference
+            android:key="pref_show_below_horiz"
+            android:summaryOff="No"
+            android:summaryOn="Yes"
+            android:title="@string/pref_display_below_horizon" />
+
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

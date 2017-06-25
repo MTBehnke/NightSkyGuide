@@ -3,6 +3,7 @@ package com.mikesrv9a.nightskyguide;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.SwitchPreference;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,9 +13,9 @@ import android.view.ViewGroup;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class SettingsActivityFragment extends PreferenceFragment {
+public class SettingsFragment extends PreferenceFragment {
 
-    public SettingsActivityFragment() { }
+    //public SettingsFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,5 +58,24 @@ public class SettingsActivityFragment extends PreferenceFragment {
                 return true;
             }
         });
+
+
+        // set Display Previously Observed SwitchPreference to on/off
+        final SwitchPreference displayPrevObserved = (SwitchPreference) findPreference("pref_show_observed");
+        displayPrevObserved.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                return true;
+            }
+        });
+
+        final SwitchPreference displayBelowHoriz = (SwitchPreference) findPreference("pref_show_below_horiz");
+        displayBelowHoriz.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                return true;
+            }
+        });
+
     }
 }

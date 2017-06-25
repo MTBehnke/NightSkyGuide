@@ -2,22 +2,18 @@
 
 package com.mikesrv9a.nightskyguide;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +23,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -45,7 +40,8 @@ public class DSObjectsFragment extends Fragment {
     DSObjectDatabaseHelper dsObjectsDB;
     SQLiteDatabase observationDB;
 
-    public ArrayList<DSObject> dsObjectsArrayList = new ArrayList<>();
+    public ArrayList<DSObject> dsObjectsArrayList = new ArrayList<>();  // dsObjects to display in recyclerview
+    public ArrayList<DSObject> allDsObjectsArrayList = new ArrayList<>();  // all dsObjects from database
     public ArrayList<String> observedList = new ArrayList<>();
 
     // used to inform the MainActivity when a dsObject is selected
@@ -56,16 +52,11 @@ public class DSObjectsFragment extends Fragment {
 
     DSObjectsClickAdapter clickAdapter;
 
+    // user preferences
     public double userLat;
     public double userLong;
-    public String userLatString;
-
-    // Temporary list of objects I've observed - to be replaced with database
-    /*public String[] observedList = {"M3","M35","M36","M37","M38","M40","M44","M46","M47","M48",
-            "M49","M50","M51","M53","M58","M59","M60","M61","M63","M64","M65","M66","M67","M81",
-            "M82","M84","M85","M86","M87","M88","M89","M90","M91","M93","M94","M95","M96","M97",
-            "M98","M99","M100","M101","M102","M103","M104","M105","M106","M108","M109"};
-    */
+    public boolean showObserved;
+    public boolean showBelowHoriz;
 
     // configures this fragment's GUI
     @Override
@@ -115,17 +106,20 @@ public class DSObjectsFragment extends Fragment {
         //handler.removeCallbacks(updateAltAz);
         dsObjectsDB.close();
         data.close();
+        allDsObjectsArrayList.clear();
         dsObjectsArrayList.clear();
         observations.close();
         observationDB.close();
         observedList.clear();
+        // need to add some error checking if attempt to close null cursor *********?????????
     }
 
     private Runnable updateAltAz = new Runnable() {
         public void run() {
             try {
-                setUserLocation();
-                for (int counter = 0; counter < dsObjectsArrayList.size(); counter++){
+                setUserPreferences();
+                updateArrayList();
+                /*for (int counter = 0; counter < dsObjectsArrayList.size(); counter++){
                     dsObjectsArrayList.get(counter).setDsoAltAz(userLat,userLong);
                 }
                 Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
@@ -133,7 +127,7 @@ public class DSObjectsFragment extends Fragment {
                     public int compare(DSObject dsObject, DSObject t1) {
                         return Double.compare(dsObject.getDsoSortAlt(), t1.getDsoSortAlt());
                     }
-                });
+                });*/
                 clickAdapter.notifyDataSetChanged();
                 handler.postDelayed(this,60000);
             }
@@ -163,11 +157,11 @@ public class DSObjectsFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Context context = getActivity();
+        //Toast.makeText(getContext(), "OnActivityCreated", Toast.LENGTH_LONG).show();
 
         // Get Observation data from database
         observationDB = new ObservationDatabaseHelper(context).getWritableDatabase();
-        //addObservation("M1");     // temp code to create some records in database
-        // need to add some error checking if attempt to close null cursor *********
+
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         String [] sqlSelect = {
                 " _id",
@@ -218,8 +212,7 @@ public class DSObjectsFragment extends Fragment {
             int nameCol = data.getColumnIndex("name");
             int psaCol = data.getColumnIndex("psa");
             int oithCol = data.getColumnIndex("oith");
-            int observedCol = data.getColumnIndex("observed");
-            setUserLocation();
+            setUserPreferences();  // need user's latitude and longitude
             while (!data.isAfterLast()) {
                 String dsoObjectID = data.getString(objectIdCol);
                 String dsoType = data.getString(typeCol);
@@ -233,33 +226,36 @@ public class DSObjectsFragment extends Fragment {
                 String dsoPSA = data.getString(psaCol);
                 String dsoOITH = data.getString(oithCol);
 
-                //Temporary code to indicate whether DSO has been observed - replace later
-                //Integer dsoObserved = data.getInt(observedCol);  temp disabled
+                //Checks observations to determine whether DSO has been observed
                 Integer dsoObserved = 0;
                 if (observedList.contains(dsoObjectID)) {dsoObserved = 1;}
+
+                // creates DSObjects
                 DSObject dsObject = new DSObject(dsoObjectID, dsoType, dsoMag, dsoSize, dsoDist,
                         dsoRA, dsoDec, dsoConst, dsoName, dsoPSA, dsoOITH, dsoObserved);
                 dsObject.setDsoAltAz(userLat, userLong);
-                dsObjectsArrayList.add(dsObject);
+                allDsObjectsArrayList.add(dsObject);
+
+                /*
+                // check user preference settings to determine whether to display
+                Double dsoAlt = dsObject.getDsoAlt();
+                if((dsoObserved == 1 && showObserved == false) || (dsoAlt < 0 && showBelowHoriz == false))
+                    {} // do nothing
+                else {
+                    dsObjectsArrayList.add(dsObject);
+                }  */
+
                 data.moveToNext();
             }
-            Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
+            // sort in onResume
+            /*Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
                 @Override
                 public int compare(DSObject dsObject, DSObject t1) {
                     return Double.compare(dsObject.getDsoSortAlt(), t1.getDsoSortAlt());
                 }
-            });
+            });*/
         }
     }
-
-    // temp code to add entries into observation database
-    public void addObservation(String dsoId) {
-        ContentValues values = new ContentValues();
-        values.put(ObserveRecordsSchema.ObsTable.Cols.DsoID, dsoId);
-        observationDB.insert(ObserveRecordsSchema.ObsTable.NAME, null, values);
-        //Log.d(String.valueOf(values), "addObservation: ");
-    }
-
 
     // display this fragment's menu items
     @Override
@@ -285,11 +281,14 @@ public class DSObjectsFragment extends Fragment {
         }
     }
 
-    // update list on resume - primarily if user changed location
+    // update list on resume - primarily if user changed location or settings
     @Override
     public void onResume() {
         super.onResume();
-        setUserLocation();
+        //Toast.makeText(getContext(), "OnResume", Toast.LENGTH_LONG).show();
+        setUserPreferences();
+        updateArrayList();
+        /*setUserPreferences();
         for (int counter = 0; counter < dsObjectsArrayList.size(); counter++){
             dsObjectsArrayList.get(counter).setDsoAltAz(userLat,userLong);
         }
@@ -299,7 +298,7 @@ public class DSObjectsFragment extends Fragment {
                 return Double.compare(dsObject.getDsoSortAlt(), t1.getDsoSortAlt());
             }
         });
-        clickAdapter.notifyDataSetChanged();
+        clickAdapter.notifyDataSetChanged();*/
         handler.postDelayed(updateAltAz,60000);
     }
 
@@ -311,10 +310,35 @@ public class DSObjectsFragment extends Fragment {
     }
 
     // update user latitude and longitude from preferences
-    public void setUserLocation() {
+    public void setUserPreferences() {
         Context context = getActivity();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         userLat = Double.parseDouble(preferences.getString("edit_text_pref_lat", ""));
         userLong = Double.parseDouble(preferences.getString("edit_text_pref_long", ""));
+        showObserved = preferences.getBoolean("pref_show_observed", true);
+        showBelowHoriz = preferences.getBoolean("pref_show_below_horiz", true);
     }
+
+    // update and sort arraylist for recyclerview based on user preferences
+    public void updateArrayList() {
+        dsObjectsArrayList.clear();
+        for (int counter = 0; counter < allDsObjectsArrayList.size(); counter++){
+            allDsObjectsArrayList.get(counter).setDsoAltAz(userLat,userLong);
+            Double dsoAlt = allDsObjectsArrayList.get(counter).getDsoAlt();
+            if((allDsObjectsArrayList.get(counter).getDsoObserved() == 1 && showObserved == false) || (dsoAlt < 0 && showBelowHoriz == false))
+            {} // do nothing
+            else {
+                dsObjectsArrayList.add(allDsObjectsArrayList.get(counter));
+            }
+        }
+        Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
+            @Override
+            public int compare(DSObject dsObject, DSObject t1) {
+                return Double.compare(dsObject.getDsoSortAlt(), t1.getDsoSortAlt());
+            }
+        });
+        clickAdapter.notifyDataSetChanged();
+
+    }
+
 }
