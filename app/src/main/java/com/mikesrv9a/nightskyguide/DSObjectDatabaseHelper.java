@@ -1,4 +1,4 @@
-// SQLiteAssetHelper subclass that defines the app's database
+// SQLiteAssetHelper subclass that defines the app's database of DSObjects
 
 package com.mikesrv9a.nightskyguide;
 
@@ -46,7 +46,7 @@ public class DSObjectDatabaseHelper extends SQLiteAssetHelper{
         return c;
     }
 
-    // only used to refresh database - not normal function for app
+    // only used to refresh database (after version error) - not normal function for app
     public static void forceDatabaseReload(Context context) {
         DSObjectDatabaseHelper dbHelper = new DSObjectDatabaseHelper(context);
         dbHelper.setForcedUpgrade(DATABASE_VERSION);

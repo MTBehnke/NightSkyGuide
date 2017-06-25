@@ -2,10 +2,13 @@
 
 package com.mikesrv9a.nightskyguide;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -36,9 +41,12 @@ public class DSObjectsFragment extends Fragment {
     }
 
     Cursor data;
+    Cursor observations;
     DSObjectDatabaseHelper dsObjectsDB;
+    SQLiteDatabase observationDB;
 
     public ArrayList<DSObject> dsObjectsArrayList = new ArrayList<>();
+    public ArrayList<String> observedList = new ArrayList<>();
 
     // used to inform the MainActivity when a dsObject is selected
     DSObjectsFragmentListener listener;
@@ -51,6 +59,13 @@ public class DSObjectsFragment extends Fragment {
     public double userLat;
     public double userLong;
     public String userLatString;
+
+    // Temporary list of objects I've observed - to be replaced with database
+    /*public String[] observedList = {"M3","M35","M36","M37","M38","M40","M44","M46","M47","M48",
+            "M49","M50","M51","M53","M58","M59","M60","M61","M63","M64","M65","M66","M67","M81",
+            "M82","M84","M85","M86","M87","M88","M89","M90","M91","M93","M94","M95","M96","M97",
+            "M98","M99","M100","M101","M102","M103","M104","M105","M106","M108","M109"};
+    */
 
     // configures this fragment's GUI
     @Override
@@ -101,6 +116,9 @@ public class DSObjectsFragment extends Fragment {
         dsObjectsDB.close();
         data.close();
         dsObjectsArrayList.clear();
+        observations.close();
+        observationDB.close();
+        observedList.clear();
     }
 
     private Runnable updateAltAz = new Runnable() {
@@ -145,6 +163,43 @@ public class DSObjectsFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Context context = getActivity();
+
+        // Get Observation data from database
+        observationDB = new ObservationDatabaseHelper(context).getWritableDatabase();
+        //addObservation("M1");     // temp code to create some records in database
+        // need to add some error checking if attempt to close null cursor *********
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        String [] sqlSelect = {
+                " _id",
+                ObserveRecordsSchema.ObsTable.Cols.DsoID,
+                ObserveRecordsSchema.ObsTable.Cols.ObsDate,
+                ObserveRecordsSchema.ObsTable.Cols.Location,
+                ObserveRecordsSchema.ObsTable.Cols.Seeing,
+                ObserveRecordsSchema.ObsTable.Cols.Transparency,
+                ObserveRecordsSchema.ObsTable.Cols.Telescope,
+                ObserveRecordsSchema.ObsTable.Cols.Eyepiece,
+                ObserveRecordsSchema.ObsTable.Cols.Power,
+                ObserveRecordsSchema.ObsTable.Cols.Filter,
+                ObserveRecordsSchema.ObsTable.Cols.Notes,
+        };
+        String sqlTables = ObserveRecordsSchema.ObsTable.NAME;
+        qb.setTables(sqlTables);
+        observations = qb.query(observationDB, sqlSelect, null, null, null, null, null);
+        observations.moveToFirst();   // cursor with observations
+
+        // create ObservationsAL arraylist
+        if (observations != null && observations.getCount() > 0) {
+            observations.moveToFirst();
+            int dsoIDCol = observations.getColumnIndex("dsoid");
+            while (!observations.isAfterLast()) {
+                String dsoObs = observations.getString(dsoIDCol);
+                observedList.add(dsoObs);
+                //Log.d(String.valueOf(context),"dsoObs Value: " + dsoObs);
+                observations.moveToNext();
+            }
+        }
+
+        // Get DSObject data from database
         dsObjectsDB = new DSObjectDatabaseHelper(context);
         //dsObjectsDB.forceDatabaseReload(context);           // *** ELIMINATE FROM FINAL VERSION
         data = dsObjectsDB.getDSObjects();
@@ -177,7 +232,11 @@ public class DSObjectsFragment extends Fragment {
                 String dsoName = data.getString(nameCol);
                 String dsoPSA = data.getString(psaCol);
                 String dsoOITH = data.getString(oithCol);
-                Integer dsoObserved = data.getInt(observedCol);
+
+                //Temporary code to indicate whether DSO has been observed - replace later
+                //Integer dsoObserved = data.getInt(observedCol);  temp disabled
+                Integer dsoObserved = 0;
+                if (observedList.contains(dsoObjectID)) {dsoObserved = 1;}
                 DSObject dsObject = new DSObject(dsoObjectID, dsoType, dsoMag, dsoSize, dsoDist,
                         dsoRA, dsoDec, dsoConst, dsoName, dsoPSA, dsoOITH, dsoObserved);
                 dsObject.setDsoAltAz(userLat, userLong);
@@ -192,6 +251,15 @@ public class DSObjectsFragment extends Fragment {
             });
         }
     }
+
+    // temp code to add entries into observation database
+    public void addObservation(String dsoId) {
+        ContentValues values = new ContentValues();
+        values.put(ObserveRecordsSchema.ObsTable.Cols.DsoID, dsoId);
+        observationDB.insert(ObserveRecordsSchema.ObsTable.NAME, null, values);
+        //Log.d(String.valueOf(values), "addObservation: ");
+    }
+
 
     // display this fragment's menu items
     @Override

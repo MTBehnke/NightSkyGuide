@@ -78,6 +78,9 @@ public class DSObjectsClickAdapter
     @Override
     public void onBindViewHolder(DSObjectsClickViewHolder holder, int position) {
         DSObject object = dsObjectsArrayList.get(position);
+        String observed;
+        if(object.getDsoObserved()==1){observed="  √";}
+                else {observed = "";}
         String arrow;
         String magIcon;
         String dsoPath = "";
@@ -89,7 +92,7 @@ public class DSObjectsClickAdapter
         if(dsoCosHA < -1) {dsoPath = "○ ";}
             else if (dsoCosHA > 1) {dsoPath = "◙ ";}
             else {dsoPath = "";}
-        String r1c1Text = object.getDsoObjectID();
+        String r1c1Text = object.getDsoObjectID() + observed;
         String r1c2Text = object.getDsoConst();
         String r1c3Text = Double.toString(object.getDsoMag()) + magIcon;
         String r1c4Text = dsoPath + Integer.toString((int) Math.round(object.getDsoAlt()))

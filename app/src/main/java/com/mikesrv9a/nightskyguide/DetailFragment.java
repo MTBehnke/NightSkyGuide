@@ -2,6 +2,7 @@
 
 package com.mikesrv9a.nightskyguide;
 
+import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -42,9 +44,17 @@ public class DetailFragment extends Fragment {
     private TextView riseTextView;  // displays dsObject's rise time
     private TextView setTextView;  // displays  dsObject's set time
 
+    private FloatingActionButton addObservationFAB;  // FAB to go to add observation record
     private ImageView constImageView; // displays dsObject's constellation image
     private Bitmap constImage;
 
+    // callback method implemented by MainActivity
+    public interface AddEditFABListener {
+        // called when addedit FAB is selected
+        void addObservationButtonClicked(DSObject dsObjectSelected);
+    }
+
+    AddEditFABListener listener;
 
     // called when DetailFragment's view needs to be created
     @Override
@@ -106,7 +116,30 @@ public class DetailFragment extends Fragment {
         Bitmap bm = loadConstImage(constName);   // display constellation .gif on detail screen
         constImageView.setImageBitmap(bm);
 
+        // set FloatingActionButton's event listener
+        addObservationFAB = (FloatingActionButton) view.findViewById(R.id.addObservationFAB);
+        addObservationFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.addObservationButtonClicked(dsObject);
+            }
+        });
+
         return view;
+    }
+
+    // set AddEditFABListener when fragment attached
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        listener = (AddEditFABListener) context;
+    }
+
+    // remove AddEditFABListener when fragment detached
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
     }
 
 

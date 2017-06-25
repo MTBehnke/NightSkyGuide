@@ -42,4 +42,13 @@
     <string name="title_activity_app_info">AppInfoActivity</string>
     <string name="default_latitude">44.1971</string>
     <string name="default_longitude">-92.8623</string>
+    <string name="hint_date">Date</string>
+    <string name="hint_location">Location</string>
+    <string name="hint_seeing">Seeing</string>
+    <string name="hint_transparency">Transparency</string>
+    <string name="hint_telescope">Telescope</string>
+    <string name="hint_eyepiece">Eyepiece</string>
+    <string name="hint_power">Power/Magnification</string>
+    <string name="hint_filter">Filter</string>
+    <string name="hint_notes">Observation Notes</string>
 </resources>

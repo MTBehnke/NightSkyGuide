@@ -14,7 +14,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
 public class MainActivity extends AppCompatActivity
-    implements DSObjectsFragment.DSObjectsFragmentListener {
+    implements DSObjectsFragment.DSObjectsFragmentListener, DetailFragment.AddEditFABListener, ObservationAddEditFragment.SaveCompletedListener {
 
     private DSObjectsFragment dsObjectsFragment; // displays dsObject list
 
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-     // display DSObjectFragment for selected dsObject
+    // display DSObjectFragment for selected dsObject
     @Override
     public void onDSObjectSelected(DSObject dsObjectSelected) {
         displayDSObject(dsObjectSelected, R.id.fragmentContainer);
@@ -64,6 +64,35 @@ public class MainActivity extends AppCompatActivity
         transaction.replace(viewID, detailFragment);
         transaction.addToBackStack(null);
         transaction.commit();  // causes DetailFragment to display
+    }
+
+    // display ObservationAddEditFragment for selected dsObject
+    public void addObservationButtonClicked(DSObject dsObjectSelected) {
+        displayObservAddEdit(dsObjectSelected, R.id.fragmentContainer);
+    }
+
+    // display addedit fragment
+    private void displayObservAddEdit(DSObject dsObjectSelected, int viewID) {
+        ObservationAddEditFragment observationFragment = new ObservationAddEditFragment();
+
+        // specify dsObject as an argument to the addedit Fragment
+        Bundle arguments = new Bundle();
+        arguments.putParcelable("dsObjectArrayListItem", dsObjectSelected);
+        observationFragment.setArguments(arguments);
+
+
+        // use a FragmentTransaction to display the addedit Fragment
+        FragmentTransaction transaction =
+                getSupportFragmentManager().beginTransaction();
+        transaction.replace(viewID, observationFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();  // causes addedit Fragment to display
+    }
+
+    // return to DetailFragment after observation record saved
+    @Override
+    public void onObservationSaved() {
+        getSupportFragmentManager().popBackStack();
     }
 
 }
