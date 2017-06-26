@@ -35,4 +35,8 @@
         <!--<item name="android:background">@drawable/textview_border</item>-->
     </style>
 
+    <style name="PreferenceScreen" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:textColor">#CCCCCC</item>
+    </style>
+
 </resources>

@@ -103,6 +103,7 @@ class DSObject implements Parcelable {
         // Create Joda DateTime instance and set date to desired time
         DateTime dateCal = new DateTime(DateTimeZone.UTC);
         DateTimeFormatter dtf = DateTimeFormat.forPattern("M/d hh:mm a");
+
         // Calculate Alt and Az
         double daysSinceJ2000 = AstroCalc.daysSinceJ2000((dateCal.getMillis()));
         double greenwichST = AstroCalc.greenwichST(daysSinceJ2000);
@@ -121,6 +122,10 @@ class DSObject implements Parcelable {
                         Math.acos(dsoOnHorizCosHA))) * 86164.1/360);
                 int setOffset = (int) ((-localST + dsoRA + Math.toDegrees(
                         Math.acos(dsoOnHorizCosHA))) * 86164.1/360);
+                if (setOffset < 0) {   // change to next day - accounts for time zone
+                    riseOffset = riseOffset - 86164;
+                    setOffset = setOffset + 86164;
+                }
                 dsoRiseTimeStr = dateCal.minusSeconds(riseOffset).
                         withZone(DateTimeZone.getDefault()).toString(dtf);
                 dsoSetTimeStr = dateCal.plusSeconds(setOffset).
@@ -128,8 +133,10 @@ class DSObject implements Parcelable {
             }
         dsoAlt = AstroCalc.dsoAlt(dsoDec, userLat, hourAngle);
         dsoAz = AstroCalc.dsoAz(dsoDec, userLat, hourAngle, dsoAlt);
+
+        // determine sort order of objects based on altitude
         if (dsoAz >= 180) {
-            if (dsoAlt >=0.5) {dsoSortAlt = dsoAlt;}   // if alt<0.5° then consider set
+            if (dsoAlt >=0) {dsoSortAlt = dsoAlt;}
             else {dsoSortAlt = 360 + dsoAlt;}}
         else {dsoSortAlt = 180 - dsoAlt;}
     }

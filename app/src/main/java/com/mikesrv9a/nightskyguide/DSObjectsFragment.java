@@ -236,24 +236,8 @@ public class DSObjectsFragment extends Fragment {
                 dsObject.setDsoAltAz(userLat, userLong);
                 allDsObjectsArrayList.add(dsObject);
 
-                /*
-                // check user preference settings to determine whether to display
-                Double dsoAlt = dsObject.getDsoAlt();
-                if((dsoObserved == 1 && showObserved == false) || (dsoAlt < 0 && showBelowHoriz == false))
-                    {} // do nothing
-                else {
-                    dsObjectsArrayList.add(dsObject);
-                }  */
-
                 data.moveToNext();
             }
-            // sort in onResume
-            /*Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
-                @Override
-                public int compare(DSObject dsObject, DSObject t1) {
-                    return Double.compare(dsObject.getDsoSortAlt(), t1.getDsoSortAlt());
-                }
-            });*/
         }
     }
 
@@ -288,17 +272,6 @@ public class DSObjectsFragment extends Fragment {
         //Toast.makeText(getContext(), "OnResume", Toast.LENGTH_LONG).show();
         setUserPreferences();
         updateArrayList();
-        /*setUserPreferences();
-        for (int counter = 0; counter < dsObjectsArrayList.size(); counter++){
-            dsObjectsArrayList.get(counter).setDsoAltAz(userLat,userLong);
-        }
-        Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
-            @Override
-            public int compare(DSObject dsObject, DSObject t1) {
-                return Double.compare(dsObject.getDsoSortAlt(), t1.getDsoSortAlt());
-            }
-        });
-        clickAdapter.notifyDataSetChanged();*/
         handler.postDelayed(updateAltAz,60000);
     }
 
@@ -315,8 +288,8 @@ public class DSObjectsFragment extends Fragment {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         userLat = Double.parseDouble(preferences.getString("edit_text_pref_lat", ""));
         userLong = Double.parseDouble(preferences.getString("edit_text_pref_long", ""));
-        showObserved = preferences.getBoolean("pref_show_observed", true);
-        showBelowHoriz = preferences.getBoolean("pref_show_below_horiz", true);
+        showObserved = preferences.getBoolean("pref_show_observed", false);
+        showBelowHoriz = preferences.getBoolean("pref_show_below_horiz", false);
     }
 
     // update and sort arraylist for recyclerview based on user preferences

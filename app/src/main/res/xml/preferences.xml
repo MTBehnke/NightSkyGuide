@@ -1,31 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="Viewing Location">
+        android:title="VIEWING LOCATION:">
 
         <EditTextPreference
             android:defaultValue="@string/default_latitude"
             android:inputType="number|numberDecimal"
             android:key="edit_text_pref_lat"
+            android:persistent="true"
             android:selectAllOnFocus="true"
             android:singleLine="false"
-            android:persistent="true"
             android:title="Latitude (dd.dddd):" />
 
         <EditTextPreference
             android:defaultValue="@string/default_longitude"
             android:inputType="number|numberDecimal|numberSigned"
             android:key="edit_text_pref_long"
+            android:persistent="true"
             android:selectAllOnFocus="true"
             android:singleLine="false"
-            android:persistent="true"
             android:title="Longitude +E/-W (dd.dddd):" />
+
+        <EditTextPreference
+            android:enabled="false" />
 
     </PreferenceCategory>
 
+
+
     <PreferenceCategory
-        android:title="Display Options">
+        android:title="DISPLAY OPTIONS:">
 
         <SwitchPreference
             android:key="pref_show_observed"
@@ -38,7 +44,6 @@
             android:summaryOff="No"
             android:summaryOn="Yes"
             android:title="@string/pref_display_below_horizon" />
-
 
     </PreferenceCategory>
 
