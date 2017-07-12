@@ -56,8 +56,6 @@ public class SettingsFragment extends PreferenceFragment {
     DecimalFormat df = new DecimalFormat("#.0000");
 
     public Context context;
-    //public Boolean locUpdates;  // GPS/Network Location Updates are currently functioning
-    //public Boolean useGPS;     // user wants to use GPS/Network (based on setting) - turn off if permissions unsuccessful
     SharedPreferences preferences;
 
     @Override
@@ -105,8 +103,6 @@ public class SettingsFragment extends PreferenceFragment {
         // start location services, including permissions checks, etc.
         context = getActivity();
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        //((SettingsActivity) getActivity()).useGPS = useDeviceLocation.isChecked();
-        //((SettingsActivity) getActivity()).locUpdates = false;
 
         // set GPS/Network SwitchPreferences
         useDeviceLocation.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -122,7 +118,6 @@ public class SettingsFragment extends PreferenceFragment {
                     ((SettingsActivity) getActivity()).stopLocationUpdates();
                 }
                 setLocSummary();
-                //Toast.makeText(getActivity(), "onChange Completed", Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
@@ -158,30 +153,6 @@ public class SettingsFragment extends PreferenceFragment {
         });
 
     }
-
-    /*
-    @Override
-    public void onResume() {
-        super.onResume();
-        // check is user has GPS/Network on and set Location summary as required
-        //useGPS = preferences.getBoolean("use_device_location", false);
-        Toast.makeText(context, "onResume: " + ((SettingsActivity) getActivity()).useGPS + " / " + ((SettingsActivity) getActivity()).locUpdates, Toast.LENGTH_LONG).show();
-        if (((SettingsActivity) getActivity()).useGPS && !((SettingsActivity) getActivity()).locUpdates) {
-            ((SettingsActivity) getActivity()).checkPermissions();
-        }
-        setLocSummary();
-    }
-
-    // Update user selected location preference onPause
-    @Override
-    public void onPause() {
-        super.onPause();
-        Toast.makeText(context, "onPause: " + ((SettingsActivity) getActivity()).useGPS + " / " + ((SettingsActivity) getActivity()).locUpdates, Toast.LENGTH_LONG).show();
-        setLatLongPref();
-        if (((SettingsActivity) getActivity()).locUpdates) {
-            ((SettingsActivity) getActivity()).stopLocationUpdates();
-        }
-    } */
 
     void updateLocSummaries() {
         // Location 1 (required)

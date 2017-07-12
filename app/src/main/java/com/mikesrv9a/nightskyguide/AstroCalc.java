@@ -132,4 +132,33 @@ public class AstroCalc {
         }
         return typeName;
     }
+
+    // convert degrees from double format to dms string format
+    public static String convertLatToDMS(double dd) {
+        String latNS;
+        if (dd < 0) {latNS = "S";} else {latNS = "N";}
+        dd = Math.abs(dd);
+        int deg = (int) dd;
+        int min = (int) ((dd-deg)*60.0);
+        long sec =  Math.round ((dd-deg-(min/60.0))*3600);
+        if(sec == 60) {sec = 0; min++;if (min == 60) {min = 0; deg ++;
+            if (deg == 360) {deg = 0;}}}
+        return latNS + deg + "° " + String.format("%02d",Math.abs(min)) + "' " +
+                String.format("%02d",Math.abs(sec)) + "\"";
+    }
+
+    // convert degrees from double format to dms string format
+    public static String convertLongToDMS(double dd) {
+        String longEW;
+        if (dd < 0) {longEW = "W";} else {longEW = "E";}
+        dd = Math.abs(dd);
+        int deg = (int) dd;
+        int min = (int) ((dd-deg)*60.0);
+        long sec =  Math.round ((dd-deg-(min/60.0))*3600);
+        if(sec == 60) {sec = 0; min++;if (min == 60) {min = 0; deg ++;
+            if (deg == 360) {deg = 0;}}}
+        return longEW + deg + "° " + String.format("%02d",Math.abs(min)) + "' " +
+                String.format("%02d",Math.abs(sec)) + "\"";
+    }
+
 }

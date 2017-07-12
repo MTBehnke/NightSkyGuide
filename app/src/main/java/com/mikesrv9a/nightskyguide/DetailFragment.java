@@ -3,6 +3,7 @@
 package com.mikesrv9a.nightskyguide;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -62,7 +64,7 @@ public class DetailFragment extends Fragment {
         LayoutInflater inflater, ViewGroup container,
         Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        setHasOptionsMenu(false);  // this fragment has no menu items to display
+        setHasOptionsMenu(true);  // this fragment has no menu items to display
 
         // get Bundle of arguments then extract the dsObject
         Bundle arguments = getArguments();
@@ -157,6 +159,27 @@ public class DetailFragment extends Fragment {
             e.printStackTrace();
         }
         return constImage;
+    }
+
+    // display this fragment's menu items
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_details_menu, menu);
+    }
+
+    // display selected menu item
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.app_info_details:
+                Intent info = new Intent(getActivity(), AppInfoActivity.class);
+                info.putExtra("appInfoKey", 2);
+                startActivity(info);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

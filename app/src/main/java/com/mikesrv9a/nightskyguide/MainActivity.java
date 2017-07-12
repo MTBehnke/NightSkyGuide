@@ -47,12 +47,12 @@ public class MainActivity extends AppCompatActivity
     private LocationCallback mLocationCallback;
     private LocationSettingsRequest mLocationSettingsRequest;
     private Location mCurrentLocation;
-    private Context context;
+    Context context;
     final int REQUEST_CHECK_SETTINGS = 1;
     final int REQUEST_LOCATION = 2;
-    private Boolean mRequestingLocationUpdates;
-    private Boolean useGPS;  // pref: use_device_location
-    private Boolean hasLocPermissions;
+    public Boolean locUpdates;
+    public Boolean useGPS;  // pref: use_device_location
+    //private Boolean hasLocPermissions;
     SharedPreferences preferences;
 
     // display DSObjectFragment when MainActivity first loads
@@ -68,9 +68,11 @@ public class MainActivity extends AppCompatActivity
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         // start location services, including permissions checks, etc.
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         context = this;
-        mRequestingLocationUpdates = true;
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        //mRequestingLocationUpdates = true;
+        useGPS = preferences.getBoolean("use_device_location", false);
+        locUpdates = false;
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
         mSettingsClient = LocationServices.getSettingsClient(context);
         createLocationCallback();
@@ -92,28 +94,16 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume () {
         super.onResume();
-        useGPS = preferences.getBoolean("use_device_location", false);
-        //Toast.makeText(context, "onResume: " + useGPS + " / " + mRequestingLocationUpdates, Toast.LENGTH_SHORT).show();
-        // mRequestingUpdates could be false if stopLocationUpdates failed (weren't started)
-        if (useGPS && mRequestingLocationUpdates) {
-            checkPermissions(); }
-        if (useGPS && mRequestingLocationUpdates && hasLocPermissions) {
-            //Toast.makeText(context, "starting Location Updates", Toast.LENGTH_SHORT).show();
-            startLocationUpdates();
+        // check if user has GPS/Network on and set location summary as required
+        if (useGPS && !locUpdates) {
+            checkPermissions();
         }
     }
 
     @Override
     protected void onPause () {
         super.onPause();
-        //Toast.makeText(context, "onPause: " + useGPS + " / " + mRequestingLocationUpdates, Toast.LENGTH_SHORT).show();
-        // If location permissions are not enabled, set location permission to false.
-        if (useGPS && !mRequestingLocationUpdates) {
-            SharedPreferences.Editor edit = preferences.edit();
-            edit.putBoolean("use_device_location", false);
-            edit.apply();
-        }
-        if (useGPS && mRequestingLocationUpdates) {
+        if (locUpdates) {
             stopLocationUpdates();
         }
     }
@@ -175,8 +165,8 @@ public class MainActivity extends AppCompatActivity
     protected void createLocationRequest() {
         // create the locatioon request and set parameters
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(120000);  // preferred update rate
-        mLocationRequest.setFastestInterval(60000);  // fastest rate app can handle updates
+        mLocationRequest.setInterval(10*60*1000);  // preferred update rate
+        mLocationRequest.setFastestInterval(5*60*1000);  // fastest rate app can handle updates
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
     }
 
@@ -191,13 +181,10 @@ public class MainActivity extends AppCompatActivity
     public void checkPermissions() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                hasLocPermissions = false;
-                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
             }
-        }
         else {
-            hasLocPermissions = true;
+            startLocationUpdates();
         }
     }
 
@@ -209,12 +196,13 @@ public class MainActivity extends AppCompatActivity
                 if (grantResults.length > 0
                         && (grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
                     // permission was granted
-                    hasLocPermissions = true;
+                    startLocationUpdates();
                 } else {
                     // permission denied
-                    hasLocPermissions = false;
-                    mRequestingLocationUpdates = false;
                     useGPS = false;
+                    SharedPreferences.Editor edit = preferences.edit();
+                    edit.putBoolean("use_device_location", false);
+                    edit.apply();
                 }
             }
         }
@@ -225,8 +213,7 @@ public class MainActivity extends AppCompatActivity
         mSettingsClient.checkLocationSettings(mLocationSettingsRequest).addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                mRequestingLocationUpdates = true;
-                useGPS = true;
+                locUpdates = true;
                 // All location settings are satisfied.
                 //noinspection MissingPermission - this comment needs to stay here to stop inspection on next line
                 mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
@@ -239,7 +226,6 @@ public class MainActivity extends AppCompatActivity
                         int statusCode = ((ApiException) e).getStatusCode();
                         switch (statusCode) {
                             case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                                mRequestingLocationUpdates = false;
                                 // location settings are not satisfied, but this can be fixed by showing the user a dialog.
                                 try {
                                     // show the dialog by calling startResolutionForResult(), and check the result in onActivityResult().
@@ -251,8 +237,11 @@ public class MainActivity extends AppCompatActivity
                                 break;
                             case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                                 // location settings are not satisfied, however no way to fix the settings so don't show dialog.
-                                mRequestingLocationUpdates = false;
+                                Toast.makeText(MainActivity.this, "Location Services Unavailable", Toast.LENGTH_LONG).show();
                                 useGPS = false;
+                                SharedPreferences.Editor edit = preferences.edit();
+                                edit.putBoolean("use_device_location", false);
+                                edit.apply();
                                 break;
                         }
                     }
@@ -266,21 +255,23 @@ public class MainActivity extends AppCompatActivity
             case REQUEST_CHECK_SETTINGS:
                 switch (resultCode) {
                     case Activity.RESULT_OK:
-                        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                                ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
                         } else {
                             // Start location updates
                             // Note - in emulator location appears to be null if no other app is using GPS at time.
                             // So if just turning on device's location services getLastLocation will likely not return anything
                             mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null /*looper*/);
-                            mRequestingLocationUpdates = true;
-                            useGPS = true;
-                        }
+                            locUpdates = true;
+                         }
                         break;
                     case Activity.RESULT_CANCELED:
-                        // user does not want to update setting. Handle it in a way that it will to affect your app functionality
-                        mRequestingLocationUpdates = false;
+                        // user does not want to update setting.
                         useGPS = false;
+                        SharedPreferences.Editor edit = preferences.edit();
+                        edit.putBoolean("use_device_location", false);
+                        edit.apply();
                         break;
                 }
                 break;
@@ -289,10 +280,11 @@ public class MainActivity extends AppCompatActivity
 
     // stop location updates
     private void stopLocationUpdates() {
+        locUpdates = false;
         mFusedLocationClient.removeLocationUpdates(mLocationCallback).addOnCompleteListener(this, new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                mRequestingLocationUpdates = false; }
+                 }
         });
     }
 

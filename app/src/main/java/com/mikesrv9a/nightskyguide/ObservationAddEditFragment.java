@@ -2,13 +2,18 @@ package com.mikesrv9a.nightskyguide;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.SimpleArrayMap;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -16,8 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 public class ObservationAddEditFragment extends Fragment {
@@ -47,13 +51,15 @@ public class ObservationAddEditFragment extends Fragment {
     private TextInputLayout notesTextInputLayout; // input for notes
 
     private FloatingActionButton saveObservationFAB; // save observation record FAB
-
+    SharedPreferences preferences;
+    DecimalFormat df = new DecimalFormat("#.0000");
 
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)  {
         super.onCreateView(inflater, container, savedInstanceState);
-        setHasOptionsMenu(false);
+        setHasOptionsMenu(true);
+        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         // get Bundle of arguments then extract the dsObject
         Bundle arguments = getArguments();
@@ -78,6 +84,21 @@ public class ObservationAddEditFragment extends Fragment {
         nameTextView.setText(dsObject.getDsoName());
         String currentDateTime = DateFormat.getInstance().format(new Date());
         dateTextInputLayout.getEditText().setText(currentDateTime);
+        String location = getLocation();
+        locationTextInputLayout.getEditText().setText(location);
+        String seeing = preferences.getString("last_seeing", "");
+        seeingTextInputLayout.getEditText().setText(seeing);
+        String transparency = preferences.getString("last_transparency", "");
+        transparencyTextInputLayout.getEditText().setText(transparency);
+        String telescope = preferences.getString("last_telescope", "");
+        telescopeTextInputLayout.getEditText().setText(telescope);
+        String eyepiece = preferences.getString("last_eyepiece", "");
+        eyepieceTextInputLayout.getEditText().setText(eyepiece);
+        String power = preferences.getString("last_power", "");
+        powerTextInputLayout.getEditText().setText(power);
+        String filter = preferences.getString("last_filter", "");
+        filterTextInputLayout.getEditText().setText(filter);
+
 
         // set FloatingActionButton's event listener
         saveObservationFAB = (FloatingActionButton) view.findViewById(R.id.saveFloatingActionButton);
@@ -117,6 +138,45 @@ public class ObservationAddEditFragment extends Fragment {
         observationDB.close();
         Toast.makeText(context, "Observation Saved", Toast.LENGTH_LONG).show();
         listener.onObservationSaved();
+        SharedPreferences.Editor edit = preferences.edit();
+        edit.putString("last_seeing", seeingTextInputLayout.getEditText().getText().toString());
+        edit.putString("last_transparency", transparencyTextInputLayout.getEditText().getText().toString());
+        edit.putString("last_telescope", telescopeTextInputLayout.getEditText().getText().toString());
+        edit.putString("last_eyepiece", eyepieceTextInputLayout.getEditText().getText().toString());
+        edit.putString("last_power", powerTextInputLayout.getEditText().getText().toString());
+        edit.putString("last_filter", filterTextInputLayout.getEditText().getText().toString());
+        edit.apply();
+    }
+
+    public String getLocation() {
+        String location = "";
+        if (preferences.getBoolean("use_device_location",false)) {
+            Double gpsLat = Double.parseDouble(preferences.getString("last_gps_lat", getString(R.string.default_latitude)));
+            Double gpsLong = Double.parseDouble(preferences.getString("last_gps_long", getString(R.string.default_longitude)));
+            location = AstroCalc.convertLatToDMS(gpsLat) + " ,  " + AstroCalc.convertLongToDMS(gpsLong);
+            // location = "Latitude:  " + df.format(gpsLat) + "   /   Longitude:  " + df.format(gpsLong);
+            }
+        else {
+            String locationNum = preferences.getString("viewing_location", "1");
+            switch (locationNum) {
+                case "2":
+                    location = preferences.getString("pref_location2", "");
+                    break;
+                case "3":
+                    location = preferences.getString("pref_location3", "");
+                    break;
+                case "4":
+                    location = preferences.getString("pref_location4", "");
+                    break;
+                case "5":
+                    location = preferences.getString("pref_location5", "");
+                    break;
+                case "1":
+                    location = preferences.getString("pref_location1", "");
+                    break;
+            }
+        }
+        return location;
     }
 
     // set AddEditFABListener when fragment attached
@@ -131,6 +191,35 @@ public class ObservationAddEditFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         listener = null;
+    }
+
+    // display this fragment's menu items
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_add_edit_observ_menu, menu);
+    }
+
+    // display selected menu item
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.app_info_add_edit:
+                Intent info = new Intent(getActivity(), AppInfoActivity.class);
+                info.putExtra("appInfoKey", 3);
+                startActivity(info);
+                return true;
+            /*case R.id.location_edit:
+                Intent loc = new Intent(getActivity(), LocationActivity.class);
+                startActivity(loc);
+                return true;
+            case R.id.settings_edit:
+                Intent settings = new Intent(getActivity(), SettingsActivity.class);
+                startActivity(settings);
+                return true;*/
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

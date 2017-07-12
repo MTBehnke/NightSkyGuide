@@ -72,8 +72,6 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // check is user has GPS/Network on and set Location summary as required
-        //Toast.makeText(context, "onResume: " + useGPS + " / " + locUpdates, Toast.LENGTH_LONG).show();
         if (useGPS && !locUpdates) {
             checkPermissions();
         }
@@ -84,13 +82,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-        //Toast.makeText(context, "onPause: " + useGPS + " / " + locUpdates, Toast.LENGTH_LONG).show();
         settingsFragment.setLatLongPref();
-        /*if (useGPS == useDeviceLocation) {
-            SharedPreferences.Editor edit = preferences.edit();
-            edit.putBoolean("use_device_location", false);
-            edit.apply();
-        }*/
         if (locUpdates) {
             stopLocationUpdates();
         }
@@ -139,6 +131,9 @@ public class SettingsActivity extends AppCompatActivity {
                 } else {
                     // permission denied -
                     useGPS = false;
+                    SharedPreferences.Editor edit = preferences.edit();
+                    edit.putBoolean("use_device_location", false);
+                    edit.apply();
                     settingsFragment.useDeviceLocation.setChecked(false);
                     settingsFragment.setLocSummary();
                 }
@@ -152,7 +147,6 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                 locUpdates = true;
-                //Toast.makeText(context, "starting GPS updates", Toast.LENGTH_LONG).show();
                 // All location settings are satisfied.
                 //noinspection MissingPermission - this comment needs to stay here to stop inspection on next line
                 mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
@@ -165,24 +159,22 @@ public class SettingsActivity extends AppCompatActivity {
                         int statusCode = ((ApiException) e).getStatusCode();
                         switch (statusCode) {
                             case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                                // location settings are not satisfied, but this can be fixed
-                                // by showing the user a dialog.
+                                // location settings are not satisfied, but this can be fixed by showing the user a dialog.
                                 try {
-                                    // show the dialog by calling startResolutionForResult(),
-                                    // and check the result in onActivityResult().
-                                    //Toast.makeText(context, "Resolution Required", Toast.LENGTH_LONG).show();
-                                    ResolvableApiException resolvable = (ResolvableApiException) e;
+                                    // show the dialog by calling startResolutionForResult(), and check the result in onActivityResult().
+                                     ResolvableApiException resolvable = (ResolvableApiException) e;
                                     resolvable.startResolutionForResult(SettingsActivity.this, REQUEST_CHECK_SETTINGS);
                                 } catch (IntentSender.SendIntentException sendEx) {
-                                    //Toast.makeText(context, "Error Ignored", Toast.LENGTH_LONG).show();
                                     // Ignore the error
                                 }
                                 break;
                             case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                                // location settings are not satisfied, however no way to
-                                // fix the settings so don't show dialog.
+                                // location settings are not satisfied, however no way to fix the settings so don't show dialog.
                                 Toast.makeText(context, "Location Services Unavailable", Toast.LENGTH_LONG).show();
                                 useGPS = false;
+                                SharedPreferences.Editor edit = preferences.edit();
+                                edit.putBoolean("use_device_location", false);
+                                edit.apply();
                                 settingsFragment.useDeviceLocation.setChecked(false);
                                 settingsFragment.setLocSummary();
                                 break;
@@ -194,7 +186,6 @@ public class SettingsActivity extends AppCompatActivity {
     // Get results from user dialog prompt to turn on location services for app
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //Toast.makeText(context, "onActivityResult: " + Integer.toString(resultCode), Toast.LENGTH_LONG).show();
         switch (requestCode) {
             case REQUEST_CHECK_SETTINGS:
                 switch (resultCode) {
@@ -208,7 +199,7 @@ public class SettingsActivity extends AppCompatActivity {
                             // Note - in emulator location appears to be null if no other app is using GPS at time.
                             // So if just turning on device's location services getLastLocation will likely not
                             // return anything
-                            Toast.makeText(context, "starting GPS updates", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(context, "starting GPS updates", Toast.LENGTH_LONG).show();
                             mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
                             locUpdates = true;
                         }
@@ -216,7 +207,9 @@ public class SettingsActivity extends AppCompatActivity {
                     case Activity.RESULT_CANCELED:
                         // user does not want to update setting. Handle it in a way that it will to affect your app functionality
                         useGPS = false;
-                        //Toast.makeText(context, "Location Service Dialog Cancelled", Toast.LENGTH_LONG).show();
+                        SharedPreferences.Editor edit = preferences.edit();
+                        edit.putBoolean("use_device_location", false);
+                        edit.apply();
                         settingsFragment.useDeviceLocation.setChecked(false);
                         settingsFragment.setLocSummary();
                         break;
@@ -227,7 +220,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     // stop location updates
     public void stopLocationUpdates() {
-        //Toast.makeText(context, "stopping GPS updates", Toast.LENGTH_LONG).show();
         locUpdates = false;
         mFusedLocationClient.removeLocationUpdates(mLocationCallback).addOnCompleteListener((Activity) context, new OnCompleteListener<Void>() {
             @Override
@@ -243,7 +235,6 @@ public class SettingsActivity extends AppCompatActivity {
                 super.onLocationResult(locationResult);
                 mCurrentLocation = locationResult.getLastLocation();
                 setLatLong(mCurrentLocation);
-                //Toast.makeText(context, "GPS Update", Toast.LENGTH_SHORT).show();
             }
         };
     }

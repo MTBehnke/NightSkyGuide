@@ -51,8 +51,6 @@
                     android:tint="@color/iconGreen"
                     android:src="@drawable/ic_save_24dp"/>
 
-
-
             </RelativeLayout>
 
             <LinearLayout
@@ -187,11 +185,11 @@
                         android:imeOptions="actionDone"
                         android:inputType="textMultiLine"/>
                 </android.support.design.widget.TextInputLayout>
+
             </LinearLayout>
+
         </RelativeLayout>
 
     </ScrollView>
-
-
 
 </FrameLayout>

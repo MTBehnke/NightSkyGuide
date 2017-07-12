@@ -248,6 +248,7 @@ public class DSObjectsFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.app_info:
                 Intent info = new Intent(getActivity(), AppInfoActivity.class);
+                info.putExtra("appInfoKey", 1);
                 startActivity(info);
                 return true;
             /*case R.id.location_edit:
