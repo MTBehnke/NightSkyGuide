@@ -53,3 +53,5 @@ Program Rules of the Astronomical League, such as:
 Update: Scott Kranz, the Messier Program Coordinator for the
 Astronomical League confirmed that this app does not conflict
 with the Messier Program rules.
+
+Copyright Shiny Objects LLC
