@@ -34,5 +34,6 @@ dependencies {
     compile 'joda-time:joda-time:2.3'
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.google.android.gms:play-services-location:11.0.1'
     testCompile 'junit:junit:4.12'
 }

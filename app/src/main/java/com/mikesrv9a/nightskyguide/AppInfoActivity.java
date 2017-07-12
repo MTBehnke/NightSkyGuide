@@ -22,8 +22,8 @@ public class AppInfoActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         TextView appInfo = (TextView)findViewById(R.id.app_info_text);
-        String infoText = "Messier Field Guide v0.1.8.2 (beta)\n" +
-                "Copyright Michael Behnke 2017\n\n" +
+        String infoText = "Messier Field Guide v0.1.10.3 (beta)\n" +
+                "Copyright Shiny Objects LLC 2017\n\n" +
                 "The main page displays each of the 110 Messier Object's, including:\n" +
                 "∙ DSO ID (with √ if previously observed)\n∙ Common Name\n"+
                 "∙ Constellation\n∙ DSO Type\n" +
@@ -39,14 +39,14 @@ public class AppInfoActivity extends AppCompatActivity {
                 "Clicking on any object in the list will open a detail page "+
                 "providing more information about the object, including rise and set times "+
                 "and an associated constellation chart.\n\n" +
-                "Note: not all of the Messier Objects are depicted on these charts. " +
                 "Please consult your sky atlas to find these objects.  The page numbers " +
                 "for two common atlases are listed on the detail pages.\n\n" +
                 "PSA refers to Sky & Telescope's Pocket Sky Atlas\n\n" +
                 "OITH refers to Objects in the Heavens ed.5.2 by Peter Birren\n\n" +
-                "These constellation charts are from the International Astronomical " +
+                "The constellation charts are from the International Astronomical " +
                 "Union and Sky & Telescope Magazine and are released under the Creative"+
-                "Commons Attribution 3.0 Unported License and have been modified. ";
+                "Commons Attribution 3.0 Unported License and have been modified to have "+
+                "a dark background and to include all 110 Messier objects.";
 
         appInfo.setText(infoText);
     }

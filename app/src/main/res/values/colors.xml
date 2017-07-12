@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">@android:color/black</color>
     <color name="colorAccent">#202020</color>
     <color name="colorBlackBackground">#000000</color>
+    <color name="accent_material_dark_1">#80cbc4</color>
+    <color name="iconGreen">#8FD425</color>
 </resources>

@@ -32,11 +32,37 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:paddingTop">6dp</item>
-        <!--<item name="android:background">@drawable/textview_border</item>-->
+    </style>
+
+    <style name="LocCategoryTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">fill_horizontal</item>
+        <item name="android:textColor">#FF80CBC4</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:paddingTop">6dp</item>-->
     </style>
 
     <style name="PreferenceScreen" parent="Theme.AppCompat.NoActionBar">
         <item name="android:textColor">#CCCCCC</item>
+    </style>
+
+    <style name="LocLabelTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">right|center_vertical</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:paddingTop">6dp</item>
+    </style>
+
+    <style name="LocTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">fill_horizontal</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingTop">6dp</item>
     </style>
 
 </resources>

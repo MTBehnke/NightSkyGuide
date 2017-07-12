@@ -5,33 +5,27 @@
     <PreferenceCategory
         android:title="VIEWING LOCATION:">
 
-        <EditTextPreference
-            android:defaultValue="@string/default_latitude"
-            android:inputType="number|numberDecimal"
-            android:key="edit_text_pref_lat"
-            android:persistent="true"
-            android:selectAllOnFocus="true"
-            android:singleLine="false"
-            android:title="Latitude (dd.dddd):" />
+        <SwitchPreference
+            android:key="use_device_location"
+            android:title="Use GPS/Network Location" />
 
-        <EditTextPreference
-            android:defaultValue="@string/default_longitude"
-            android:inputType="number|numberDecimal|numberSigned"
-            android:key="edit_text_pref_long"
-            android:persistent="true"
-            android:selectAllOnFocus="true"
-            android:singleLine="false"
-            android:title="Longitude +E/-W (dd.dddd):" />
+        <!--android:summaryOff="No"
+            android:summaryOn="Yes"-->
+
+        <ListPreference
+            android:defaultValue="1"
+            android:key="viewing_location"
+            android:summary="%s"
+            android:title="Location" />
 
         <EditTextPreference
             android:enabled="false" />
 
     </PreferenceCategory>
 
-
-
     <PreferenceCategory
         android:title="DISPLAY OPTIONS:">
+
 
         <SwitchPreference
             android:key="pref_show_observed"
@@ -45,6 +39,222 @@
             android:summaryOn="Yes"
             android:title="@string/pref_display_below_horizon" />
 
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/pref_sort_by"
+            android:entryValues="@array/pref_sort_by_items"
+            android:key="pref_sort_by"
+            android:summary="%s"
+            android:title="@string/pref_sort_by_list" />
+
+        <!--
+        <MultiSelectListPreference
+            android:defaultValue="@array/constellation_default"
+            android:entries="@array/constellation_abbr"
+            android:entryValues="@array/constellation_abbr"
+            android:key="multi_pref_constellation"
+            android:summary="%s"
+            android:title="@string/pref_list_display_const" /> -->
+
     </PreferenceCategory>
+
+    <EditTextPreference
+        android:enabled="false" />
+
+    <PreferenceCategory
+        android:title="EDIT USER LISTS:"/>
+
+    <PreferenceScreen
+        android:key="update_location_pref_screen"
+        android:title="Update Locations">
+
+        <PreferenceCategory
+            android:title="USER DEFINED LOCATIONS:"/>
+
+        <PreferenceScreen
+            android:key="update_loc1">
+
+            <PreferenceCategory
+                android:title="LOCATION 1:" />
+
+            <EditTextPreference
+                android:defaultValue="@string/location_default"
+                android:inputType="text"
+                android:key="pref_location1"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:title="@string/pref_loc_title"
+                android:dialogTitle="@string/pref_loc_label_req"/>
+
+            <EditTextPreference
+                android:defaultValue="@string/default_latitude"
+                android:inputType="number|numberDecimal|numberSigned"
+                android:key="pref_lat1"
+                android:persistent="true"
+                android:selectAllOnFocus="true"
+                android:singleLine="false"
+                android:title="@string/loc_current_lat_title"
+                android:dialogTitle="@string/loc_current_lat_label"/>
+
+            <EditTextPreference
+                android:defaultValue="@string/default_longitude"
+                android:inputType="number|numberDecimal|numberSigned"
+                android:key="pref_long1"
+                android:persistent="true"
+                android:selectAllOnFocus="true"
+                android:singleLine="false"
+                android:title="@string/loc_current_long_title"
+                android:dialogTitle="@string/loc_current_long_label"/>
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:key="update_loc2">
+
+          <PreferenceCategory
+                android:title="LOCATION 2:" />
+
+            <EditTextPreference
+                android:defaultValue="@string/location_null"
+                android:inputType="text"
+                android:key="pref_location2"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:title="@string/pref_loc_title"
+                android:dialogTitle="@string/pref_loc_label"/>
+
+            <EditTextPreference
+                android:defaultValue="@string/default_latitude"
+                android:inputType="number|numberDecimal|numberSigned"
+                android:key="pref_lat2"
+                android:persistent="true"
+                android:selectAllOnFocus="true"
+                android:singleLine="false"
+                android:title="@string/loc_current_lat_title"
+                android:dialogTitle="@string/loc_current_lat_label"/>
+
+            <EditTextPreference
+                android:defaultValue="@string/default_longitude"
+                android:inputType="number|numberDecimal|numberSigned"
+                android:key="pref_long2"
+                android:persistent="true"
+                android:selectAllOnFocus="true"
+                android:singleLine="false"
+                android:title="@string/loc_current_long_title"
+                android:dialogTitle="@string/loc_current_long_label"/>
+
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:key="update_loc3">
+
+            <PreferenceCategory
+                android:title="LOCATION 3:" />
+
+            <EditTextPreference
+                android:defaultValue="@string/location_null"
+                android:inputType="text"
+                android:key="pref_location3"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:title="@string/pref_loc_title"
+                android:dialogTitle="@string/pref_loc_label"/>
+
+            <EditTextPreference
+                android:defaultValue="@string/default_latitude"
+                android:inputType="number|numberDecimal|numberSigned"
+                android:key="pref_lat3"
+                android:persistent="true"
+                android:selectAllOnFocus="true"
+                android:singleLine="false"
+                android:title="@string/loc_current_lat_title"
+                android:dialogTitle="@string/loc_current_lat_label"/>
+
+            <EditTextPreference
+                android:defaultValue="@string/default_longitude"
+                android:inputType="number|numberDecimal|numberSigned"
+                android:key="pref_long3"
+                android:persistent="true"
+                android:selectAllOnFocus="true"
+                android:singleLine="false"
+                android:title="@string/loc_current_long_title"
+                android:dialogTitle="@string/loc_current_long_label"/>
+
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:key="update_loc4">
+
+            <PreferenceCategory
+                android:title="LOCATION 4:" />
+
+            <EditTextPreference
+                android:defaultValue="@string/location_null"
+                android:inputType="text"
+                android:key="pref_location4"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:title="@string/pref_loc_title"
+                android:dialogTitle="@string/pref_loc_label"/>
+
+            <EditTextPreference
+                android:defaultValue="@string/default_latitude"
+                android:inputType="number|numberDecimal|numberSigned"
+                android:key="pref_lat4"
+                android:persistent="true"
+                android:selectAllOnFocus="true"
+                android:singleLine="false"
+                android:title="@string/loc_current_lat_title"
+                android:dialogTitle="@string/loc_current_lat_label"/>
+
+            <EditTextPreference
+                android:defaultValue="@string/default_longitude"
+                android:inputType="number|numberDecimal|numberSigned"
+                android:key="pref_long4"
+                android:persistent="true"
+                android:selectAllOnFocus="true"
+                android:singleLine="false"
+                android:title="@string/loc_current_long_title"
+                android:dialogTitle="@string/loc_current_long_label"/>
+
+        </PreferenceScreen>
+
+        <PreferenceScreen
+        android:key="update_loc5">
+
+            <PreferenceCategory
+                android:title="LOCATION 5:" />
+
+            <EditTextPreference
+                android:defaultValue="@string/location_null"
+                android:inputType="text"
+                android:key="pref_location5"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:title="@string/pref_loc_title"
+                android:dialogTitle="@string/pref_loc_label"/>
+
+            <EditTextPreference
+                android:defaultValue="@string/default_latitude"
+                android:inputType="number|numberDecimal|numberSigned"
+                android:key="pref_lat5"
+                android:persistent="true"
+                android:selectAllOnFocus="true"
+                android:singleLine="false"
+                android:title="@string/loc_current_lat_title"
+                android:dialogTitle="@string/loc_current_lat_label"/>
+
+            <EditTextPreference
+                android:defaultValue="@string/default_longitude"
+                android:inputType="number|numberDecimal|numberSigned"
+                android:key="pref_long5"
+                android:persistent="true"
+                android:selectAllOnFocus="true"
+                android:singleLine="false"
+                android:title="@string/loc_current_long_title"
+                android:dialogTitle="@string/loc_current_long_label"/>
+
+        </PreferenceScreen>
+
+    </PreferenceScreen>
 
 </PreferenceScreen>

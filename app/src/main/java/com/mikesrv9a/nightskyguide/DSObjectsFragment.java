@@ -52,11 +52,14 @@ public class DSObjectsFragment extends Fragment {
 
     DSObjectsClickAdapter clickAdapter;
 
+    Context context;
+
     // user preferences
     public double userLat;
     public double userLong;
     public boolean showObserved;
     public boolean showBelowHoriz;
+    public String sortPreference;
 
     // configures this fragment's GUI
     @Override
@@ -119,20 +122,10 @@ public class DSObjectsFragment extends Fragment {
             try {
                 setUserPreferences();
                 updateArrayList();
-                /*for (int counter = 0; counter < dsObjectsArrayList.size(); counter++){
-                    dsObjectsArrayList.get(counter).setDsoAltAz(userLat,userLong);
-                }
-                Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
-                    @Override
-                    public int compare(DSObject dsObject, DSObject t1) {
-                        return Double.compare(dsObject.getDsoSortAlt(), t1.getDsoSortAlt());
-                    }
-                });*/
                 clickAdapter.notifyDataSetChanged();
-                handler.postDelayed(this,60000);
-            }
-            catch (Exception e) {
-                Toast.makeText(getActivity(),"error", Toast.LENGTH_SHORT).show();
+                handler.postDelayed(this, 60000);
+            } catch (Exception e) {
+                Toast.makeText(getActivity(), "error", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         }
@@ -156,14 +149,13 @@ public class DSObjectsFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Context context = getActivity();
-        //Toast.makeText(getContext(), "OnActivityCreated", Toast.LENGTH_LONG).show();
+        context = getActivity();
 
         // Get Observation data from database
         observationDB = new ObservationDatabaseHelper(context).getWritableDatabase();
 
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        String [] sqlSelect = {
+        String[] sqlSelect = {
                 " _id",
                 ObserveRecordsSchema.ObsTable.Cols.DsoID,
                 ObserveRecordsSchema.ObsTable.Cols.ObsDate,
@@ -228,7 +220,9 @@ public class DSObjectsFragment extends Fragment {
 
                 //Checks observations to determine whether DSO has been observed
                 Integer dsoObserved = 0;
-                if (observedList.contains(dsoObjectID)) {dsoObserved = 1;}
+                if (observedList.contains(dsoObjectID)) {
+                    dsoObserved = 1;
+                }
 
                 // creates DSObjects
                 DSObject dsObject = new DSObject(dsoObjectID, dsoType, dsoMag, dsoSize, dsoDist,
@@ -253,12 +247,16 @@ public class DSObjectsFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.app_info:
-                Intent info = new Intent(getActivity(),AppInfoActivity.class);
+                Intent info = new Intent(getActivity(), AppInfoActivity.class);
                 startActivity(info);
                 return true;
-            case R.id.location_edit:
-                Intent loc = new Intent(getActivity(),SettingsActivity.class);
+            /*case R.id.location_edit:
+                Intent loc = new Intent(getActivity(), LocationActivity.class);
                 startActivity(loc);
+                return true;*/
+            case R.id.settings_edit:
+                Intent settings = new Intent(getActivity(), SettingsActivity.class);
+                startActivity(settings);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -272,7 +270,7 @@ public class DSObjectsFragment extends Fragment {
         //Toast.makeText(getContext(), "OnResume", Toast.LENGTH_LONG).show();
         setUserPreferences();
         updateArrayList();
-        handler.postDelayed(updateAltAz,60000);
+        handler.postDelayed(updateAltAz, 60000);
     }
 
     // stop runnable on pause
@@ -286,32 +284,54 @@ public class DSObjectsFragment extends Fragment {
     public void setUserPreferences() {
         Context context = getActivity();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        userLat = Double.parseDouble(preferences.getString("edit_text_pref_lat", ""));
-        userLong = Double.parseDouble(preferences.getString("edit_text_pref_long", ""));
+        if (preferences.getBoolean("use_device_location", false)) {
+            userLat = Double.parseDouble(preferences.getString("last_gps_lat", getString(R.string.default_latitude)));
+            userLong = Double.parseDouble(preferences.getString("last_gps_long", getString(R.string.default_longitude)));}
+        else {
+            userLat = Double.parseDouble(preferences.getString("edit_text_pref_lat", getString(R.string.default_latitude)));
+            userLong = Double.parseDouble(preferences.getString("edit_text_pref_long", getString(R.string.default_longitude)));}
+        //Toast.makeText(getContext(), userLat + " / " + userLong, Toast.LENGTH_LONG).show();
         showObserved = preferences.getBoolean("pref_show_observed", false);
         showBelowHoriz = preferences.getBoolean("pref_show_below_horiz", false);
+        sortPreference = preferences.getString("pref_sort_by", "1");
     }
 
     // update and sort arraylist for recyclerview based on user preferences
     public void updateArrayList() {
         dsObjectsArrayList.clear();
-        for (int counter = 0; counter < allDsObjectsArrayList.size(); counter++){
-            allDsObjectsArrayList.get(counter).setDsoAltAz(userLat,userLong);
+        for (int counter = 0; counter < allDsObjectsArrayList.size(); counter++) {
+            allDsObjectsArrayList.get(counter).setDsoAltAz(userLat, userLong);
             Double dsoAlt = allDsObjectsArrayList.get(counter).getDsoAlt();
-            if((allDsObjectsArrayList.get(counter).getDsoObserved() == 1 && showObserved == false) || (dsoAlt < 0 && showBelowHoriz == false))
-            {} // do nothing
+            if ((allDsObjectsArrayList.get(counter).getDsoObserved() == 1 && showObserved == false) || (dsoAlt < 0 && showBelowHoriz == false)) {
+            } // do nothing
             else {
                 dsObjectsArrayList.add(allDsObjectsArrayList.get(counter));
             }
         }
-        Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
-            @Override
-            public int compare(DSObject dsObject, DSObject t1) {
-                return Double.compare(dsObject.getDsoSortAlt(), t1.getDsoSortAlt());
-            }
-        });
+        if (sortPreference.equals("1")) {
+            Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
+                @Override
+                public int compare(DSObject dsObject, DSObject t1) {
+                    return Double.compare(dsObject.getDsoSortAlt(), t1.getDsoSortAlt());
+                }
+            });
+        }
+        else if (sortPreference.equals("2")) {
+            Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
+                @Override
+                public int compare(DSObject dsObject, DSObject t1) {
+                    return Integer.valueOf(dsObject.dsoObjectID.substring(1)).compareTo(Integer.valueOf(t1.dsoObjectID.substring(1)));
+                }
+            });
+        }
+        else {
+                Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
+                    @Override
+                    public int compare(DSObject dsObject, DSObject t1) {
+                        return dsObject.getDsoConst().compareTo(t1.getDsoConst());
+                    }
+                });
+        }
         clickAdapter.notifyDataSetChanged();
-
     }
-
 }

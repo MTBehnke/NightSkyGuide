@@ -1,21 +1,64 @@
 package com.mikesrv9a.nightskyguide;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.preference.EditTextPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Toast;
 
-/**
- * A placeholder fragment containing a simple view.
- */
+import java.text.DecimalFormat;
+import java.util.Arrays;
+
 public class SettingsFragment extends PreferenceFragment {
 
-    //public SettingsFragment() { }
+    // Viewing Location:
+    SwitchPreference useDeviceLocation;  // Preference "use_device_location"
+    ListPreference viewingLocation;  //  Preference "viewing_location"  (if not GPS/Network)
+    String[] viewLocItem;  // Array for viewingLocation ListPreference
+    String[] viewLocList;  // Array for viewingLocation ListPreference
+
+    // locationParent > Edit Locations:
+    PreferenceScreen updateLocParent;  // Parent to Update Locations
+    PreferenceScreen update_loc1;
+    PreferenceScreen update_loc2;
+    PreferenceScreen update_loc3;
+    PreferenceScreen update_loc4;
+    PreferenceScreen update_loc5;
+
+    // Update Locations > Location 1-5
+    EditTextPreference locationEditText1;
+    EditTextPreference latEditText1;
+    EditTextPreference longEditText1;
+    EditTextPreference locationEditText2;
+    EditTextPreference latEditText2;
+    EditTextPreference longEditText2;
+    EditTextPreference locationEditText3;
+    EditTextPreference latEditText3;
+    EditTextPreference longEditText3;
+    EditTextPreference locationEditText4;
+    EditTextPreference latEditText4;
+    EditTextPreference longEditText4;
+    EditTextPreference locationEditText5;
+    EditTextPreference latEditText5;
+    EditTextPreference longEditText5;
+
+    // Display Options:
+    SwitchPreference displayPrevObserved;  // Pref:  display previously observed
+    SwitchPreference displayBelowHoriz;  // Pref:  display objects below horizon
+    ListPreference sortByPref;  // Pref:  sort list of objects by <list>
+
+    DecimalFormat df = new DecimalFormat("#.0000");
+
+    public Context context;
+    //public Boolean locUpdates;  // GPS/Network Location Updates are currently functioning
+    //public Boolean useGPS;     // user wants to use GPS/Network (based on setting) - turn off if permissions unsuccessful
+    SharedPreferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,54 +66,91 @@ public class SettingsFragment extends PreferenceFragment {
         // load the preferences from the XML resource
         addPreferencesFromResource(R.xml.preferences);
 
-        // display current value for latitude
-        final EditTextPreference latEditText = (EditTextPreference) findPreference("edit_text_pref_lat");
-        latEditText.setSummary(latEditText.getText());
+        // locationParent > Edit Locations:
+        updateLocParent = (PreferenceScreen) findPreference("update_location_ref_screen");  // Parent to Update Locations
+        update_loc1 = (PreferenceScreen) findPreference("update_loc1");
+        update_loc2 = (PreferenceScreen) findPreference("update_loc2");
+        update_loc3 = (PreferenceScreen) findPreference("update_loc3");
+        update_loc4 = (PreferenceScreen) findPreference("update_loc4");
+        update_loc5 = (PreferenceScreen) findPreference("update_loc5");
 
-        // display current value for longitude
-        final EditTextPreference longEditText = (EditTextPreference) findPreference("edit_text_pref_long");
-        longEditText.setSummary(longEditText.getText());
+        // Update Locations > Location 1-5
+        locationEditText1 = (EditTextPreference) findPreference("pref_location1");
+        latEditText1 = (EditTextPreference) findPreference("pref_lat1");
+        longEditText1 = (EditTextPreference) findPreference("pref_long1");
+        locationEditText2 = (EditTextPreference) findPreference("pref_location2");
+        latEditText2 = (EditTextPreference) findPreference("pref_lat2");
+        longEditText2 = (EditTextPreference) findPreference("pref_long2");
+        locationEditText3 = (EditTextPreference) findPreference("pref_location3");
+        latEditText3 = (EditTextPreference) findPreference("pref_lat3");
+        longEditText3 = (EditTextPreference) findPreference("pref_long3");
+        locationEditText4 = (EditTextPreference) findPreference("pref_location4");
+        latEditText4 = (EditTextPreference) findPreference("pref_lat4");
+        longEditText4 = (EditTextPreference) findPreference("pref_long4");
+        locationEditText5 = (EditTextPreference) findPreference("pref_location5");
+        latEditText5 = (EditTextPreference) findPreference("pref_lat5");
+        longEditText5 = (EditTextPreference) findPreference("pref_long5");
 
-        // set latitude preference change listener and validate input
-        latEditText.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        // Viewing Location:
+        useDeviceLocation = (SwitchPreference) findPreference("use_device_location");
+        viewingLocation = (ListPreference) findPreference("viewing_location");
+
+        // Display Options:
+        displayPrevObserved = (SwitchPreference) findPreference("pref_show_observed");  // Pref:  display previously observed
+        displayBelowHoriz = (SwitchPreference) findPreference("pref_show_below_horiz");  // Pref:  display objects below horizon
+        sortByPref = (ListPreference) findPreference("pref_sort_by");  // Pref:  sort list of objects by <list>
+
+        updateLocSummaries();
+
+        // start location services, including permissions checks, etc.
+        context = getActivity();
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        //((SettingsActivity) getActivity()).useGPS = useDeviceLocation.isChecked();
+        //((SettingsActivity) getActivity()).locUpdates = false;
+
+        // set GPS/Network SwitchPreferences
+        useDeviceLocation.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
-            public boolean onPreferenceChange(Preference preference, Object newLat) {
-                try {
-                    double latCheck = Double.parseDouble(newLat.toString());
-                } catch (NumberFormatException nfe) {
-                    return false;
+            public boolean onPreferenceChange(Preference preference, Object useDeviceLoc) {
+                Boolean turnGPSOn = (Boolean) useDeviceLoc;  // Use GPS/Network Location changed to on/off (before preference saved)
+                if (turnGPSOn) {           // if user is trying to turn GPS on
+                    ((SettingsActivity) getActivity()).useGPS = true;
+                    ((SettingsActivity) getActivity()).checkPermissions();    // if checkPermissions opens dialog box then onChange completes, then onPause due to dialog box.  After dialog closed then onResume called.
                 }
-                latEditText.setSummary(newLat.toString());
+                else {
+                    ((SettingsActivity) getActivity()).useGPS = false;
+                    ((SettingsActivity) getActivity()).stopLocationUpdates();
+                }
+                setLocSummary();
+                //Toast.makeText(getActivity(), "onChange Completed", Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
 
-        // set longitude preference change listener and validate input
-        longEditText.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        viewingLocation.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
             @Override
-            public boolean onPreferenceChange(Preference preference, Object newLat) {
-                try {
-                    double longCheck = Double.parseDouble(newLat.toString());
-                } catch (NumberFormatException nfe) {
-                    return false;
-                }
-                longEditText.setSummary(newLat.toString());
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                updateLocationList();
                 return true;
             }
         });
 
+        setLocationPrefListeners();  // sets Location 1 - 5 onChangePreferenceListeners
 
-        // set Display Previously Observed SwitchPreference to on/off
-        final SwitchPreference displayPrevObserved = (SwitchPreference) findPreference("pref_show_observed");
+        // set Display Options SwitchPreferences
         displayPrevObserved.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 return true;
             }
         });
-
-        final SwitchPreference displayBelowHoriz = (SwitchPreference) findPreference("pref_show_below_horiz");
         displayBelowHoriz.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                return true;
+            }
+        });
+        sortByPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 return true;
@@ -78,4 +158,440 @@ public class SettingsFragment extends PreferenceFragment {
         });
 
     }
+
+    /*
+    @Override
+    public void onResume() {
+        super.onResume();
+        // check is user has GPS/Network on and set Location summary as required
+        //useGPS = preferences.getBoolean("use_device_location", false);
+        Toast.makeText(context, "onResume: " + ((SettingsActivity) getActivity()).useGPS + " / " + ((SettingsActivity) getActivity()).locUpdates, Toast.LENGTH_LONG).show();
+        if (((SettingsActivity) getActivity()).useGPS && !((SettingsActivity) getActivity()).locUpdates) {
+            ((SettingsActivity) getActivity()).checkPermissions();
+        }
+        setLocSummary();
+    }
+
+    // Update user selected location preference onPause
+    @Override
+    public void onPause() {
+        super.onPause();
+        Toast.makeText(context, "onPause: " + ((SettingsActivity) getActivity()).useGPS + " / " + ((SettingsActivity) getActivity()).locUpdates, Toast.LENGTH_LONG).show();
+        setLatLongPref();
+        if (((SettingsActivity) getActivity()).locUpdates) {
+            ((SettingsActivity) getActivity()).stopLocationUpdates();
+        }
+    } */
+
+    void updateLocSummaries() {
+        // Location 1 (required)
+        locationEditText1.setSummary(locationEditText1.getText());
+        latEditText1.setSummary(latEditText1.getText());
+        longEditText1.setSummary(longEditText1.getText());
+
+        // Location 2
+        if (("").equals(locationEditText2.getText())) {
+            locationEditText2.setSummary(R.string.location_null);
+            latEditText2.setSummary("");
+            longEditText2.setSummary("");}
+        else {
+            locationEditText2.setSummary(locationEditText2.getText());
+            latEditText2.setSummary(latEditText2.getText());
+            longEditText2.setSummary(longEditText2.getText());}
+
+        // Location 3
+        if (("").equals(locationEditText3.getText())) {
+            locationEditText3.setSummary(R.string.location_null);
+            latEditText3.setSummary("");
+            longEditText3.setSummary("");}
+        else {
+            locationEditText3.setSummary(locationEditText3.getText());
+            latEditText3.setSummary(latEditText3.getText());
+            longEditText3.setSummary(longEditText3.getText());}
+
+        // Location 4
+        if (("").equals(locationEditText4.getText())) {
+            locationEditText4.setSummary(R.string.location_null);
+            latEditText4.setSummary("");
+            longEditText4.setSummary("");}
+        else {
+            locationEditText4.setSummary(locationEditText4.getText());
+            latEditText4.setSummary(latEditText4.getText());
+            longEditText4.setSummary(longEditText4.getText());}
+
+        // Location 5
+        if (("").equals(locationEditText5.getText())) {
+            locationEditText5.setSummary(R.string.location_null);
+            latEditText5.setSummary("");
+            longEditText5.setSummary("");}
+        else {
+            locationEditText5.setSummary(locationEditText5.getText());
+            latEditText5.setSummary(latEditText5.getText());
+            longEditText5.setSummary(longEditText5.getText());}
+
+        updateLocParents();
+    }
+
+    void updateLocParents() {
+        update_loc1.setSummary(locationEditText1.getSummary());
+        update_loc2.setSummary(locationEditText2.getSummary());
+        update_loc3.setSummary(locationEditText3.getSummary());
+        update_loc4.setSummary(locationEditText4.getSummary());
+        update_loc5.setSummary(locationEditText5.getSummary());
+        updateLocationList();
+    }
+
+    // creates new array of user locations for use in viewingLocation listpreference
+    void updateLocationList() {   // location when GPS/Network not in use
+        int numLoc = 1;
+        String tempInitItem[] = {"1","2","3","4","5"};
+        String tempLocItem[] = new String[5];
+        String tempLocList[] = new String[5];
+        tempLocItem[0] = "1";
+        tempLocList[0] = locationEditText1.getText();
+
+        if (!("").equals(locationEditText2.getText())) {
+            tempLocItem[numLoc] = tempInitItem[1];
+            tempLocList[numLoc] = locationEditText2.getText();
+            numLoc++;}
+
+        if (!("").equals(locationEditText3.getText())) {
+            tempLocItem[numLoc] = tempInitItem[2];
+            tempLocList[numLoc] = locationEditText3.getText();
+            numLoc++;}
+
+        if (!("").equals(locationEditText4.getText())) {
+            tempLocItem[numLoc] = tempInitItem[3];
+            tempLocList[numLoc] = locationEditText4.getText();
+            numLoc++;}
+
+        if (!("").equals(locationEditText5.getText())) {
+            tempLocItem[numLoc] = tempInitItem[4];
+            tempLocList[numLoc] = locationEditText5.getText();
+            numLoc++;}
+
+        viewLocItem = Arrays.copyOf(tempLocItem,numLoc);
+        viewLocList = Arrays.copyOf(tempLocList,numLoc);
+        viewingLocation.setEntryValues(viewLocItem);
+        viewingLocation.setEntries(viewLocList);
+    }
+
+    // set latitude and longitude preference values based on selected location
+    public void setLatLongPref() {
+        String locLat = null;
+        String locLong = null;
+        switch (viewingLocation.getValue()) {
+            case "2":
+                locLat = latEditText2.getText();
+                locLong = longEditText2.getText();
+                break;
+            case "3":
+                locLat = latEditText3.getText();
+                locLong = longEditText3.getText();
+                break;
+            case "4":
+                locLat = latEditText4.getText();
+                locLong = longEditText4.getText();
+                break;
+            case "5":
+                locLat = latEditText5.getText();
+                locLong = longEditText5.getText();
+                break;
+            case "1":
+                locLat = latEditText1.getText();
+                locLong = longEditText1.getText();
+                break;
+        }
+        SharedPreferences pref;
+        pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences.Editor edit = pref.edit();
+        edit.putString("edit_text_pref_lat", locLat);
+        edit.putString("edit_text_pref_long", locLong);
+        edit.apply();
+    }
+
+        // set GPS/Network Location and Location summaries
+    public void setLocSummary() {
+        if (((SettingsActivity) getActivity()).useGPS) {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            Double gpsLat = Double.parseDouble(preferences.getString("last_gps_lat", getString(R.string.default_latitude)));
+            Double gpsLong = Double.parseDouble(preferences.getString("last_gps_long", getString(R.string.default_longitude)));
+            viewingLocation.setSummary("Latitude:  " + df.format(gpsLat) + "   /   Longitude:  " + df.format(gpsLong));
+            useDeviceLocation.setSummary("Yes");}
+        else {
+            useDeviceLocation.setSummary("No");
+            viewingLocation.setSummary("%s");
+        }
+    }
+
+    // Set onPreferenceChangeListeners
+    private void setLocationPrefListeners() {
+        // Location 1 OnPreferenceChangeListeners
+        locationEditText1.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newLocName) {
+                String newLoc = newLocName.toString();
+                if (newLoc.trim().length() == 0) {newLoc = "";}  // blank or all spaces
+                if (("").equals(newLoc)) {
+                    Toast.makeText(getActivity(), "Location Invalid / Required", Toast.LENGTH_LONG).show();
+                    return false;
+                } else {
+                    locationEditText1.setText(newLocName.toString());
+                    updateLocSummaries();
+                    return true;
+                }
+            }
+        });
+
+        latEditText1.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newLat) {
+                try {
+                    double latCheck = Double.parseDouble(newLat.toString());
+                } catch (NumberFormatException nfe) {
+                    return false;
+                }
+                double lat = Double.parseDouble(newLat.toString());
+                if (lat > -90 && lat < 90) {
+                    latEditText1.setSummary(newLat.toString());
+                    return true;
+                } else {
+                    Toast.makeText(getActivity(), "Invalid Latitude", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            }
+        });
+
+        longEditText1.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newLong) {
+                try {
+                    double longCheck = Double.parseDouble(newLong.toString());
+                } catch (NumberFormatException nfe) {
+                    return false;
+                }
+                double lon = Double.parseDouble(newLong.toString());
+                if (lon >= -180 && lon <= 180) {
+                    longEditText1.setSummary(newLong.toString());
+                    return true;
+                } else {
+                    Toast.makeText(getActivity(), "Invalid Longitude", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            }
+        });
+
+        // Location 2 OnPreferenceChangeListeners
+        locationEditText2.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newLocName) {
+                String newLoc = newLocName.toString();
+                if (newLoc.trim().length() == 0) {newLoc = "";}  // blank or all spaces
+                if (("").equals(newLoc) && viewingLocation.getValue() == "2") {
+                    Toast.makeText(getActivity(), "Cannot null current viewing location", Toast.LENGTH_LONG).show();
+                    return false;}
+                locationEditText2.setText(newLoc);
+                updateLocSummaries();
+                return true;
+            }
+        });
+
+        latEditText2.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newLat) {
+                try {
+                    double latCheck = Double.parseDouble(newLat.toString());
+                } catch (NumberFormatException nfe) {
+                    return false;
+                }
+                double lat = Double.parseDouble(newLat.toString());
+                if (lat > -90 && lat < 90) {
+                    latEditText2.setSummary(newLat.toString());
+                    return true;
+                } else {
+                    Toast.makeText(getActivity(), "Invalid Latitude", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            }
+        });
+
+        longEditText2.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newLong) {
+                try {
+                    double longCheck = Double.parseDouble(newLong.toString());
+                } catch (NumberFormatException nfe) {
+                    return false;
+                }
+                double lon = Double.parseDouble(newLong.toString());
+                if (lon >= -180 && lon <= 180) {
+                    longEditText2.setSummary(newLong.toString());
+                    return true;
+                } else {
+                    Toast.makeText(getActivity(), "Invalid Longitude", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            }
+        });
+
+        // Location 3 OnPreferenceChangeListeners
+        locationEditText3.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newLocName) {
+                String newLoc = newLocName.toString();
+                if (newLoc.trim().length() == 0) {newLoc = "";}  // blank or all spaces
+                if (("").equals(newLoc) && viewingLocation.getValue() == "3") {
+                    Toast.makeText(getActivity(), "Cannot null current viewing location", Toast.LENGTH_LONG).show();
+                    return false;}
+                locationEditText3.setText(newLoc);
+                updateLocSummaries();
+                return true;
+            }
+        });
+
+        latEditText3.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newLat) {
+                try {
+                    double latCheck = Double.parseDouble(newLat.toString());
+                } catch (NumberFormatException nfe) {
+                    return false;
+                }
+                double lat = Double.parseDouble(newLat.toString());
+                if (lat > -90 && lat < 90) {
+                    latEditText3.setSummary(newLat.toString());
+                    return true;
+                } else {
+                    Toast.makeText(getActivity(), "Invalid Latitude", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            }
+        });
+
+        longEditText3.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newLong) {
+                try {
+                    double longCheck = Double.parseDouble(newLong.toString());
+                } catch (NumberFormatException nfe) {
+                    return false;
+                }
+                double lon = Double.parseDouble(newLong.toString());
+                if (lon >= -180 && lon <= 180) {
+                    longEditText3.setSummary(newLong.toString());
+                    return true;
+                } else {
+                    Toast.makeText(getActivity(), "Invalid Longitude", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            }
+        });
+
+        // Location 4 OnPreferenceChangeListeners
+        locationEditText4.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newLocName) {
+                String newLoc = newLocName.toString();
+                if (newLoc.trim().length() == 0) {newLoc = "";}  // blank or all spaces
+                if (("").equals(newLoc) && viewingLocation.getValue() == "4") {
+                    Toast.makeText(getActivity(), "Cannot null current viewing location", Toast.LENGTH_LONG).show();
+                    return false;}
+                locationEditText4.setText(newLoc);
+                updateLocSummaries();
+                return true;
+            }
+        });
+
+        latEditText4.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newLat) {
+                try {
+                    double latCheck = Double.parseDouble(newLat.toString());
+                } catch (NumberFormatException nfe) {
+                    return false;
+                }
+                double lat = Double.parseDouble(newLat.toString());
+                if (lat > -90 && lat < 90) {
+                    latEditText4.setSummary(newLat.toString());
+                    return true;
+                } else {
+                    Toast.makeText(getActivity(), "Invalid Latitude", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            }
+        });
+
+        longEditText4.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newLong) {
+                try {
+                    double longCheck = Double.parseDouble(newLong.toString());
+                } catch (NumberFormatException nfe) {
+                    return false;
+                }
+                double lon = Double.parseDouble(newLong.toString());
+                if (lon >= -180 && lon <= 180) {
+                    longEditText4.setSummary(newLong.toString());
+                    return true;
+                } else {
+                    Toast.makeText(getActivity(), "Invalid Longitude", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            }
+        });
+
+        // Location 5 OnPreferenceChangeListeners
+        locationEditText5.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newLocName) {
+                String newLoc = newLocName.toString();
+                if (newLoc.trim().length() == 0) {newLoc = "";}  // blank or all spaces
+                if (("").equals(newLoc) && viewingLocation.getValue() == "5") {
+                    Toast.makeText(getActivity(), "Cannot null current viewing location", Toast.LENGTH_LONG).show();
+                    return false;}
+                locationEditText5.setText(newLoc);
+                updateLocSummaries();
+                return true;
+            }
+        });
+
+        latEditText5.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newLat) {
+                try {
+                    double latCheck = Double.parseDouble(newLat.toString());
+                } catch (NumberFormatException nfe) {
+                    return false;
+                }
+                double lat = Double.parseDouble(newLat.toString());
+                if (lat > -90 && lat < 90) {
+                    latEditText5.setSummary(newLat.toString());
+                    return true;
+                } else {
+                    Toast.makeText(getActivity(), "Invalid Latitude", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            }
+        });
+
+        longEditText5.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newLong) {
+                try {
+                    double longCheck = Double.parseDouble(newLong.toString());
+                } catch (NumberFormatException nfe) {
+                    return false;
+                }
+                double lon = Double.parseDouble(newLong.toString());
+                if (lon >= -180 && lon <= 180) {
+                    longEditText5.setSummary(newLong.toString());
+                    return true;
+                } else {
+                    Toast.makeText(getActivity(), "Invalid Longitude", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            }
+        });
+    }
+
 }

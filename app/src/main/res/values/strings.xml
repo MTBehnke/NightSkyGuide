@@ -40,6 +40,7 @@
     <string name="label_set">Set Time:</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_app_info">AppInfoActivity</string>
+    <string name="title_activity_location">LocationActivity</string>
     <string name="default_latitude">44.1971</string>
     <string name="default_longitude">-92.8623</string>
     <string name="hint_date">Date</string>
@@ -53,4 +54,17 @@
     <string name="hint_notes">Observation Notes</string>
     <string name="pref_show_observed">Display previously observed</string>
     <string name="pref_display_below_horizon">Display objects below horizon</string>
+    <string name="loc_current_title">VIEWING LOCATION:</string>
+    <string name="loc_current_lat_title">Latitude</string>
+    <string name="loc_current_long_title">Longitude</string>
+    <string name="loc_current_lat_label">Latitude (dd.dddd):</string>
+    <string name="loc_current_long_label">Longitude +E/-W (dd.dddd):</string>
+    <string name="menuitem_settings">Settings</string>
+    <string name="location_default">Home</string>
+    <string name="location_null"></string>
+    <string name="pref_loc_title">Location</string>
+    <string name="pref_loc_label_req">Location (required)</string>
+    <string name="pref_loc_label">Location (blank for null)</string>
+    <string name="pref_checkbox">pref_checkbox</string>
+
 </resources>

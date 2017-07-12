@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_sort_by_items">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="pref_sort_by">
+        <item>Altitude</item>
+        <item>Object ID</item>
+        <item>Constellation</item>
+    </string-array>
+
+    <string name="pref_sort_by_list">Sort List of Objects by:</string>
+
+    <string-array name="constellation_abbr">
+        <item>ALL</item>
+        <item>AND</item>
+        <item>AQR</item>
+        <item>AUR</item>
+        <item>CNC</item>
+        <item>CMA</item>
+        <item>CVN</item>
+        <item>CAP</item>
+        <item>CAS</item>
+        <item>CET</item>
+        <item>COM</item>
+        <item>CYG</item>
+        <item>DRA</item>
+        <item>GEM</item>
+        <item>HER</item>
+        <item>HYA</item>
+        <item>LEO</item>
+        <item>LEP</item>
+        <item>LYR</item>
+        <item>MON</item>
+        <item>OPH</item>
+        <item>ORI</item>
+        <item>PEG</item>
+        <item>PER</item>
+        <item>PSC</item>
+        <item>PUP</item>
+        <item>SCO</item>
+        <item>SCT</item>
+        <item>SER</item>
+        <item>SGE</item>
+        <item>SGR</item>
+        <item>TAU</item>
+        <item>TRI</item>
+        <item>UMA</item>
+        <item>VIR</item>
+        <item>VUL</item>
+    </string-array>
+
+    <string-array name="constellation_default">All</string-array>
+
+    <string-array name="constellation_name">
+        <item>All</item>
+        <item>Andromeda</item>
+        <item>Aquarius</item>
+        <item>Auriga</item>
+        <item>Cancer</item>
+        <item>Canis Major</item>
+        <item>Canes Venatici</item>
+        <item>Capricornus</item>
+        <item>Cassiopeia</item>
+        <item>Cetus</item>
+        <item>Coma Berenices</item>
+        <item>Cygnus</item>
+        <item>Draco</item>
+        <item>Gemini</item>
+        <item>Hercules</item>
+        <item>Hydra</item>
+        <item>Leo</item>
+        <item>Lepus</item>
+        <item>Lyra</item>
+        <item>Monoceros</item>
+        <item>Ophiuchus</item>
+        <item>Orion</item>
+        <item>Pegasus</item>
+        <item>Perseus</item>
+        <item>Pisces</item>
+        <item>Puppis</item>
+        <item>Scorpius</item>
+        <item>Scutum</item>
+        <item>Serpens</item>
+        <item>Sagitta</item>
+        <item>Sagittarius</item>
+        <item>Taurus</item>
+        <item>Triangulum</item>
+        <item>Ursa Major</item>
+        <item>Virgo</item>
+        <item>Vulpecula</item>
+    </string-array>
+
+    <string name="pref_list_display_const">Display constellations</string>
+
+</resources>
