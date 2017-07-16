@@ -8,7 +8,7 @@ package com.mikesrv9a.nightskyguide;
 // Additional info at https://en.wikipedia.org/wiki/Sidereal_time
 // Additional info at http://www.stargazing.net/kepler/altaz.html
 
-import org.joda.time.DateTime;
+
 
 public class AstroCalc {
 
@@ -139,12 +139,9 @@ public class AstroCalc {
         if (dd < 0) {latNS = "S";} else {latNS = "N";}
         dd = Math.abs(dd);
         int deg = (int) dd;
-        int min = (int) ((dd-deg)*60.0);
-        long sec =  Math.round ((dd-deg-(min/60.0))*3600);
-        if(sec == 60) {sec = 0; min++;if (min == 60) {min = 0; deg ++;
-            if (deg == 360) {deg = 0;}}}
-        return latNS + deg + "° " + String.format("%02d",Math.abs(min)) + "' " +
-                String.format("%02d",Math.abs(sec)) + "\"";
+        long min =  Math.round ((dd-deg)*60);
+        if(min == 60) {min = 0; deg++;}
+        return latNS + deg + "° " + String.format("%02d",Math.abs(min)) + "'";
     }
 
     // convert degrees from double format to dms string format
@@ -153,12 +150,9 @@ public class AstroCalc {
         if (dd < 0) {longEW = "W";} else {longEW = "E";}
         dd = Math.abs(dd);
         int deg = (int) dd;
-        int min = (int) ((dd-deg)*60.0);
-        long sec =  Math.round ((dd-deg-(min/60.0))*3600);
-        if(sec == 60) {sec = 0; min++;if (min == 60) {min = 0; deg ++;
-            if (deg == 360) {deg = 0;}}}
-        return longEW + deg + "° " + String.format("%02d",Math.abs(min)) + "' " +
-                String.format("%02d",Math.abs(sec)) + "\"";
+        long min =  Math.round ((dd-deg)*60);
+        if(min == 60) {min = 0; deg++;}
+        return longEW + deg + "° " + String.format("%02d",Math.abs(min)) + "'";
     }
 
 }

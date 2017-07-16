@@ -66,5 +66,9 @@
     <string name="pref_loc_label_req">Location (required)</string>
     <string name="pref_loc_label">Location (blank for null)</string>
     <string name="pref_checkbox">pref_checkbox</string>
+    <string name="title_activity_observations">Observation Log</string>
+    <string name="hint_time">Time</string>
+    <string name="label_date">Date:</string>
+    <string name="label_location">Location:</string>
 
 </resources>

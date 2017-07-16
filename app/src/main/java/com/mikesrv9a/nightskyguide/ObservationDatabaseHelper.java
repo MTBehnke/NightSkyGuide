@@ -2,7 +2,6 @@
 
 package com.mikesrv9a.nightskyguide;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -37,6 +36,30 @@ public class ObservationDatabaseHelper extends SQLiteOpenHelper{
         ObsTable.Cols.Notes + ")"
         );
         Log.d(String.valueOf(obsDatabase), "onActivityCreated: ");
+    }
+
+    public Cursor getObservations() {
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+        String [] sqlSelect = {
+                "_id",
+                ObsTable.Cols.DsoID,
+                ObsTable.Cols.ObsDate,
+                ObsTable.Cols.Location,
+                ObsTable.Cols.Seeing,
+                ObsTable.Cols.Transparency,
+                ObsTable.Cols.Telescope,
+                ObsTable.Cols.Eyepiece,
+                ObsTable.Cols.Power,
+                ObsTable.Cols.Filter,
+                ObsTable.Cols.Notes
+        };
+
+        qb.setTables(ObsTable.NAME);
+        Cursor c = qb.query(db, sqlSelect, null, null, null, null, null);
+        c.moveToFirst();
+        return c;
     }
 
     @Override

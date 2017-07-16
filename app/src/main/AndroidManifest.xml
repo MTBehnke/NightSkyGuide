@@ -27,8 +27,8 @@
                 android:value="com.mikesrv9a.nightskyguide.MainActivity" />
         </activity>
         <activity
-            android:name=".LocationActivity"
-            android:label="@string/title_activity_location"
+            android:name=".ObservationsActivity"
+            android:label="@string/title_activity_observations"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

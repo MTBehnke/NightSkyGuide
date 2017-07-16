@@ -1,12 +1,7 @@
 package com.mikesrv9a.nightskyguide;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.icu.text.SimpleDateFormat;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.preference.PreferenceManager;
-import android.renderscript.Double2;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;

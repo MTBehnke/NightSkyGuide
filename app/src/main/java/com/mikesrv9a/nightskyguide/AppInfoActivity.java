@@ -2,11 +2,8 @@ package com.mikesrv9a.nightskyguide;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.TextView;
 
 public class AppInfoActivity extends AppCompatActivity {
@@ -31,7 +28,7 @@ public class AppInfoActivity extends AppCompatActivity {
 
         switch (appInfoKey) {
             case 1:
-                infoText = "Messier Field Guide v0.1.11.0 (beta)\n" +
+                infoText = "Messier Field Guide v0.1.12.0 (beta)\n" +
                         "Copyright Shiny Objects LLC 2017\n\n" +
                         "The main page displays each of the 110 Messier Object's, including:\n" +
                         "∙ DSO ID (with √ if previously observed)\n∙ Common Name\n" +

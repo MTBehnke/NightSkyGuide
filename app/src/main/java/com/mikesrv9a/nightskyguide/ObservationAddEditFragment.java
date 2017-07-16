@@ -1,5 +1,9 @@
 package com.mikesrv9a.nightskyguide;
 
+import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -8,8 +12,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,18 +24,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.Date;
 
-public class ObservationAddEditFragment extends Fragment {
+import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+
+public class ObservationAddEditFragment extends Fragment  {
 
     private DSObject dsObject;  // dsObject to display
     SQLiteDatabase observationDB;
-    String dsoId;
 
     public interface SaveCompletedListener {
         // called when save FAB is clicked
@@ -40,7 +55,10 @@ public class ObservationAddEditFragment extends Fragment {
 
     private TextView objectIdTextView;  // displays dsObject's ID
     private TextView nameTextView; // displays dsObject's Common Name
-    private TextInputLayout dateTextInputLayout; // input for date/time
+    private TextInputLayout dateTextInputLayout; // input for date
+    private TextInputEditText dateEditText;  // actual edit text portion of inputlayout
+    private TextInputLayout timeTextInputLayout; // input for time
+    private TextInputEditText timeEditText;  // actual edit text portion of inputlayout
     private TextInputLayout locationTextInputLayout; // input for location
     private TextInputLayout seeingTextInputLayout; // input for seeing conditions
     private TextInputLayout transparencyTextInputLayout; // input for transparency conditions
@@ -53,12 +71,18 @@ public class ObservationAddEditFragment extends Fragment {
     private FloatingActionButton saveObservationFAB; // save observation record FAB
     SharedPreferences preferences;
     DecimalFormat df = new DecimalFormat("#.0000");
+    DateTime calendar;
+    DateTime newDate;
+    LocalTime newTime;
+    DateTimeFormatter dateFormat = DateTimeFormat.forPattern("M/d/yy");
+    DateTimeFormatter timeFormat = DateTimeFormat.forPattern("h:mm a");
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)  {
+            LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState)  {
         super.onCreateView(inflater, container, savedInstanceState);
         setHasOptionsMenu(true);
+
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         // get Bundle of arguments then extract the dsObject
@@ -70,6 +94,9 @@ public class ObservationAddEditFragment extends Fragment {
         objectIdTextView = (TextView) view.findViewById(R.id.objectIdTextView);
         nameTextView = (TextView) view.findViewById(R.id.nameTextView);
         dateTextInputLayout = (TextInputLayout) view.findViewById(R.id.dateTextInputLayout);
+        dateEditText = (TextInputEditText) view.findViewById(R.id.editDateText);
+        timeTextInputLayout = (TextInputLayout) view.findViewById(R.id.timeTextInputLayout);
+        timeEditText = (TextInputEditText) view.findViewById(R.id.editTimeText);
         locationTextInputLayout = (TextInputLayout) view.findViewById(R.id.locationTextInputLayout);
         seeingTextInputLayout = (TextInputLayout) view.findViewById(R.id.seeingTextInputLayout);
         transparencyTextInputLayout = (TextInputLayout) view.findViewById(R.id.transparencyTextInputLayout);
@@ -80,10 +107,13 @@ public class ObservationAddEditFragment extends Fragment {
         notesTextInputLayout = (TextInputLayout) view.findViewById(R.id.notesTextInputLayout);
 
         // set initial values of text entry fields
+        calendar = new DateTime();
         objectIdTextView.setText(dsObject.getDsoObjectID());
         nameTextView.setText(dsObject.getDsoName());
-        String currentDateTime = DateFormat.getInstance().format(new Date());
-        dateTextInputLayout.getEditText().setText(currentDateTime);
+        String currentDate = calendar.toString(dateFormat);
+        dateTextInputLayout.getEditText().setText(currentDate);
+        String currentTime = calendar.toString(timeFormat);
+        timeTextInputLayout.getEditText().setText(currentTime);
         String location = getLocation();
         locationTextInputLayout.getEditText().setText(location);
         String seeing = preferences.getString("last_seeing", "");
@@ -105,6 +135,9 @@ public class ObservationAddEditFragment extends Fragment {
         saveObservationFAB.setOnClickListener(saveFABClicked);
         saveObservationFAB.show();
 
+        dateEditText.setOnClickListener(dateClicked);
+        timeEditText.setOnClickListener(timeClicked);
+
         return view;
     }
 
@@ -119,13 +152,50 @@ public class ObservationAddEditFragment extends Fragment {
         }
     };
 
+    private final View.OnClickListener dateClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            DatePickerDialog datePicker = new DatePickerDialog(getContext(), dateListener, calendar.getYear(), calendar.getMonthOfYear(), calendar.getDayOfMonth());
+            datePicker.show();
+        };
+    };
+
+    // set date and time onfocuschange listeners
+    final OnDateSetListener dateListener = new OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker dateListener, int y, int m, int d) {
+            newDate = new DateTime().withDate(y, m, d);
+            String currentDate = newDate.toString(dateFormat);
+            dateTextInputLayout.getEditText().setText(currentDate);
+        }
+    };
+
+    private final View.OnClickListener timeClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            TimePickerDialog timePicker = new TimePickerDialog(getContext(), android.R.style.Theme_Holo_Dialog, timeListener, calendar.getHourOfDay(), calendar.getMinuteOfHour(), false);
+            timePicker.show();
+        };
+    };
+
+    // set date and time onfocuschange listeners
+    final TimePickerDialog.OnTimeSetListener timeListener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker timeListener, int h, int m) {
+            newTime = new LocalTime(h, m);
+            String currentTime = newTime.toString(timeFormat);
+            timeTextInputLayout.getEditText().setText(currentTime);
+        }
+    };
+
     // temp code to add entries into observation database
     public void addObservation() {
+        String saveDate = dateTextInputLayout.getEditText().getText().toString() + " " + timeTextInputLayout.getEditText().getText().toString();
         Context context = getActivity();
         observationDB = new ObservationDatabaseHelper(context).getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(ObserveRecordsSchema.ObsTable.Cols.DsoID, dsObject.getDsoObjectID());
-        values.put(ObserveRecordsSchema.ObsTable.Cols.ObsDate, dateTextInputLayout.getEditText().getText().toString());
+        values.put(ObserveRecordsSchema.ObsTable.Cols.ObsDate, saveDate);
         values.put(ObserveRecordsSchema.ObsTable.Cols.Location, locationTextInputLayout.getEditText().getText().toString());
         values.put(ObserveRecordsSchema.ObsTable.Cols.Seeing, seeingTextInputLayout.getEditText().getText().toString());
         values.put(ObserveRecordsSchema.ObsTable.Cols.Transparency, transparencyTextInputLayout.getEditText().getText().toString());
@@ -209,17 +279,10 @@ public class ObservationAddEditFragment extends Fragment {
                 info.putExtra("appInfoKey", 3);
                 startActivity(info);
                 return true;
-            /*case R.id.location_edit:
-                Intent loc = new Intent(getActivity(), LocationActivity.class);
-                startActivity(loc);
-                return true;
-            case R.id.settings_edit:
-                Intent settings = new Intent(getActivity(), SettingsActivity.class);
-                startActivity(settings);
-                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
 }

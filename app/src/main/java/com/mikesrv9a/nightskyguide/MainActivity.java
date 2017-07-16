@@ -8,7 +8,6 @@ import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.preference.PreferenceManager;
@@ -70,7 +69,6 @@ public class MainActivity extends AppCompatActivity
         // start location services, including permissions checks, etc.
         context = this;
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        //mRequestingLocationUpdates = true;
         useGPS = preferences.getBoolean("use_device_location", false);
         locUpdates = false;
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);

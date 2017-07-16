@@ -251,10 +251,10 @@ public class DSObjectsFragment extends Fragment {
                 info.putExtra("appInfoKey", 1);
                 startActivity(info);
                 return true;
-            /*case R.id.location_edit:
-                Intent loc = new Intent(getActivity(), LocationActivity.class);
-                startActivity(loc);
-                return true;*/
+            case R.id.observations_fragment:
+                Intent obs = new Intent(getActivity(), ObservationsActivity.class);
+                startActivity(obs);
+                return true;
             case R.id.settings_edit:
                 Intent settings = new Intent(getActivity(), SettingsActivity.class);
                 startActivity(settings);
@@ -268,7 +268,6 @@ public class DSObjectsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //Toast.makeText(getContext(), "OnResume", Toast.LENGTH_LONG).show();
         setUserPreferences();
         updateArrayList();
         handler.postDelayed(updateAltAz, 60000);

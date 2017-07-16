@@ -11,10 +11,10 @@
         android:title="@string/menuitem_settings"
         app:showAsAction="ifRoom" />
 
-    <!--<item
-        android:id="@+id/location_edit"
+    <item
+        android:id="@+id/observations_fragment"
         android:enabled="true"
-        android:icon="@android:drawable/ic_menu_mylocation"
+        android:icon="@drawable/ic_storage_black_24dp"
         android:orderInCategory="1"
         android:title="@string/menuitem_location"
         app:showAsAction="ifRoom" />-->
