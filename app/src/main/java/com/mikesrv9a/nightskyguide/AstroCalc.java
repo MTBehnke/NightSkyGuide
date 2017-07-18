@@ -141,7 +141,7 @@ public class AstroCalc {
         int deg = (int) dd;
         long min =  Math.round ((dd-deg)*60);
         if(min == 60) {min = 0; deg++;}
-        return latNS + deg + "° " + String.format("%02d",Math.abs(min)) + "'";
+        return latNS + deg + "\u00B0 " + String.format("%02d",Math.abs(min)) + "'";
     }
 
     // convert degrees from double format to dms string format
@@ -152,7 +152,7 @@ public class AstroCalc {
         int deg = (int) dd;
         long min =  Math.round ((dd-deg)*60);
         if(min == 60) {min = 0; deg++;}
-        return longEW + deg + "° " + String.format("%02d",Math.abs(min)) + "'";
+        return longEW + deg + "\u00B0 " + String.format("%02d",Math.abs(min)) + "'";
     }
 
 }

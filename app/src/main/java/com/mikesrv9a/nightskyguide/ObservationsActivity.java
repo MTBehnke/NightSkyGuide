@@ -1,14 +1,25 @@
 package com.mikesrv9a.nightskyguide;
 
 
+import android.Manifest;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
+
+import java.util.List;
 
 public class ObservationsActivity extends AppCompatActivity implements ObservationsFragment.ObservationsFragmentListener {
 
     private ObservationsFragment observationsFragment; // displays dsObject list
+    final int REQUEST_STORAGE = 3;
 
 
     // display ObservationsFragment when MainActivity first loads
@@ -54,5 +65,18 @@ public class ObservationsActivity extends AppCompatActivity implements Observati
         transaction.addToBackStack(null);
         transaction.commit();  // causes DetailFragment to display
     }
+
+    /*
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        //Toast.makeText(this, "Result", Toast.LENGTH_LONG);
+        if (fragments != null) {
+            for (Fragment fragment : fragments) {
+                fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            }
+        }
+    } */
 
 }

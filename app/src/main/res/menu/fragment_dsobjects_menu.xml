@@ -14,17 +14,25 @@
     <item
         android:id="@+id/observations_fragment"
         android:enabled="true"
-        android:icon="@drawable/ic_storage_black_24dp"
-        android:orderInCategory="1"
-        android:title="@string/menuitem_location"
-        app:showAsAction="ifRoom" />-->
+        android:icon="@drawable/ic_logbook"
+        android:orderInCategory="2"
+        android:title="@string/menuitem_logbook"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/app_info"
         android:enabled="true"
         android:icon="@android:drawable/ic_menu_info_details"
-        android:orderInCategory="2"
+        android:orderInCategory="3"
         android:title="@string/menuitem_info"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/app_credits"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:orderInCategory="4"
+        android:title="@string/menuitem_credits"
+        app:showAsAction="never" />
 
 </menu>

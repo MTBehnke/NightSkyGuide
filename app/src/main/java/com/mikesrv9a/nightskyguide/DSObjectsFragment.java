@@ -180,7 +180,6 @@ public class DSObjectsFragment extends Fragment {
             while (!observations.isAfterLast()) {
                 String dsoObs = observations.getString(dsoIDCol);
                 observedList.add(dsoObs);
-                //Log.d(String.valueOf(context),"dsoObs Value: " + dsoObs);
                 observations.moveToNext();
             }
         }
@@ -258,6 +257,11 @@ public class DSObjectsFragment extends Fragment {
             case R.id.settings_edit:
                 Intent settings = new Intent(getActivity(), SettingsActivity.class);
                 startActivity(settings);
+                return true;
+            case R.id.app_credits:
+                Intent credits = new Intent(getActivity(), AppInfoActivity.class);
+                credits.putExtra("appInfoKey", 4);
+                startActivity(credits);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

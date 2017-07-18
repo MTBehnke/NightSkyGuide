@@ -70,5 +70,9 @@
     <string name="hint_time">Time</string>
     <string name="label_date">Date:</string>
     <string name="label_location">Location:</string>
+    <string name="menuitem_logbook">Logbook</string>
+    <string name="export_csv">Export Log to CSV</string>
+    <string name="hint_objectID">Object ID</string>
+    <string name="menuitem_credits">Credits</string>
 
 </resources>

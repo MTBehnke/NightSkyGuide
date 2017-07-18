@@ -28,8 +28,8 @@ public class AppInfoActivity extends AppCompatActivity {
 
         switch (appInfoKey) {
             case 1:
-                infoText = "Messier Field Guide v0.1.12.0 (beta)\n" +
-                        "Copyright Shiny Objects LLC 2017\n\n" +
+                infoText = "Messier Field Guide v0.1.13.0 (beta)\n" +
+                        "Copyright 2017 Shiny Objects LLC\n\n" +
                         "The main page displays each of the 110 Messier Object's, including:\n" +
                         "∙ DSO ID (with √ if previously observed)\n∙ Common Name\n" +
                         "∙ Constellation\n∙ DSO Type\n" +
@@ -58,11 +58,7 @@ public class AppInfoActivity extends AppCompatActivity {
                         "OITH refers to Objects in the Heavens ed.5.2 by Peter Birren\n\n" +
                         "Clicking on the + icon will allow you to create a record of your observations, including " +
                         "information generally required for various observing programs, such as those sponsored " +
-                        "by the Astronomical League.\n\n" +
-                        "The constellation charts are from the International Astronomical " +
-                        "Union and Sky & Telescope Magazine and are released under the Creative" +
-                        "Commons Attribution 3.0 Unported License and have been modified to have " +
-                        "a dark background and to include all 110 Messier objects.";
+                        "by the Astronomical League.\n\n";
                 break;
             case 3:
                 infoText = "Entering observation information is at your discretion, however if you using this " +
@@ -74,6 +70,23 @@ public class AppInfoActivity extends AppCompatActivity {
                         "The date, time and observing location will automatically be filled out.\n\n" +
                         "Aside from the observation notes field at the bottom, all other fields will automatically be filled out " +
                         "to match the entries from your last saved record.";
+
+            case 4:
+                infoText = "The Messier Field Guide is copyright 2017 Shiny Objects, LLC\n\n\n" +
+                        "Attributions:\n\n " +
+                        "The constellation charts are from the International Astronomical " +
+                        "Union and Sky & Telescope Magazine and are released under the Creative " +
+                        "Commons Attribution 3.0 Unported License and have been modified to have " +
+                        "a dark background and to include all 110 Messier objects.  A copy of this license " +
+                        "is available at https://creativecommons.org/licenses/by/3.0/\n\n\n" +
+                        "This application includes the following open source software:\n\n" +
+                        "opencv v.3.10\nLicensed under the Apache License version 2.0.\n\n" +
+                        "Joda-Time v2.3\nLicensed under the Apache License version 2.0.\n\n" +
+                        "The Apache License version 2.0 is an open source software license released " +
+                        "by the Apache Software Foundation.  A copy of this license is available at " +
+                        "http://www.apache.org/licenses/LICENSE-2.0\n\n\n" +
+                        "Note: the Messier Field Guide is not currently copyrighted as open source.";
+
         }
 
         appInfo.setText(infoText);
