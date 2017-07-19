@@ -65,4 +65,9 @@ public class ObservationDatabaseHelper extends SQLiteOpenHelper{
     @Override
     public void onUpgrade(SQLiteDatabase obsDatabase, int oldVersion, int newVersion) {}
 
+    public void deleteObservation(int recordId) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(ObsTable.NAME,"_id=" + recordId, null);
+    }
+
 }

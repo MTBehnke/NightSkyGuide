@@ -2,9 +2,15 @@
 
 package com.mikesrv9a.nightskyguide;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -25,13 +31,26 @@ public class ObservationDetailFragment extends Fragment {
     private TextView filterTextView;
     private TextView notesTextView;
 
+    public interface DeleteCompletedListener {
+        // called when save FAB is clicked
+        void onObservationDeleted();
+    }
+
+    public interface EditObservationListener {
+        // called when edit menu icon is clicked
+        void editObservationButtonClicked(Observation observation);
+    }
+
+    DeleteCompletedListener deleteCompletedListener;
+    EditObservationListener editObservationListener;
+
     // called when DetailFragment's view needs to be created
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        setHasOptionsMenu(false);  // this fragment has no menu items to display
+        setHasOptionsMenu(true);  // this fragment has no menu items to display
 
         // get Bundle of arguments then extract the observation
         Bundle arguments = getArguments();
@@ -68,6 +87,69 @@ public class ObservationDetailFragment extends Fragment {
         notesTextView.setText(observation.getObsNotes());
 
         return view;
+    }
+
+    // set AddEditFABListener when fragment attached
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        deleteCompletedListener = (DeleteCompletedListener) context;
+        editObservationListener = (EditObservationListener) context;
+    }
+
+    // remove AddEditFABListener when fragment detached
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        deleteCompletedListener = null;
+        editObservationListener = null;
+    }
+
+    // display this fragment's menu items
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_observ_detail_menu, menu);
+    }
+
+    // display selected menu item
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.edit_observation:
+                editObservationListener.editObservationButtonClicked(observation);
+                return true;
+            case R.id.delete_observation:
+                displayAlertDialog("Permanently delete this observation?");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void displayAlertDialog(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(message);
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                deleteObsRecord();
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void deleteObsRecord() {
+        Integer recordId = observation.getObsDBid();
+        ObservationDatabaseHelper observationDatabaseHelper = new ObservationDatabaseHelper(getContext());
+        observationDatabaseHelper.deleteObservation(recordId);
+        deleteCompletedListener.onObservationDeleted();
     }
 
 }

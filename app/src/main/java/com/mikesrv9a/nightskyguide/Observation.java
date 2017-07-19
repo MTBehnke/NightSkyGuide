@@ -1,11 +1,11 @@
 package com.mikesrv9a.nightskyguide;
 
-import android.bluetooth.le.ScanRecord;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 class Observation implements Parcelable {
 
+    Integer obsDBid;
     String obsDsoID;
     String obsDate;
     String obsLocation;
@@ -18,8 +18,9 @@ class Observation implements Parcelable {
     String obsNotes;
 
     // constructor
-    Observation (String id, String date, String location, String seeing, String transparency, String telescope,
+    Observation (Integer dbID, String id, String date, String location, String seeing, String transparency, String telescope,
                  String eyepiece, String power, String filter, String notes) {
+        obsDBid = dbID;
         obsDsoID = id;
         obsDate = date;
         obsLocation = location;
@@ -33,6 +34,7 @@ class Observation implements Parcelable {
     }
 
     // getter methods
+    Integer getObsDBid() {return obsDBid;}
     String getObsDsoID() {return obsDsoID;}
     String getObsDate() {return obsDate;}
     String getObsLocation() {return obsLocation;}
@@ -52,6 +54,7 @@ class Observation implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(obsDBid);
         parcel.writeString(obsDsoID);
         parcel.writeString(obsDate);
         parcel.writeString(obsLocation);
@@ -66,6 +69,7 @@ class Observation implements Parcelable {
 
     // required method, not used
     private Observation(Parcel in) {
+        obsDBid = in.readInt();
         obsDsoID = in.readString();
         obsDate = in.readString();
         obsLocation = in.readString();

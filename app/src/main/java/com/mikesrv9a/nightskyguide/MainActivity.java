@@ -35,7 +35,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 public class MainActivity extends AppCompatActivity
-    implements DSObjectsFragment.DSObjectsFragmentListener, DetailFragment.AddEditFABListener, ObservationAddEditFragment.SaveCompletedListener {
+    implements DSObjectsFragment.DSObjectsFragmentListener, DetailFragment.AddEditFABListener, ObservationAddFragment.SaveCompletedListener {
 
     private DSObjectsFragment dsObjectsFragment; // displays dsObject list
 
@@ -130,14 +130,14 @@ public class MainActivity extends AppCompatActivity
         transaction.commit();  // causes DetailFragment to display
     }
 
-    // display ObservationAddEditFragment for selected dsObject
+    // display ObservationAddFragment for selected dsObject
     public void addObservationButtonClicked(DSObject dsObjectSelected) {
         displayObservAddEdit(dsObjectSelected, R.id.fragmentContainer);
     }
 
     // display addedit fragment
     private void displayObservAddEdit(DSObject dsObjectSelected, int viewID) {
-        ObservationAddEditFragment observationFragment = new ObservationAddEditFragment();
+        ObservationAddFragment observationFragment = new ObservationAddFragment();
 
         // specify dsObject as an argument to the addedit Fragment
         Bundle arguments = new Bundle();

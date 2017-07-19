@@ -152,37 +152,7 @@ public class DSObjectsFragment extends Fragment {
         context = getActivity();
 
         // Get Observation data from database
-        observationDB = new ObservationDatabaseHelper(context).getWritableDatabase();
-
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        String[] sqlSelect = {
-                " _id",
-                ObserveRecordsSchema.ObsTable.Cols.DsoID,
-                ObserveRecordsSchema.ObsTable.Cols.ObsDate,
-                ObserveRecordsSchema.ObsTable.Cols.Location,
-                ObserveRecordsSchema.ObsTable.Cols.Seeing,
-                ObserveRecordsSchema.ObsTable.Cols.Transparency,
-                ObserveRecordsSchema.ObsTable.Cols.Telescope,
-                ObserveRecordsSchema.ObsTable.Cols.Eyepiece,
-                ObserveRecordsSchema.ObsTable.Cols.Power,
-                ObserveRecordsSchema.ObsTable.Cols.Filter,
-                ObserveRecordsSchema.ObsTable.Cols.Notes,
-        };
-        String sqlTables = ObserveRecordsSchema.ObsTable.NAME;
-        qb.setTables(sqlTables);
-        observations = qb.query(observationDB, sqlSelect, null, null, null, null, null);
-        observations.moveToFirst();   // cursor with observations
-
-        // create ObservationsAL arraylist
-        if (observations != null && observations.getCount() > 0) {
-            observations.moveToFirst();
-            int dsoIDCol = observations.getColumnIndex("dsoid");
-            while (!observations.isAfterLast()) {
-                String dsoObs = observations.getString(dsoIDCol);
-                observedList.add(dsoObs);
-                observations.moveToNext();
-            }
-        }
+        getObservationData();
 
         // Get DSObject data from database
         dsObjectsDB = new DSObjectDatabaseHelper(context);
@@ -273,6 +243,8 @@ public class DSObjectsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         setUserPreferences();
+        getObservationData();
+        updateObservationInfo();
         updateArrayList();
         handler.postDelayed(updateAltAz, 60000);
     }
@@ -338,4 +310,49 @@ public class DSObjectsFragment extends Fragment {
         }
         clickAdapter.notifyDataSetChanged();
     }
+
+    public void getObservationData() {
+        observationDB = new ObservationDatabaseHelper(context).getWritableDatabase();
+
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        String[] sqlSelect = {
+                " _id",
+                ObserveRecordsSchema.ObsTable.Cols.DsoID,
+                ObserveRecordsSchema.ObsTable.Cols.ObsDate,
+                ObserveRecordsSchema.ObsTable.Cols.Location,
+                ObserveRecordsSchema.ObsTable.Cols.Seeing,
+                ObserveRecordsSchema.ObsTable.Cols.Transparency,
+                ObserveRecordsSchema.ObsTable.Cols.Telescope,
+                ObserveRecordsSchema.ObsTable.Cols.Eyepiece,
+                ObserveRecordsSchema.ObsTable.Cols.Power,
+                ObserveRecordsSchema.ObsTable.Cols.Filter,
+                ObserveRecordsSchema.ObsTable.Cols.Notes,
+        };
+        String sqlTables = ObserveRecordsSchema.ObsTable.NAME;
+        qb.setTables(sqlTables);
+        observations = qb.query(observationDB, sqlSelect, null, null, null, null, null);   // cursor of observations
+        observations.moveToFirst();
+
+        // create ObservedList arraylist
+        if (observations != null && observations.getCount() > 0) {
+            observedList.clear();
+            observations.moveToFirst();
+            int dsoIDCol = observations.getColumnIndex("dsoid");
+            while (!observations.isAfterLast()) {
+                String dsoObs = observations.getString(dsoIDCol);
+                observedList.add(dsoObs);
+                observations.moveToNext();
+            }
+        }
+    }
+
+    public void updateObservationInfo() {
+        for (int counter = 0; counter < allDsObjectsArrayList.size(); counter++) {
+            Integer dsoObserved = 0;
+            String dsObjectID = allDsObjectsArrayList.get(counter).getDsoObjectID();
+            if (observedList.contains(dsObjectID)) {dsoObserved = 1;}
+            allDsObjectsArrayList.get(counter).setDsoObserved(dsoObserved);
+        }
+    }
+
 }

@@ -1,26 +1,19 @@
 package com.mikesrv9a.nightskyguide;
 
-
-import android.Manifest;
-import android.content.DialogInterface;
-import android.content.pm.PackageManager;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
 
-import java.util.List;
 
-public class ObservationsActivity extends AppCompatActivity implements ObservationsFragment.ObservationsFragmentListener {
+public class ObservationsActivity extends AppCompatActivity implements ObservationsFragment.ObservationsFragmentListener,
+        ObservationDetailFragment.DeleteCompletedListener, ObservationDetailFragment.EditObservationListener, ObservationEditFragment.SaveCompletedListener {
 
-    private ObservationsFragment observationsFragment; // displays dsObject list
-    final int REQUEST_STORAGE = 3;
-
+    private ObservationsFragment observationsFragment;
+    private ObservationDetailFragment observationDetailFragment;
+    private ObservationEditFragment observationEditFragment;
 
     // display ObservationsFragment when MainActivity first loads
     @Override
@@ -50,7 +43,7 @@ public class ObservationsActivity extends AppCompatActivity implements Observati
 
     // display a dsObject
     private void displayObservation(Observation observationSelected, int viewID) {
-        ObservationDetailFragment observationDetailFragment = new ObservationDetailFragment();
+        observationDetailFragment = new ObservationDetailFragment();
 
         // specify dsObject as an argument to the DetailFragment
         Bundle arguments = new Bundle();
@@ -66,17 +59,41 @@ public class ObservationsActivity extends AppCompatActivity implements Observati
         transaction.commit();  // causes DetailFragment to display
     }
 
-    /*
+    // return to DetailFragment after observation record saved
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        //Toast.makeText(this, "Result", Toast.LENGTH_LONG);
-        if (fragments != null) {
-            for (Fragment fragment : fragments) {
-                fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            }
-        }
-    } */
+    public void onObservationDeleted() {
+        getSupportFragmentManager().popBackStack();
+    }
+
+    // display ObservationEditFragment for selected dsObject
+    public void editObservationButtonClicked(Observation observationSelected) {
+        displayObservEdit(observationSelected, R.id.fragmentObservationsContainer);
+    }
+
+    // display edit fragment
+    private void displayObservEdit(Observation observationSelected, int viewID) {
+        observationEditFragment = new ObservationEditFragment();
+
+        // specify dsObject as an argument to the edit Fragment
+        Bundle arguments = new Bundle();
+        arguments.putParcelable("observationArrayListItem", observationSelected);
+        observationEditFragment.setArguments(arguments);
+
+
+        // use a FragmentTransaction to display the edit Fragment
+        FragmentTransaction transaction =
+                getSupportFragmentManager().beginTransaction();
+        transaction.replace(viewID, observationEditFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();  // causes edit Fragment to display
+    }
+
+    // return to DetailFragment after observation record saved
+    @Override
+    public void onObservationSaved() {
+        Intent refresh = new Intent(this, ObservationsActivity.class);
+        startActivity(refresh);
+        this.finish();
+    }
 
 }

@@ -80,6 +80,8 @@ class DSObject implements Parcelable {
 
     Integer getDsoObserved() {return dsoObserved;}
 
+    void setDsoObserved(Integer observed) {dsoObserved = observed;}
+
     Double getDsoAlt() {return dsoAlt;}
 
     Double getDsoAz() {return dsoAz;}

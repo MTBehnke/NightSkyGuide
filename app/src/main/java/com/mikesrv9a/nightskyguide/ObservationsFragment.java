@@ -41,6 +41,7 @@ public class ObservationsFragment extends Fragment {
 
     Cursor data;
     ObservationDatabaseHelper observationsDB;
+    int obsDbIdCol = 0;
     int objectIdCol;
     int dateCol;
     int locationCol;
@@ -150,6 +151,7 @@ public class ObservationsFragment extends Fragment {
             filterCol = data.getColumnIndex(ObserveRecordsSchema.ObsTable.Cols.Filter);
             notesCol = data.getColumnIndex(ObserveRecordsSchema.ObsTable.Cols.Notes);
             while (!data.isAfterLast()) {
+                Integer obsDbId = data.getInt(obsDbIdCol);  // database record #, column 0
                 String obsObjectID = data.getString(objectIdCol);
                 String obsDate = data.getString(dateCol);
                 String obsLocation = data.getString(locationCol);
@@ -162,7 +164,7 @@ public class ObservationsFragment extends Fragment {
                 String obsNotes = data.getString(notesCol);
 
                 // creates Observation objects
-                Observation observation = new Observation(obsObjectID, obsDate, obsLocation, obsSeeing, obsTransparency,
+                Observation observation = new Observation(obsDbId, obsObjectID, obsDate, obsLocation, obsSeeing, obsTransparency,
                         obsTelescope, obsEyepiece, obsPower, obsFilter, obsNotes);
                 allObservationsArrayList.add(observation);
 
@@ -194,25 +196,8 @@ public class ObservationsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //setUserPreferences();
         updateArrayList();
     }
-
-    /* update user latitude and longitude from preferences
-    public void setUserPreferences() {
-        Context context = getActivity();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        if (preferences.getBoolean("use_device_location", false)) {
-            userLat = Double.parseDouble(preferences.getString("last_gps_lat", getString(R.string.default_latitude)));
-            userLong = Double.parseDouble(preferences.getString("last_gps_long", getString(R.string.default_longitude)));}
-        else {
-            userLat = Double.parseDouble(preferences.getString("edit_text_pref_lat", getString(R.string.default_latitude)));
-            userLong = Double.parseDouble(preferences.getString("edit_text_pref_long", getString(R.string.default_longitude)));}
-        //Toast.makeText(getContext(), userLat + " / " + userLong, Toast.LENGTH_LONG).show();
-        showObserved = preferences.getBoolean("pref_show_observed", false);
-        showBelowHoriz = preferences.getBoolean("pref_show_below_horiz", false);
-        sortPreference = preferences.getString("pref_sort_by", "1");
-    }  */
 
     // update and sort arraylist for recyclerview based on user preferences
     public void updateArrayList() {
@@ -229,31 +214,6 @@ public class ObservationsFragment extends Fragment {
             }
         });
 
-        /*
-        if (sortPreference.equals("1")) {
-            Collections.sort(observationsArrayList, new Comparator<DSObject>() {
-                @Override
-                public int compare(DSObject dsObject, DSObject t1) {
-                    return Double.compare(dsObject.getDsoSortAlt(), t1.getDsoSortAlt());
-                }
-            });
-        }
-        else if (sortPreference.equals("2")) {
-            Collections.sort(observationsArrayList, new Comparator<DSObject>() {
-                @Override
-                public int compare(DSObject dsObject, DSObject t1) {
-                    return Integer.valueOf(dsObject.dsoObjectID.substring(1)).compareTo(Integer.valueOf(t1.dsoObjectID.substring(1)));
-                }
-            });
-        }
-        else {
-            Collections.sort(observationsArrayList, new Comparator<DSObject>() {
-                @Override
-                public int compare(DSObject dsObject, DSObject t1) {
-                    return dsObject.getDsoConst().compareTo(t1.getDsoConst());
-                }
-            });
-        } */
         clickAdapter.notifyDataSetChanged();
     }
 
@@ -318,10 +278,9 @@ public class ObservationsFragment extends Fragment {
                     // permission granted
                     displayAlertDialog("Save Observation Log to CSV?");
                 } else {
-                    // permission denied
+                    // permission denied - you shall not pass!!!
             }
     }
-
 
     private void displayAlertDialog(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -340,6 +299,5 @@ public class ObservationsFragment extends Fragment {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
 
 }
