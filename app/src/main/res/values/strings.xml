@@ -7,6 +7,7 @@
     <string name="invalid_update_uri">Invalid update Uri:</string>
     <string name="invalid_delete_uri">Invalid delete Uri:</string>
     <string name="menuitem_edit">Edit</string>
+    <string name="menuitem_add">Add</string>
     <string name="menuitem_delete">Delete</string>
     <string name="menuitem_location">Update Location</string>
     <string name="menuitem_info">App Info</string>
@@ -23,9 +24,10 @@
     <string name="hint_oith">OITH Page(s)</string>
     <string name="hint_observed">Observed (0/1)</string>
     <string name="label_objectid">Object ID:</string>
+    <string name="label_catalogue">Catalogue:</string>
     <string name="label_type">Type:</string>
     <string name="label_mag">Magnitude:</string>
-    <string name="label_size">Size (arcmins):</string>
+    <string name="label_size">Size:</string>
     <string name="label_dist">Distance:</string>
     <string name="label_RA">RA:</string>
     <string name="label_dec">DEC:</string>

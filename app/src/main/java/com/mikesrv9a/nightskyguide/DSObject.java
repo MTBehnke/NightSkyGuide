@@ -2,11 +2,15 @@ package com.mikesrv9a.nightskyguide;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+
+import java.text.DecimalFormat;
+import java.util.Arrays;
 
 /** Creates DSObjects and updates sky position, etc.
  */
@@ -24,6 +28,7 @@ class DSObject implements Parcelable {
     String dsoName;         // DSO Common Name (e.g. Andromeda Galaxy)
     String dsoPSA;          // DSO Page Number(s) in S&T Pocket Sky Atlas
     String dsoOITH;         // DSO Page Number(s) in Objects in the Heavens
+    String dsoCatalogue;    // DSO Catalogue ID (e.g. NGC #)
     Integer dsoObserved;    // DSO Observed (not observed = 0, observed = tbd)
     Double dsoAlt;          // DSO current altitude in sky (ddd.ddd)
     Double dsoAz;           // DSO current azimuth in sky (ddd.ddd)
@@ -36,7 +41,7 @@ class DSObject implements Parcelable {
     // DSObject constructor
     DSObject (String id, String type, Double mag, String size, String dist,
                      Double ra, Double dec, String cons, String name, String psa,
-                     String oith, Integer observed) {
+                     String oith, String catalogue, Integer observed) {
         dsoObjectID = id;
         dsoType = type;
         dsoMag = mag;
@@ -48,6 +53,7 @@ class DSObject implements Parcelable {
         dsoName = name;
         dsoPSA = psa;
         dsoOITH = oith;
+        dsoCatalogue = catalogue;
         dsoObserved = observed;
         dsoAlt = 0.0;
         dsoAz = 0.0;
@@ -78,6 +84,8 @@ class DSObject implements Parcelable {
 
     String getDsoOITH() {return dsoOITH;}
 
+    String getDsoCatalogue()  {return dsoCatalogue;}
+
     Integer getDsoObserved() {return dsoObserved;}
 
     void setDsoObserved(Integer observed) {dsoObserved = observed;}
@@ -94,7 +102,49 @@ class DSObject implements Parcelable {
 
     String getDsoSetTimeStr() {return dsoSetTimeStr;}
 
+    Integer getObjectIdSort() {
+        Integer sort;
+        if (dsoType.equals("PL")) {sort = Arrays.asList(AstroCalc.planetName).indexOf("dsoObjectID");}    // planets first
+        else if (dsoObjectID.startsWith("M")) {sort = 100 + Integer.valueOf(dsoObjectID.substring(1));}   // Messier objects second
+        else if (dsoObjectID.startsWith("C")) {sort = 300 + Integer.valueOf(dsoObjectID.substring(1));}   // Caldwell objects third
+        else {sort = 1000;}   // error handling
+        return sort;
+    }
+
     // setter methods
+    public void setPlanetCoords(int planet) {
+        DateTime dateCal = new DateTime(DateTimeZone.UTC);
+        double daysSinceJ2010 = AstroCalc.daysSinceJ2010(dateCal.getMillis());
+        double daysSinceJ2000 = daysSinceJ2010 + 3651.5;
+        double obliqEclip = AstroCalc.obliqEclip(daysSinceJ2000);
+        // calculate Earth coordinates
+        double meanAnomoly = AstroCalc.meanAnomoly(0, daysSinceJ2010);
+        double trueAnomoly = AstroCalc.trueAnomoly(0,meanAnomoly);
+        double earthHelioLong = AstroCalc.helioLong(0,trueAnomoly);
+        double earthRadiusVector = AstroCalc.radiusVector(0,trueAnomoly);
+        // calculate planet coordinates
+        meanAnomoly = AstroCalc.meanAnomoly(planet, daysSinceJ2010);
+        trueAnomoly = AstroCalc.trueAnomoly(planet, meanAnomoly);
+        double helioLong = AstroCalc.helioLong(planet, trueAnomoly);
+        double radiusVector = AstroCalc.radiusVector(planet, trueAnomoly);
+        double helioLat = AstroCalc.helioLat(planet,helioLong);
+        double projHelioLong = AstroCalc.projHelioLong(planet,helioLong);
+        double projRadiusVector = AstroCalc.projRadiusVector(radiusVector, helioLat);
+        double geoEclLong = AstroCalc.geoEclLong(planet,projHelioLong,projRadiusVector,earthHelioLong,earthRadiusVector);
+        double geoEclLat = AstroCalc.geoEclLat(projHelioLong,projRadiusVector,earthHelioLong,earthRadiusVector,geoEclLong,helioLat);
+        double distPlanet = AstroCalc.distPlanet(projHelioLong, projRadiusVector,earthHelioLong,earthRadiusVector,helioLat);
+        double sizePlanet = AstroCalc.sizePlanet(planet,distPlanet);
+        double magPlanet = AstroCalc.magPlanet(planet,geoEclLong,helioLong,radiusVector,distPlanet);
+        dsoDist = String.format("%.1f",distPlanet) + " AU";
+        dsoSize = String.format("%.1f",sizePlanet) + "\"";
+        magPlanet = magPlanet*10;  // these three lines round magPlanet to one decimal point
+        magPlanet = (double)((int)magPlanet);
+        magPlanet = magPlanet/10;
+        dsoMag = magPlanet;
+        dsoRA = AstroCalc.raFromEclip(obliqEclip,geoEclLong,geoEclLat);
+        dsoDec = AstroCalc.decFromEclip(obliqEclip,geoEclLong,geoEclLat);
+    }
+
     public void setDsoAltAz(Double userLat, Double userLong) {
         // Temporary variables for DateTime and userLat/userLong
         // Create Joda DateTime instance and set date to desired time
@@ -158,6 +208,7 @@ class DSObject implements Parcelable {
         parcel.writeString(dsoName);
         parcel.writeString(dsoPSA);
         parcel.writeString(dsoOITH);
+        parcel.writeString(dsoCatalogue);
         parcel.writeInt(dsoObserved);
         parcel.writeDouble(dsoAlt);
         parcel.writeDouble(dsoAz);
@@ -176,6 +227,7 @@ class DSObject implements Parcelable {
         dsoName = in.readString();
         dsoPSA = in.readString();
         dsoOITH = in.readString();
+        dsoCatalogue = in.readString();
         dsoRiseTimeStr = in.readString();
         dsoSetTimeStr = in.readString();
     }

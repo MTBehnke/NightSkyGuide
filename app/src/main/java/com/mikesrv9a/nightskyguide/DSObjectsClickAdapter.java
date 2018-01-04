@@ -88,7 +88,7 @@ public class DSObjectsClickAdapter
         if(object.getDsoMag()<=7.0){magIcon = " ●";}
                 else {magIcon = "";}
         if(dsoCosHA < -1) {dsoPath = "○ ";}
-            else if (dsoCosHA > 1) {dsoPath = "◙ ";}
+            else if (dsoCosHA > 1) {dsoPath = "ø ";}
             else {dsoPath = "";}
         String r1c1Text = object.getDsoObjectID() + observed;
         String r1c2Text = object.getDsoConst();
@@ -99,6 +99,7 @@ public class DSObjectsClickAdapter
         //String r1c4Text = Double.toString(object.getDsoAlt());
         String r2c1Text = object.getDsoName();
         String r2c2Text = object.getDsoType();
+        if (r2c2Text=="PL") {r2c2Text="";}
         String r2c3Text = object.getDsoSize();
         String r2c4Text = Integer.toString((int) Math.round(object.getDsoAz())) + "°";
         //String r2c4Text = Double.toString(object.getDsoAz());

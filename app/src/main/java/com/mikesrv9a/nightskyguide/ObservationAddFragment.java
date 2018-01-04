@@ -61,7 +61,6 @@ public class ObservationAddFragment extends Fragment  {
     private TextInputLayout filterTextInputLayout; // input for filter
     private TextInputLayout notesTextInputLayout; // input for notes
 
-    private FloatingActionButton saveObservationFAB; // save observation record FAB
     SharedPreferences preferences;
     DecimalFormat df = new DecimalFormat("#.0000");
     DateTime calendar;
@@ -123,28 +122,11 @@ public class ObservationAddFragment extends Fragment  {
         String filter = preferences.getString("last_filter", "");
         filterTextInputLayout.getEditText().setText(filter);
 
-
-        // set FloatingActionButton's event listener
-        saveObservationFAB = (FloatingActionButton) view.findViewById(R.id.saveFloatingActionButton);
-        saveObservationFAB.setOnClickListener(saveFABClicked);
-        saveObservationFAB.show();
-
         dateEditText.setOnClickListener(dateClicked);
         timeEditText.setOnClickListener(timeClicked);
 
         return view;
     }
-
-    // responds to event generated when save button clicked
-    private final View.OnClickListener saveFABClicked = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            // hide the virtual keyboard
-            ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE))
-                    .hideSoftInputFromWindow(getView().getWindowToken(),0);
-            addObservation();  // save observation to the database
-        }
-    };
 
     private final View.OnClickListener dateClicked = new View.OnClickListener() {
         @Override
@@ -270,6 +252,9 @@ public class ObservationAddFragment extends Fragment  {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_save:
+                addObservation();
+                return true;
             case R.id.app_info_add_edit:
                 Intent info = new Intent(getActivity(), AppInfoActivity.class);
                 info.putExtra("appInfoKey", 3);

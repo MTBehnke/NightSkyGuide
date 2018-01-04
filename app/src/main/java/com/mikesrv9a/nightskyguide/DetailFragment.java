@@ -36,6 +36,7 @@ public class DetailFragment extends Fragment {
     private TextView nameTextView; // displays dsObject's Common Name
     private TextView psaTextView; // displays dsObject's PSA pages
     private TextView oithTextView; // displays dsObject's OITH pages
+    private TextView catTextView;  // displays dsObject's catalogue number (e.g. NGC #)
     private TextView altTextView; // displays dsObject's altitude
     private TextView azTextView; // displays dsObject's azimuth
     private TextView riseTextView;  // displays dsObject's rise time
@@ -46,12 +47,12 @@ public class DetailFragment extends Fragment {
     private Bitmap constImage;
 
     // callback method implemented by MainActivity
-    public interface AddEditFABListener {
+    public interface AddObservationListener {
         // called when addedit FAB is selected
         void addObservationButtonClicked(DSObject dsObjectSelected);
     }
 
-    AddEditFABListener listener;
+    AddObservationListener listener;
 
     // called when DetailFragment's view needs to be created
     @Override
@@ -82,6 +83,7 @@ public class DetailFragment extends Fragment {
         nameTextView = (TextView) view.findViewById(R.id.nameTextView);
         psaTextView = (TextView) view.findViewById(R.id.psaTextView);
         oithTextView = (TextView) view.findViewById(R.id.oithTextView);
+        catTextView = (TextView) view.findViewById(R.id.catTextView);
         altTextView = (TextView) view.findViewById(R.id.altTextView);
         azTextView = (TextView) view.findViewById(R.id.azTextView);
         riseTextView = (TextView) view.findViewById(R.id.riseTextView);
@@ -102,25 +104,18 @@ public class DetailFragment extends Fragment {
         nameTextView.setText(dsObject.getDsoName());
         psaTextView.setText(dsObject.getDsoPSA());
         oithTextView.setText(dsObject.getDsoOITH());
+        catTextView.setText(dsObject.getDsoCatalogue());
         altTextView.setText((Integer.toString((int)Math.round(dsObject.getDsoAlt()))) + "°");
         azTextView.setText((Integer.toString((int)Math.round(dsObject.getDsoAz()))) + "°");
         riseTextView.setText(dsObject.getDsoRiseTimeStr());
         setTextView.setText(dsObject.getDsoSetTimeStr());
 
         // display constellation image
+        if (!typeAbbr.equals("PL")) {
         String constName = "images/" + dsObject.getDsoConst() + ".gif";
         constImageView = (ImageView) view.findViewById(R.id.constImageView);
         Bitmap bm = loadConstImage(constName);   // display constellation .gif on detail screen
-        constImageView.setImageBitmap(bm);
-
-        // set FloatingActionButton's event listener
-        addObservationFAB = (FloatingActionButton) view.findViewById(R.id.addObservationFAB);
-        addObservationFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.addObservationButtonClicked(dsObject);
-            }
-        });
+        constImageView.setImageBitmap(bm);}
 
         return view;
     }
@@ -129,7 +124,7 @@ public class DetailFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        listener = (AddEditFABListener) context;
+        listener = (AddObservationListener) context;
     }
 
     // remove AddEditFABListener when fragment detached
@@ -167,6 +162,9 @@ public class DetailFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.edit_observation:
+                listener.addObservationButtonClicked(dsObject);
+                return true;
             case R.id.app_info_details:
                 Intent info = new Intent(getActivity(), AppInfoActivity.class);
                 info.putExtra("appInfoKey", 2);

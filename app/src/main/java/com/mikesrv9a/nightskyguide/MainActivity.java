@@ -35,7 +35,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 public class MainActivity extends AppCompatActivity
-    implements DSObjectsFragment.DSObjectsFragmentListener, DetailFragment.AddEditFABListener, ObservationAddFragment.SaveCompletedListener {
+    implements DSObjectsFragment.DSObjectsFragmentListener, DetailFragment.AddObservationListener, ObservationAddFragment.SaveCompletedListener {
 
     private DSObjectsFragment dsObjectsFragment; // displays dsObject list
 

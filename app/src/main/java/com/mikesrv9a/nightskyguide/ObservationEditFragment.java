@@ -25,7 +25,6 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
-import java.text.ParseException;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
@@ -59,7 +58,6 @@ public class ObservationEditFragment extends Fragment  {
     private TextInputLayout filterTextInputLayout; // input for filter
     private TextInputLayout notesTextInputLayout; // input for notes
 
-    private FloatingActionButton saveObservationFAB; // save observation record FAB
     DecimalFormat df = new DecimalFormat("#.0000");
     DateTime calendar;
     DateTime newDate;
@@ -124,11 +122,6 @@ public class ObservationEditFragment extends Fragment  {
         String notes = observation.getObsNotes();
         notesTextInputLayout.getEditText().setText(notes);
 
-
-        // set FloatingActionButton's event listener
-        saveObservationFAB = (FloatingActionButton) view.findViewById(R.id.saveFloatingActionButton);
-        saveObservationFAB.setOnClickListener(saveFABClicked);
-        saveObservationFAB.show();
 
         dateEditText.setOnClickListener(dateClicked);
         timeEditText.setOnClickListener(timeClicked);
@@ -233,6 +226,9 @@ public class ObservationEditFragment extends Fragment  {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_save:
+                saveObservation();
+                return true;
             case R.id.app_info_add_edit:
                 Intent info = new Intent(getActivity(), AppInfoActivity.class);
                 info.putExtra("appInfoKey", 3);

@@ -173,6 +173,7 @@ public class DSObjectsFragment extends Fragment {
             int nameCol = data.getColumnIndex("name");
             int psaCol = data.getColumnIndex("psa");
             int oithCol = data.getColumnIndex("oith");
+            int catCol = data.getColumnIndex("catalogue");
             setUserPreferences();  // need user's latitude and longitude
             while (!data.isAfterLast()) {
                 String dsoObjectID = data.getString(objectIdCol);
@@ -186,6 +187,7 @@ public class DSObjectsFragment extends Fragment {
                 String dsoName = data.getString(nameCol);
                 String dsoPSA = data.getString(psaCol);
                 String dsoOITH = data.getString(oithCol);
+                String dsoCatalogue = data.getString(catCol);
 
                 //Checks observations to determine whether DSO has been observed
                 Integer dsoObserved = 0;
@@ -195,11 +197,20 @@ public class DSObjectsFragment extends Fragment {
 
                 // creates DSObjects
                 DSObject dsObject = new DSObject(dsoObjectID, dsoType, dsoMag, dsoSize, dsoDist,
-                        dsoRA, dsoDec, dsoConst, dsoName, dsoPSA, dsoOITH, dsoObserved);
+                        dsoRA, dsoDec, dsoConst, dsoName, dsoPSA, dsoOITH, dsoCatalogue, dsoObserved);
                 dsObject.setDsoAltAz(userLat, userLong);
                 allDsObjectsArrayList.add(dsObject);
 
                 data.moveToNext();
+            }
+
+            // add planets as DSObjects  (1:Mercury thru 7: Neptune, skip 0:Earth)
+            for (int planet = 1; planet < 8; planet++) {
+                   DSObject dsObject = new DSObject(AstroCalc.planetName[planet],"PL",0.0,"","",null,null,
+                           "",null,"","","",0);
+                   dsObject.setPlanetCoords(planet);
+                   dsObject.setDsoAltAz(userLat, userLong);
+                   allDsObjectsArrayList.add(dsObject);
             }
         }
     }
@@ -284,7 +295,7 @@ public class DSObjectsFragment extends Fragment {
                 dsObjectsArrayList.add(allDsObjectsArrayList.get(counter));
             }
         }
-        if (sortPreference.equals("1")) {
+        if (sortPreference.equals("1")) {    // sort based on altitude
             Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
                 @Override
                 public int compare(DSObject dsObject, DSObject t1) {
@@ -292,15 +303,16 @@ public class DSObjectsFragment extends Fragment {
                 }
             });
         }
-        else if (sortPreference.equals("2")) {
+        else if (sortPreference.equals("2")) {     // sort based on object ID
             Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
                 @Override
                 public int compare(DSObject dsObject, DSObject t1) {
-                    return Integer.valueOf(dsObject.dsoObjectID.substring(1)).compareTo(Integer.valueOf(t1.dsoObjectID.substring(1)));
+                    //return Integer.valueOf(dsObject.dsoObjectID.substring(1)).compareTo(Integer.valueOf(t1.dsoObjectID.substring(1)));
+                    return Integer.compare(dsObject.getObjectIdSort(), t1.getObjectIdSort());
                 }
             });
         }
-        else {
+        else {      // sort by constellation
                 Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
                     @Override
                     public int compare(DSObject dsObject, DSObject t1) {
