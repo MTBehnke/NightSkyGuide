@@ -111,7 +111,7 @@ public class DetailFragment extends Fragment {
         setTextView.setText(dsObject.getDsoSetTimeStr());
 
         // display constellation image
-        if (!typeAbbr.equals("PL")) {
+        if (!constAbbr.equals("")) {
         String constName = "images/" + dsObject.getDsoConst() + ".gif";
         constImageView = (ImageView) view.findViewById(R.id.constImageView);
         Bitmap bm = loadConstImage(constName);   // display constellation .gif on detail screen

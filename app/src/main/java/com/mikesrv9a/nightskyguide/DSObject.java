@@ -143,6 +143,7 @@ class DSObject implements Parcelable {
         dsoMag = magPlanet;
         dsoRA = AstroCalc.raFromEclip(obliqEclip,geoEclLong,geoEclLat);
         dsoDec = AstroCalc.decFromEclip(obliqEclip,geoEclLong,geoEclLat);
+        dsoConst = AstroCalc.planetConst(dsoRA,dsoDec);
     }
 
     public void setDsoAltAz(Double userLat, Double userLong) {
