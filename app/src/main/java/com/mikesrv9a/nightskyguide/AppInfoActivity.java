@@ -28,7 +28,7 @@ public class AppInfoActivity extends AppCompatActivity {
 
         switch (appInfoKey) {
             case 1:
-                infoText = "Messier Field Guide v0.2.01 (beta)\n" +
+                infoText = "Night Sky Guide v0.2.02 (beta)\n" +
                         "Copyright 2018 Shiny Objects LLC\n\n" +
                         "The main page displays each of the 110 Messier Object's, including:\n" +
                         "∙ DSO ID (with √ if previously observed)\n∙ Common Name\n" +
@@ -83,10 +83,11 @@ public class AppInfoActivity extends AppCompatActivity {
                         "This application includes the following open source software:\n\n" +
                         "opencv v.3.10\nLicensed under the Apache License version 2.0.\n\n" +
                         "Joda-Time v2.3\nLicensed under the Apache License version 2.0.\n\n" +
+                        "PhotoView v2.1.3\nLicensed under the Apache License version 2.0.\n\n"+
                         "The Apache License version 2.0 is an open source software license released " +
                         "by the Apache Software Foundation.  A copy of this license is available at " +
                         "http://www.apache.org/licenses/LICENSE-2.0\n\n\n" +
-                        "Note: the Messier Field Guide is not currently copyrighted as open source.";
+                        "Note: the Night Sky Guide is not currently copyrighted as open source.";
         }
 
         appInfo.setText(infoText);

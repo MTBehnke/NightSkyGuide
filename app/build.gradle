@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.mikesrv9a.nightskyguide"
         minSdkVersion 19
@@ -37,4 +37,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:11.0.1'
     testCompile 'junit:junit:4.12'
     compile project(':opencsv-3.10')
+    compile 'com.github.chrisbanes:PhotoView:2.1.3'
 }

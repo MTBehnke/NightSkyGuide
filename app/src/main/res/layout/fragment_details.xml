@@ -356,13 +356,14 @@
             android:layout_below="@id/Section4"
             android:paddingTop="12dp">
 
-            <ImageView
+            <com.github.chrisbanes.photoview.PhotoView
                 android:id="@+id/constImageView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
-                android:contentDescription="@string/hint_const"
-                android:scaleType="fitCenter" />
+                android:contentDescription="@string/hint_const"/>
 
         </RelativeLayout>
 

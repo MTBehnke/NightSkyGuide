@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.InputStream;
+import com.github.chrisbanes.photoview.PhotoView;
 
 public class DetailFragment extends Fragment {
 
@@ -43,7 +44,7 @@ public class DetailFragment extends Fragment {
     private TextView setTextView;  // displays  dsObject's set time
 
     private FloatingActionButton addObservationFAB;  // FAB to go to add observation record
-    private ImageView constImageView; // displays dsObject's constellation image
+    private PhotoView constImageView; // displays dsObject's constellation image
     private Bitmap constImage;
 
     // callback method implemented by MainActivity
@@ -113,7 +114,7 @@ public class DetailFragment extends Fragment {
         // display constellation image
         if (!constAbbr.equals("")) {
         String constName = "images/" + dsObject.getDsoConst() + ".gif";
-        constImageView = (ImageView) view.findViewById(R.id.constImageView);
+        constImageView = (PhotoView) view.findViewById(R.id.constImageView);
         Bitmap bm = loadConstImage(constName);   // display constellation .gif on detail screen
         constImageView.setImageBitmap(bm);}
 
