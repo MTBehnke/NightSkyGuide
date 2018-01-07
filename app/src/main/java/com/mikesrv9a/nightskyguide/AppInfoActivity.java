@@ -28,7 +28,7 @@ public class AppInfoActivity extends AppCompatActivity {
 
         switch (appInfoKey) {
             case 1:
-                infoText = "Night Sky Guide v0.2.02 (beta)\n" +
+                infoText = "Night Sky Guide v0.2.03 (beta)\n" +
                         "Copyright 2018 Shiny Objects LLC\n\n" +
                         "The main page displays each of the 110 Messier Object's, including:\n" +
                         "∙ DSO ID (with √ if previously observed)\n∙ Common Name\n" +
@@ -69,7 +69,7 @@ public class AppInfoActivity extends AppCompatActivity {
                         "All DSO's that have an observation records will be indicated with a check mark on the main " +"" +
                         "screen and there is a settings option to show only DSO's that you haven't previously observed.\n\n" +
                         "The date, time and observing location will automatically be filled out.\n\n" +
-                        "Aside from the observation notes field at the bottom, all other fields will automatically be filled out " +
+                        "Aside from the observation notes field at the bottom, all other fields will automatically populated " +
                         "to match the entries from your last saved record.";
 
             case 4:
