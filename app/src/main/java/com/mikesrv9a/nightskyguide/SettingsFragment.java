@@ -56,6 +56,7 @@ public class SettingsFragment extends PreferenceFragment {
     SwitchPreference displayBelowHoriz;  // Pref:  display objects below horizon
     ListPreference sortByPref;  // Pref:  sort list of objects by <list>
     MultiSelectListPreference displayObjectList;  // Pref:  select object lists to display (Planets, Messier, Caldwell)
+    MultiSelectListPreference displayConstList;  // Pref:  select which constellations to display objects
 
     DecimalFormat df = new DecimalFormat("#.0000");
 
@@ -102,8 +103,9 @@ public class SettingsFragment extends PreferenceFragment {
         displayBelowHoriz = (SwitchPreference) findPreference("pref_show_below_horiz");  // Pref:  display objects below horizon
         sortByPref = (ListPreference) findPreference("pref_sort_by");  // Pref:  sort list of objects by <list>
         displayObjectList = (MultiSelectListPreference) findPreference("multi_pref_object_list");   // Pref:  select object lists to display
-        //displayObjectList.setSummary(displayObjectList.getValues().toString());   // set summary to match object lists to display
         displayObjectList.setSummary(updateObjectList(displayObjectList.getValues().toString()));
+        //displayConstList = (MultiSelectListPreference) findPreference("multi_pref_const_month");
+        //Log.i("Start: ", displayConstList.getValues().toString());
 
         updateLocSummaries();
         //setObjectListSummary();
@@ -172,6 +174,14 @@ public class SettingsFragment extends PreferenceFragment {
                 return true;
             }
         });
+        /*displayConstList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                String selected = newValue.toString();
+                Log.i("Const: ",selected);
+                return true;
+            }
+        });*/
     }
 
     public String updateObjectList(String selected) {

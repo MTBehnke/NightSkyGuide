@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity
         // start location services, including permissions checks, etc.
         context = this;
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        //preferences.edit().remove("multi_pref_object_list").apply();   used to clear existing preference if required
+        //preferences.edit().remove("multi_pref_constellation").apply();   //used to clear existing preference if required
         useGPS = preferences.getBoolean("use_device_location", false);
         locUpdates = false;
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);

@@ -55,12 +55,11 @@
             android:summary="%s"
             android:title="@string/pref_list_title" />
 
-        <!--
-        <MultiSelectListPreference
-            android:defaultValue="@array/constellation_default"
-            android:entries="@array/constellation_abbr"
+        <!--<MultiSelectListPreference
+            android:defaultValue="@array/constellation_abbr"
+            android:entries="@array/constellation_name"
             android:entryValues="@array/constellation_abbr"
-            android:key="multi_pref_constellation"
+            android:key="multi_pref_const_month"
             android:summary="%s"
             android:title="@string/pref_list_display_const" /> -->
 
