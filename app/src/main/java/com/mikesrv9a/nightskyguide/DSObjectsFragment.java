@@ -14,6 +14,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Set;
 
 public class DSObjectsFragment extends Fragment {
 
@@ -60,6 +62,7 @@ public class DSObjectsFragment extends Fragment {
     public boolean showObserved;
     public boolean showBelowHoriz;
     public String sortPreference;
+    public Set<String> showObjectLists;
 
     // configures this fragment's GUI
     @Override
@@ -281,6 +284,11 @@ public class DSObjectsFragment extends Fragment {
         showObserved = preferences.getBoolean("pref_show_observed", false);
         showBelowHoriz = preferences.getBoolean("pref_show_below_horiz", false);
         sortPreference = preferences.getString("pref_sort_by", "1");
+        showObjectLists = preferences.getStringSet("multi_pref_object_list", null);
+        String selected = null;
+        if (showObjectLists != null) {    // should never be null, included to prevent error flagging
+            selected = showObjectLists.toString();
+        }
     }
 
     // update and sort arraylist for recyclerview based on user preferences
@@ -291,8 +299,14 @@ public class DSObjectsFragment extends Fragment {
             Double dsoAlt = allDsObjectsArrayList.get(counter).getDsoAlt();
             if ((allDsObjectsArrayList.get(counter).getDsoObserved() == 1 && showObserved == false) || (dsoAlt < 0 && showBelowHoriz == false)) {
             } // do nothing
+            else if (allDsObjectsArrayList.get(counter).dsoType.equals("PL") && !showObjectLists.contains("P")) {
+                } // do nothing
+            else if (!allDsObjectsArrayList.get(counter).dsoType.equals("PL") && allDsObjectsArrayList.get(counter).dsoObjectID.startsWith("M") && !showObjectLists.contains("M")) {
+                } // do nothing
+            else if (!allDsObjectsArrayList.get(counter).dsoType.equals("PL") && allDsObjectsArrayList.get(counter).dsoObjectID.startsWith("C") && !showObjectLists.contains("C")) {
+                } // do nothing
             else {
-                dsObjectsArrayList.add(allDsObjectsArrayList.get(counter));
+                dsObjectsArrayList.add(allDsObjectsArrayList.get(counter));    // passes all filters - add to recyclerview
             }
         }
         if (sortPreference.equals("1")) {    // sort based on altitude
@@ -303,7 +317,15 @@ public class DSObjectsFragment extends Fragment {
                 }
             });
         }
-        else if (sortPreference.equals("2")) {     // sort based on object ID
+        else if (sortPreference.equals("2")) {    // sort based on azimuth
+            Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
+                @Override
+                public int compare(DSObject dsObject, DSObject t1) {
+                    return Double.compare(dsObject.getDsoAz(), t1.getDsoAz());
+                }
+            });
+        }
+        else if (sortPreference.equals("3")) {     // sort based on object ID
             Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
                 @Override
                 public int compare(DSObject dsObject, DSObject t1) {

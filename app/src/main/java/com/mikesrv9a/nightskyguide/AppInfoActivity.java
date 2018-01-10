@@ -28,7 +28,7 @@ public class AppInfoActivity extends AppCompatActivity {
 
         switch (appInfoKey) {
             case 1:
-                infoText = "Night Sky Guide v0.2.03 (beta)\n" +
+                infoText = "Night Sky Guide v0.2.04 (beta)\n" +
                         "Copyright 2018 Shiny Objects LLC\n\n" +
                         "The main page displays each of the 110 Messier Object's, including:\n" +
                         "∙ DSO ID (with √ if previously observed)\n∙ Common Name\n" +

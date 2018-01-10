@@ -47,6 +47,14 @@
             android:summary="%s"
             android:title="@string/pref_sort_by_list" />
 
+        <MultiSelectListPreference
+            android:defaultValue="@array/pref_list_type"
+            android:entries="@array/pref_list_type_names"
+            android:entryValues="@array/pref_list_type"
+            android:key="multi_pref_object_list"
+            android:summary="%s"
+            android:title="@string/pref_list_title" />
+
         <!--
         <MultiSelectListPreference
             android:defaultValue="@array/constellation_default"

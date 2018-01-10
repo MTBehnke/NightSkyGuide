@@ -4,16 +4,19 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
+import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
+import java.util.Set;
 
 public class SettingsFragment extends PreferenceFragment {
 
@@ -52,6 +55,7 @@ public class SettingsFragment extends PreferenceFragment {
     SwitchPreference displayPrevObserved;  // Pref:  display previously observed
     SwitchPreference displayBelowHoriz;  // Pref:  display objects below horizon
     ListPreference sortByPref;  // Pref:  sort list of objects by <list>
+    MultiSelectListPreference displayObjectList;  // Pref:  select object lists to display (Planets, Messier, Caldwell)
 
     DecimalFormat df = new DecimalFormat("#.0000");
 
@@ -97,8 +101,12 @@ public class SettingsFragment extends PreferenceFragment {
         displayPrevObserved = (SwitchPreference) findPreference("pref_show_observed");  // Pref:  display previously observed
         displayBelowHoriz = (SwitchPreference) findPreference("pref_show_below_horiz");  // Pref:  display objects below horizon
         sortByPref = (ListPreference) findPreference("pref_sort_by");  // Pref:  sort list of objects by <list>
+        displayObjectList = (MultiSelectListPreference) findPreference("multi_pref_object_list");   // Pref:  select object lists to display
+        //displayObjectList.setSummary(displayObjectList.getValues().toString());   // set summary to match object lists to display
+        displayObjectList.setSummary(updateObjectList(displayObjectList.getValues().toString()));
 
         updateLocSummaries();
+        //setObjectListSummary();
 
         // start location services, including permissions checks, etc.
         context = getActivity();
@@ -151,7 +159,37 @@ public class SettingsFragment extends PreferenceFragment {
                 return true;
             }
         });
+        displayObjectList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                String selected = newValue.toString();
+                String objectList = updateObjectList(selected);
+                if (objectList.equals("None")) {
+                    Toast.makeText(getActivity(),"Must select at least one Object List", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                displayObjectList.setSummary(objectList);
+                return true;
+            }
+        });
+    }
 
+    public String updateObjectList(String selected) {
+        int listNum = 0;
+        String objectList = "";
+        if (selected.contains("P")) {
+            objectList="Planets";
+            listNum++;}
+        if (selected.contains("M")) {
+            if (listNum >= 1) {objectList = objectList + ", ";}
+            objectList = objectList + "Messier";
+            listNum++;}
+        if (selected.contains("C")) {
+            if (listNum >= 1) {objectList = objectList + ", ";}
+            objectList = objectList + "Caldwell";
+            listNum++;}
+        if (listNum == 0) {objectList = "None";}
+        return objectList;
     }
 
     void updateLocSummaries() {

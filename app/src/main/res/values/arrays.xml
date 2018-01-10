@@ -4,28 +4,41 @@
         <item>1</item>
         <item>2</item>
         <item>3</item>
+        <item>4</item>
     </string-array>
 
     <string-array name="pref_sort_by">
         <item>Altitude</item>
+        <item>Azimuth</item>
         <item>Object ID</item>
         <item>Constellation</item>
     </string-array>
 
     <string name="pref_sort_by_list">Sort List of Objects by:</string>
 
+    <string-array name="pref_list_type">
+        <item>P</item>
+        <item>M</item>
+        <item>C</item>
+    </string-array>
+
+    <string-array name="pref_list_type_names">
+        <item>Planets</item>
+        <item>Messier</item>
+        <item>Caldwell</item>
+    </string-array>
+
+    <string name="pref_list_title">Object Lists:</string>
+
     <string-array name="constellation_abbr">
         <item>ALL</item>
         <item>AND</item>
-        <item>ANT</item>
         <item>APS</item>
-        <item>AQL</item>
         <item>AQR</item>
         <item>ARA</item>
         <item>ARI</item>
         <item>AUR</item>
         <item>BOO</item>
-        <item>CAE</item>
         <item>CAM</item>
         <item>CAP</item>
         <item>CAR</item>
@@ -36,12 +49,10 @@
         <item>CHA</item>
         <item>CIR</item>
         <item>CMA</item>
-        <item>CMI</item>
         <item>CNC</item>
         <item>COL</item>
         <item>COM</item>
         <item>CRA</item>
-        <item>CRB</item>
         <item>CRT</item>
         <item>CRU</item>
         <item>CRV</item>
@@ -50,42 +61,27 @@
         <item>DEL</item>
         <item>DOR</item>
         <item>DRA</item>
-        <item>EQU</item>
-        <item>ERI</item>
         <item>FOR</item>
         <item>GEM</item>
-        <item>GRU</item>
         <item>HER</item>
         <item>HOR</item>
         <item>HYA</item>
-        <item>HYI</item>
-        <item>IND</item>
         <item>LAC</item>
         <item>LEO</item>
         <item>LEP</item>
         <item>LIB</item>
-        <item>LMI</item>
-        <item>LUP</item>
         <item>LYN</item>
         <item>LYR</item>
-        <item>MEN</item>
-        <item>MIC</item>
         <item>MON</item>
         <item>MUS</item>
         <item>NOR</item>
-        <item>OCT</item>
         <item>OPH</item>
         <item>ORI</item>
         <item>PAV</item>
         <item>PEG</item>
         <item>PER</item>
-        <item>PHE</item>
-        <item>PIC</item>
-        <item>PSA</item>
         <item>PSC</item>
         <item>PUP</item>
-        <item>PYX</item>
-        <item>RET</item>
         <item>SCL</item>
         <item>SCO</item>
         <item>SCT</item>
@@ -94,15 +90,12 @@
         <item>SGE</item>
         <item>SGR</item>
         <item>TAU</item>
-        <item>TEL</item>
         <item>TRA</item>
         <item>TRI</item>
         <item>TUC</item>
         <item>UMA</item>
-        <item>UMI</item>
         <item>VEL</item>
         <item>VIR</item>
-        <item>VOL</item>
         <item>VUL</item>
     </string-array>
 
@@ -111,15 +104,12 @@
     <string-array name="constellation_name">
         <item>All</item>
         <item>Andromeda</item>
-        <item>Antlia</item>
         <item>Apus</item>
-        <item>Aquila</item>
         <item>Aquarius</item>
         <item>Ara</item>
         <item>Aries</item>
         <item>Auriga</item>
         <item>Boötes</item>
-        <item>Caelum</item>
         <item>Camelopardalis</item>
         <item>Capricornus</item>
         <item>Carina</item>
@@ -130,12 +120,10 @@
         <item>Chamaeleon</item>
         <item>Circinus</item>
         <item>Canis Major</item>
-        <item>Canis Minor</item>
         <item>Cancer</item>
         <item>Columba</item>
         <item>Coma Berenices</item>
         <item>Corona Austrina</item>
-        <item>Corona Borealis</item>
         <item>Crater</item>
         <item>Crux</item>
         <item>Corvus</item>
@@ -144,42 +132,27 @@
         <item>Delphinus</item>
         <item>Dorado</item>
         <item>Draco</item>
-        <item>Equuleus</item>
-        <item>Eridanus</item>
         <item>Fornax</item>
         <item>Gemini</item>
-        <item>Grus</item>
         <item>Hercules</item>
         <item>Horologium</item>
         <item>Hydra</item>
-        <item>Hydrus</item>
-        <item>Indus</item>
         <item>Lacerta</item>
         <item>Leo</item>
         <item>Lepus</item>
         <item>Libra</item>
-        <item>Leo Minor</item>
-        <item>Lupus</item>
         <item>Lynx</item>
         <item>Lyra</item>
-        <item>Mensa</item>
-        <item>Microscopium</item>
         <item>Monoceros</item>
         <item>Musca</item>
         <item>Norma</item>
-        <item>Octans</item>
         <item>Ophiuchus</item>
         <item>Orion</item>
         <item>Pavo</item>
         <item>Pegasus</item>
         <item>Perseus</item>
-        <item>Phoenix</item>
-        <item>Pictor</item>
-        <item>Piscis Austrinus</item>
         <item>Pisces</item>
         <item>Puppis</item>
-        <item>Pyxis</item>
-        <item>Reticulum</item>
         <item>Sculptor</item>
         <item>Scorpius</item>
         <item>Scutum</item>
@@ -188,15 +161,12 @@
         <item>Sagitta</item>
         <item>Sagittarius</item>
         <item>Taurus</item>
-        <item>Telescopium</item>
         <item>Triangulum Australe</item>
         <item>Triangulum</item>
         <item>Tucana</item>
         <item>Ursa Major</item>
-        <item>Ursa Minor</item>
         <item>Vela</item>
         <item>Virgo</item>
-        <item>Volans</item>
         <item>Vulpecula</item>
     </string-array>
 

@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity
         // start location services, including permissions checks, etc.
         context = this;
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        //preferences.edit().remove("multi_pref_object_list").apply();   used to clear existing preference if required
         useGPS = preferences.getBoolean("use_device_location", false);
         locUpdates = false;
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
