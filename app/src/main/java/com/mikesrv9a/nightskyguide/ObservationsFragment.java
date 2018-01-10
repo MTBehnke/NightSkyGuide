@@ -207,12 +207,12 @@ public class ObservationsFragment extends Fragment {
             observationsArrayList.add(allObservationsArrayList.get(counter));
         }
 
-        Collections.sort(observationsArrayList, new Comparator<Observation>() {
+        /*Collections.sort(observationsArrayList, new Comparator<Observation>() {
             @Override
             public int compare(Observation observation, Observation t1) {
                 return Integer.valueOf(observation.obsDsoID.substring(1)).compareTo(Integer.valueOf(t1.obsDsoID.substring(1)));
             }
-        });
+        });*/
 
         clickAdapter.notifyDataSetChanged();
     }

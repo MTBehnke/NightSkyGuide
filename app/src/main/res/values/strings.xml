@@ -43,8 +43,8 @@
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_app_info">AppInfoActivity</string>
     <string name="title_activity_location">LocationActivity</string>
-    <string name="default_latitude">44.1971</string>
-    <string name="default_longitude">-92.8623</string>
+    <string name="default_latitude">31.9601</string>
+    <string name="default_longitude">-111.5982</string>
     <string name="hint_date">Date</string>
     <string name="hint_location">Location</string>
     <string name="hint_seeing">Seeing</string>
@@ -62,7 +62,7 @@
     <string name="loc_current_lat_label">Latitude (dd.dddd):</string>
     <string name="loc_current_long_label">Longitude +E/-W (dd.dddd):</string>
     <string name="menuitem_settings">Settings</string>
-    <string name="location_default">Home</string>
+    <string name="location_default">Kitt Peak</string>
     <string name="location_null"></string>
     <string name="pref_loc_title">Location</string>
     <string name="pref_loc_label_req">Location (required)</string>
