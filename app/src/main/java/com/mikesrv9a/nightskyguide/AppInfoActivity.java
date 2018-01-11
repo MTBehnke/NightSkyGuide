@@ -1,10 +1,15 @@
 package com.mikesrv9a.nightskyguide;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.IOException;
 
 public class AppInfoActivity extends AppCompatActivity {
 
@@ -25,26 +30,15 @@ public class AppInfoActivity extends AppCompatActivity {
         Integer appInfoKey = intent.getIntExtra("appInfoKey",1);
 
         TextView appInfo = (TextView)findViewById(R.id.app_info_text);
+        ImageView imageView = (ImageView)findViewById(R.id.app_info_image);
 
         switch (appInfoKey) {
             case 1:
-                infoText = "Night Sky Guide v0.2.06 (beta)\n" +
-                        "Copyright 2018 Shiny Objects LLC\n\n" +
-                        "The main page displays each of the 110 Messier Object's, including:\n" +
-                        "∙ DSO ID (with √ if previously observed)\n∙ Common Name\n" +
-                        "∙ Constellation\n∙ DSO Type\n" +
-                        "∙ Magnitude (with ● if Mag 7.0 or brighter)\n∙ Apparent Size\n" +
-                        "∙ Current Altitude (with ▲ or ▼ for rising/setting)\n∙ Current Azimuth.\n\n" +
-                        "The list of objects is sorted based on altitude, with setting " +
-                        "objects listed first.  A negative altitude indicates the object " +
-                        "is below the horizon.\n\n" +
-                        "The altitude for circumpolar objects are preceeded by a ○ symbol and " +
-                        "objects that do not rise above the horizon are preceeded by a ø symbol. " +
-                        "Some objects without either symbol may only be above the horizon during " +
-                        "daylight hours and thus may not be observable at this time of year.\n\n" +
-                        "Clicking on any object in the list will open a detail page " +
-                        "providing more information about the object, including rise and set times " +
-                        "and an associated constellation chart.";
+                try {
+                    imageView.setImageBitmap(BitmapFactory.decodeStream(this.getAssets().open("images/DSObject Key.png")));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 break;
             case 2:
                 infoText = "Rise and set times are shown for the current time zone of your phone or tablet, " +
@@ -62,18 +56,25 @@ public class AppInfoActivity extends AppCompatActivity {
                         "by the Astronomical League.\n\n";
                 break;
             case 3:
-                infoText = "Entering observation information is at your discretion, however if you using this " +
-                        "as a record for an observing program, please make sure that you record all information " +
-                        "required by the sponsors.\n\n  If you are only interested in tracking what objects you have " +
-                        "observed, you can save a record without entering any information. "+
-                        "All DSO's that have an observation records will be indicated with a check mark on the main " +"" +
-                        "screen and there is a settings option to show only DSO's that you haven't previously observed.\n\n" +
-                        "The date, time and observing location will automatically be filled out.\n\n" +
-                        "Aside from the observation notes field at the bottom, all other fields will automatically populated " +
-                        "to match the entries from your last saved record.";
-
+                infoText = "Astronomical Seeing:\n\n" +
+                        "1 - Severely Disturbed Skies:\nEven low power views are uselessly shaky.\n\n" +
+                        "2 - Poor:\nLow power images are pretty steady, but medium powers are not.\n\n" +
+                        "3 - Good:\nYou can use about half the useful magnification of your scope. High powers produce " +
+                        "fidgety planets.\n\n" +
+                        "4 - Excellent:\nMedium powers are crisp and stable. High powers are good, but a little soft.\n\n" +
+                        "5 - Superb:\nAny power eyepiece produces a good, crisp image.\n\n\n" +
+                        "Transparency Scale:\n\n" +
+                        "0 - Do Not Observe:\nCompletely cloudy or precipitating.\n\n" +
+                        "1 - Very Poor:\nMostly cloudy.\n\n" +
+                        "2 - Poor:\nPartly cloudy or heavy haze. 1 or 2 Little Dipper stars visible.\n\n" +
+                        "3 - Somewhat Clear:\nCirrus or moderate haze. 3 or 4 Little Dipper stars visible.\n\n" +
+                        "4 - Partly Clear:\nSlight haze. 4 or 5 Little Dipper stars visible.\n\n" +
+                        "5 - Clear:\nNo clouds. Milky Way visible with averted vision. 6 Little Dipper stars visible.\n\n" +
+                        "6 - Very Clear:\nMilky Way and M31 visible. 7 Little Dipper stars visible.\n\n" +
+                        "7 - Extremely Clear:\nM33 and/or M81 visible.";
+                break;
             case 4:
-                infoText = "The Messier Field Guide is copyright 2018 Shiny Objects, LLC\n\n\n" +
+                infoText = "Night Sky Guide v0.2.7 (Beta)\nCopyright 2018 Shiny Objects, LLC\n\n\n" +
                         "Attributions:\n\n " +
                         "The constellation charts are from the International Astronomical " +
                         "Union and Sky & Telescope Magazine and are released under the Creative " +
@@ -86,8 +87,7 @@ public class AppInfoActivity extends AppCompatActivity {
                         "PhotoView v2.1.3\nLicensed under the Apache License version 2.0.\n\n"+
                         "The Apache License version 2.0 is an open source software license released " +
                         "by the Apache Software Foundation.  A copy of this license is available at " +
-                        "http://www.apache.org/licenses/LICENSE-2.0\n\n\n" +
-                        "Note: the Night Sky Guide is not currently copyrighted as open source.";
+                        "http://www.apache.org/licenses/LICENSE-2.0.";
         }
 
         appInfo.setText(infoText);

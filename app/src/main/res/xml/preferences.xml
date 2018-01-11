@@ -69,7 +69,7 @@
         android:enabled="false" />
 
     <PreferenceCategory
-        android:title="EDIT USER LISTS:"/>
+        android:title="EDIT USER DEFINED LOCATIONS:"/>
 
     <PreferenceScreen
         android:key="update_location_pref_screen"

@@ -1,6 +1,7 @@
 package com.mikesrv9a.nightskyguide;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
@@ -12,6 +13,9 @@ import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
@@ -66,6 +70,7 @@ public class SettingsFragment extends PreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         // load the preferences from the XML resource
         addPreferencesFromResource(R.xml.preferences);
 
@@ -182,6 +187,27 @@ public class SettingsFragment extends PreferenceFragment {
                 return true;
             }
         });*/
+    }
+
+    // display this fragment's menu items
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_settings, menu);
+    }
+
+    // display selected menu item
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.app_credits:
+                Intent credits = new Intent(getActivity(), AppInfoActivity.class);
+                credits.putExtra("appInfoKey", 4);
+                startActivity(credits);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public String updateObjectList(String selected) {

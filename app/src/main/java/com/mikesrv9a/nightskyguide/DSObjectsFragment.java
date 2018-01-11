@@ -242,11 +242,11 @@ public class DSObjectsFragment extends Fragment {
                 Intent settings = new Intent(getActivity(), SettingsActivity.class);
                 startActivity(settings);
                 return true;
-            case R.id.app_credits:
+            /*case R.id.app_credits:
                 Intent credits = new Intent(getActivity(), AppInfoActivity.class);
                 credits.putExtra("appInfoKey", 4);
                 startActivity(credits);
-                return true;
+                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }

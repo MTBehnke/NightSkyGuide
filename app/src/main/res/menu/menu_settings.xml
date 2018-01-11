@@ -2,10 +2,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.mikesrv9a.nightskyguide.SettingsActivity">
+
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/app_credits"
+        android:enabled="true"
+        android:icon="@drawable/ic_copyright_24dp"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:title="@string/menuitem_credits"
+        app:showAsAction="ifRoom" />
 
 </menu>

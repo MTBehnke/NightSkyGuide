@@ -13,15 +13,24 @@ android:paddingTop="@dimen/activity_vertical_margin"
 app:layout_behavior="@string/appbar_scrolling_view_behavior"
 tools:context="com.mikesrv9a.nightskyguide.AppInfoActivity">
 
-<LinearLayout
+<RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    tools:ignore="Orientation">
+
+    <ImageView
+        android:id="@+id/app_info_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"/>
 
     <TextView
-    android:id="@+id/app_info_text"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+        android:id="@+id/app_info_text"
+        android:layout_below="@id/app_info_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-</LinearLayout>
+</RelativeLayout>
 
 </ScrollView>
