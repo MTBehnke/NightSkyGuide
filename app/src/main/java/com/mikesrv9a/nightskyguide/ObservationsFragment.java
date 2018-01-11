@@ -249,7 +249,7 @@ public class ObservationsFragment extends Fragment {
                 data.moveToNext();
             }
             csvWrite.close();
-            Toast.makeText(getActivity(), "File saved", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "File saved to:\n" + filePath, Toast.LENGTH_LONG).show();
         }
         catch (Exception exception) {
             Toast.makeText(getActivity(), "Error writing file", Toast.LENGTH_LONG).show();

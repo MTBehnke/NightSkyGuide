@@ -74,7 +74,7 @@ public class AppInfoActivity extends AppCompatActivity {
                         "7 - Extremely Clear:\nM33 and/or M81 visible.";
                 break;
             case 4:
-                infoText = "Night Sky Guide v0.2.7 (Beta)\nCopyright 2018 Shiny Objects, LLC\n\n\n" +
+                infoText = "Night Sky Guide v0.2.8 (Beta)\nCopyright 2018 Shiny Objects, LLC\n\n\n" +
                         "Attributions:\n\n " +
                         "The constellation charts are from the International Astronomical " +
                         "Union and Sky & Telescope Magazine and are released under the Creative " +
