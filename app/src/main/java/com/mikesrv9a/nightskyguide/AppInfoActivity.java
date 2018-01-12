@@ -74,8 +74,13 @@ public class AppInfoActivity extends AppCompatActivity {
                         "7 - Extremely Clear:\nM33 and/or M81 visible.";
                 break;
             case 4:
-                infoText = "Night Sky Guide v0.2.9 (Beta)\n" +
-                        "Copyright 2018 Shiny Objects, LLC\n\n" +
+                infoText = "Night Sky Guide v0.2.10 (Beta)\n" +
+                        "Copyright 2018 Shiny Objects, LLC\n\n\n" +
+                        "Privacy Policy:\n\nWe don’t collect, transmit or store your data, period.\n" +
+                        "All data used by this app, including location information as enabled by ‘Use GPS/Network Location’ or entered by you, " +
+                        "is stored locally on your device.  If you choose to ‘Export Log to CSV’, this data will be written to a file stored " +
+                        "locally on your device.\n\n\n" +
+                        "Software License:\n" +
                         "Licensed under the Apache License, Version 2.0 (the \"License\"); " +
                         "you may not use this file except in compliance with the License. " +
                         "You may obtain a copy of the License at\n\n" +
@@ -84,10 +89,10 @@ public class AppInfoActivity extends AppCompatActivity {
                         "distributed under the License is distributed on an \"AS IS\" BASIS, " +
                         "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. " +
                         "See the License for the specific language governing permissions and " +
-                        "limitations under the License.\n\n" +
+                        "limitations under the License.\n\n\n" +
                         "Open source code available at:\n" +
                         "https://github.com/MTBehnke/NightSkyGuide\n\n\n"+
-                        "Attributions:\n\n " +
+                        "Attributions:\n\n" +
                         "The constellation charts are from the International Astronomical " +
                         "Union and Sky & Telescope Magazine and are released under the Creative " +
                         "Commons Attribution 3.0 Unported License and have been modified to have " +
