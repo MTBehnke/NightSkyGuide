@@ -176,6 +176,7 @@ public class DSObjectsFragment extends Fragment {
             int nameCol = data.getColumnIndex("name");
             int psaCol = data.getColumnIndex("psa");
             int oithCol = data.getColumnIndex("oith");
+            int skyatlasCol = data.getColumnIndex("skyatlas");
             int catCol = data.getColumnIndex("catalogue");
             setUserPreferences();  // need user's latitude and longitude
             while (!data.isAfterLast()) {
@@ -190,6 +191,7 @@ public class DSObjectsFragment extends Fragment {
                 String dsoName = data.getString(nameCol);
                 String dsoPSA = data.getString(psaCol);
                 String dsoOITH = data.getString(oithCol);
+                String dsoSkyAtlas = data.getString(skyatlasCol);
                 String dsoCatalogue = data.getString(catCol);
 
                 //Checks observations to determine whether DSO has been observed
@@ -200,7 +202,7 @@ public class DSObjectsFragment extends Fragment {
 
                 // creates DSObjects
                 DSObject dsObject = new DSObject(dsoObjectID, dsoType, dsoMag, dsoSize, dsoDist,
-                        dsoRA, dsoDec, dsoConst, dsoName, dsoPSA, dsoOITH, dsoCatalogue, dsoObserved);
+                        dsoRA, dsoDec, dsoConst, dsoName, dsoPSA, dsoOITH, dsoSkyAtlas, dsoCatalogue, dsoObserved);
                 dsObject.setDsoAltAz(userLat, userLong);
                 allDsObjectsArrayList.add(dsObject);
 
@@ -210,7 +212,7 @@ public class DSObjectsFragment extends Fragment {
             // add planets as DSObjects  (1:Mercury thru 7: Neptune, skip 0:Earth)
             for (int planet = 1; planet < 8; planet++) {
                    DSObject dsObject = new DSObject(AstroCalc.planetName[planet],"PL",0.0,"","",null,null,
-                           "",null,"","","",0);
+                           "",null,"","","","",0);
                    dsObject.setPlanetCoords(planet);
                    dsObject.setDsoAltAz(userLat, userLong);
                    allDsObjectsArrayList.add(dsObject);
@@ -309,7 +311,7 @@ public class DSObjectsFragment extends Fragment {
                 dsObjectsArrayList.add(allDsObjectsArrayList.get(counter));    // passes all filters - add to recyclerview
             }
         }
-        if (sortPreference.equals("1")) {    // sort based on altitude
+        if (sortPreference.equals("1")) {    // sort based on altitude - setting, then rising
             Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
                 @Override
                 public int compare(DSObject dsObject, DSObject t1) {
@@ -317,7 +319,16 @@ public class DSObjectsFragment extends Fragment {
                 }
             });
         }
-        else if (sortPreference.equals("2")) {    // sort based on azimuth
+        else if (sortPreference.equals("2")) {    // sort based on altitude - highest to lowest
+            Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
+                @Override
+                public int compare(DSObject dsObject, DSObject t1) {
+                    return Double.compare(dsObject.getDsoAlt(), t1.getDsoAlt());
+                }
+            });
+            Collections.reverse(dsObjectsArrayList);
+        }
+        else if (sortPreference.equals("3")) {    // sort based on azimuth
             Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
                 @Override
                 public int compare(DSObject dsObject, DSObject t1) {
@@ -325,7 +336,7 @@ public class DSObjectsFragment extends Fragment {
                 }
             });
         }
-        else if (sortPreference.equals("3")) {     // sort based on object ID
+        else if (sortPreference.equals("4")) {     // sort based on object ID
             Collections.sort(dsObjectsArrayList, new Comparator<DSObject>() {
                 @Override
                 public int compare(DSObject dsObject, DSObject t1) {

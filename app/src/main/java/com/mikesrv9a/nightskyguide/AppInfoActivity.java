@@ -62,6 +62,7 @@ public class AppInfoActivity extends AppCompatActivity {
                         "for two common atlases are listed on the detail pages.\n\n" +
                         "PSA refers to Sky & Telescope's Pocket Sky Atlas\n\n" +
                         "OITH refers to Objects in the Heavens ed.5.2 by Peter Birren\n\n" +
+                        "Sky Atlas 2000 refers to Sky Atlas 2000.0 by Tirion & Sinnott\n\n" +
                         "Clicking on the + icon will allow you to create a record of your observations, including " +
                         "information generally required for various observing programs, such as those sponsored " +
                         "by the Astronomical League.\n\n";
@@ -85,7 +86,7 @@ public class AppInfoActivity extends AppCompatActivity {
                         "7 - Extremely Clear:\nM33 and/or M81 visible.";
                 break;
             case 4:
-                infoText = "Night Sky Guide v0.2.11 (Beta)\n" +
+                infoText = "Night Sky Guide v0.2.12 (Beta)\n" +
                         "Copyright 2018 Shiny Objects, LLC\n\n\n" +
                         "Privacy Policy:\n\nWe don’t collect, transmit or store your data, period.\n\n" +
                         "All data used by this app, including location information as enabled by ‘Use GPS/Network Location’ or entered by you, " +

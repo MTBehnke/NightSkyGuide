@@ -229,8 +229,18 @@ public class ObservationsFragment extends Fragment {
         String exportDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
         String fileName = "ObservationLog.csv";
         String filePath = exportDir + File.separator + fileName;
+        File existCheck = new File(filePath);
         try
         {
+            if (existCheck.exists()) {
+                int version = 0;
+                do {
+                    version++;
+                    fileName = "ObservationLog (" + version + ").csv";
+                    filePath = exportDir + File.separator + fileName;
+                    existCheck = new File(filePath);
+                } while (existCheck.exists());
+            }
             FileOutputStream file = new FileOutputStream(filePath);
             file.write(0xef);
             file.write(0xbb);

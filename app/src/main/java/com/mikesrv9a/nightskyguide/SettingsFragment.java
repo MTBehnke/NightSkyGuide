@@ -60,7 +60,8 @@ public class SettingsFragment extends PreferenceFragment {
     SwitchPreference displayBelowHoriz;  // Pref:  display objects below horizon
     ListPreference sortByPref;  // Pref:  sort list of objects by <list>
     MultiSelectListPreference displayObjectList;  // Pref:  select object lists to display (Planets, Messier, Caldwell)
-    MultiSelectListPreference displayConstList;  // Pref:  select which constellations to display objects
+    MultiSelectListPreference displayAtlasList;  // Pref:  select atlas lists to display (PSA, OITH, Sky Atlas)
+    //MultiSelectListPreference displayConstList;  // Pref:  select which constellations to display objects
 
     DecimalFormat df = new DecimalFormat("#.0000");
 
@@ -109,6 +110,8 @@ public class SettingsFragment extends PreferenceFragment {
         sortByPref = (ListPreference) findPreference("pref_sort_by");  // Pref:  sort list of objects by <list>
         displayObjectList = (MultiSelectListPreference) findPreference("multi_pref_object_list");   // Pref:  select object lists to display
         displayObjectList.setSummary(updateObjectList(displayObjectList.getValues().toString()));
+        displayAtlasList = (MultiSelectListPreference) findPreference("multi_pref_atlas_list");  // Pref:  select atlas lists to display
+        displayAtlasList.setSummary(updateAtlasList(displayAtlasList.getValues().toString()));
         //displayConstList = (MultiSelectListPreference) findPreference("multi_pref_const_month");
         //Log.i("Start: ", displayConstList.getValues().toString());
 
@@ -179,6 +182,15 @@ public class SettingsFragment extends PreferenceFragment {
                 return true;
             }
         });
+        displayAtlasList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                String selected = newValue.toString();
+                String atlasList = updateAtlasList(selected);
+                displayAtlasList.setSummary(atlasList);
+                return true;
+            }
+        });
         /*displayConstList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -223,6 +235,24 @@ public class SettingsFragment extends PreferenceFragment {
         if (selected.contains("C")) {
             if (listNum >= 1) {objectList = objectList + ", ";}
             objectList = objectList + "Caldwell";
+            listNum++;}
+        if (listNum == 0) {objectList = "None";}
+        return objectList;
+    }
+
+    public String updateAtlasList(String selected) {
+        int listNum = 0;
+        String objectList = "";
+        if (selected.contains("P")) {
+            objectList="Pocket Sky Atlas";
+            listNum++;}
+        if (selected.contains("O")) {
+            if (listNum >= 1) {objectList = objectList + ", ";}
+            objectList = objectList + "Objects in the Heavens";
+            listNum++;}
+        if (selected.contains("S")) {
+            if (listNum >= 1) {objectList = objectList + ", ";}
+            objectList = objectList + "Sky Atlas 2000.0";
             listNum++;}
         if (listNum == 0) {objectList = "None";}
         return objectList;
@@ -362,10 +392,13 @@ public class SettingsFragment extends PreferenceFragment {
             Double gpsLat = Double.parseDouble(preferences.getString("last_gps_lat", getString(R.string.default_latitude)));
             Double gpsLong = Double.parseDouble(preferences.getString("last_gps_long", getString(R.string.default_longitude)));
             viewingLocation.setSummary("Latitude:  " + df.format(gpsLat) + "   /   Longitude:  " + df.format(gpsLong));
-            useDeviceLocation.setSummary("Yes");}
+            useDeviceLocation.setSummary("Yes");
+            viewingLocation.setEnabled(false);
+        }
         else {
             useDeviceLocation.setSummary("No");
             viewingLocation.setSummary("%s");
+            viewingLocation.setEnabled(true);
         }
     }
 

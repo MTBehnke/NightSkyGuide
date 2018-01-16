@@ -5,10 +5,12 @@
         <item>2</item>
         <item>3</item>
         <item>4</item>
+        <item>5</item>
     </string-array>
 
     <string-array name="pref_sort_by">
-        <item>Altitude</item>
+        <item>Altitude - Setting, then Rising</item>
+        <item>Altitude - Highest to Lowest</item>
         <item>Azimuth</item>
         <item>Object ID</item>
         <item>Constellation</item>
@@ -29,6 +31,20 @@
     </string-array>
 
     <string name="pref_list_title">Object Lists:</string>
+
+    <string-array name="pref_list_atlas">
+        <item>P</item>
+        <item>O</item>
+        <item>S</item>
+    </string-array>
+
+    <string-array name="pref_list_atlas_names">
+        <item>Pocket Sky Atlas</item>
+        <item>Objects in the Heavens</item>
+        <item>Sky Atlas 2000.0</item>
+    </string-array>
+
+    <string name="pref_list_atlas_title">Select Sky Atlases:</string>
 
     <!--<string-array name="constellation_abbr">
         <item>JAN</item>

@@ -22,6 +22,7 @@
     <string name="hint_name">Common Name</string>
     <string name="hint_psa">PSA Page(s)</string>
     <string name="hint_oith">OITH Page(s)</string>
+    <string name="hint_skyatlas">Sky Atlas</string>
     <string name="hint_observed">Observed (0/1)</string>
     <string name="label_objectid">Object ID:</string>
     <string name="label_catalogue">Catalogue:</string>
@@ -33,8 +34,9 @@
     <string name="label_dec">DEC:</string>
     <string name="label_const">Constellation:</string>
     <string name="label_name">Common Name:</string>
-    <string name="label_psa">PSA Pages:</string>
-    <string name="label_oith">OITH Pages:</string>
+    <string name="label_psa">Pocket Sky Atlas:</string>
+    <string name="label_oith">OITH Fieldbook:</string>
+    <string name="label_skyatlas">Sky Atlas 2000:</string>
     <string name="label_observed">Observed:</string>
     <string name="label_alt">Altitude:</string>
     <string name="label_az">Azimuth:</string>

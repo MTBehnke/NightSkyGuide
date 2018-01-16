@@ -28,6 +28,7 @@ class DSObject implements Parcelable {
     String dsoName;         // DSO Common Name (e.g. Andromeda Galaxy)
     String dsoPSA;          // DSO Page Number(s) in S&T Pocket Sky Atlas
     String dsoOITH;         // DSO Page Number(s) in Objects in the Heavens
+    String dsoSkyAtlas;     // DSO Page Number(s) for Sky Atlas 2000
     String dsoCatalogue;    // DSO Catalogue ID (e.g. NGC #)
     Integer dsoObserved;    // DSO Observed (not observed = 0, observed = tbd)
     Double dsoAlt;          // DSO current altitude in sky (ddd.ddd)
@@ -41,7 +42,7 @@ class DSObject implements Parcelable {
     // DSObject constructor
     DSObject (String id, String type, Double mag, String size, String dist,
                      Double ra, Double dec, String cons, String name, String psa,
-                     String oith, String catalogue, Integer observed) {
+                     String oith, String skyatlas, String catalogue, Integer observed) {
         dsoObjectID = id;
         dsoType = type;
         dsoMag = mag;
@@ -53,6 +54,7 @@ class DSObject implements Parcelable {
         dsoName = name;
         dsoPSA = psa;
         dsoOITH = oith;
+        dsoSkyAtlas = skyatlas;
         dsoCatalogue = catalogue;
         dsoObserved = observed;
         dsoAlt = 0.0;
@@ -83,6 +85,8 @@ class DSObject implements Parcelable {
     String getDsoPSA() {return dsoPSA;}
 
     String getDsoOITH() {return dsoOITH;}
+
+    String getDsoSkyAtlas() {return dsoSkyAtlas;}
 
     String getDsoCatalogue()  {return dsoCatalogue;}
 
@@ -209,6 +213,7 @@ class DSObject implements Parcelable {
         parcel.writeString(dsoName);
         parcel.writeString(dsoPSA);
         parcel.writeString(dsoOITH);
+        parcel.writeString(dsoSkyAtlas);
         parcel.writeString(dsoCatalogue);
         parcel.writeInt(dsoObserved);
         parcel.writeDouble(dsoAlt);
@@ -228,6 +233,7 @@ class DSObject implements Parcelable {
         dsoName = in.readString();
         dsoPSA = in.readString();
         dsoOITH = in.readString();
+        dsoSkyAtlas = in.readString();
         dsoCatalogue = in.readString();
         dsoRiseTimeStr = in.readString();
         dsoSetTimeStr = in.readString();

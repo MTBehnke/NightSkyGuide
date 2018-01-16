@@ -51,7 +51,8 @@
                 android:id="@+id/Section2L"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.4">
+                android:paddingBottom="12dp"
+                android:layout_weight="0.45">
 
                 <TextView
                     android:id="@+id/catLabelTextView"
@@ -105,10 +106,16 @@
                     style="@style/DSObjectLabelTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="12dp"
                     android:layout_below="@id/psaLabelTextView"
                     android:text="@string/label_oith" />
 
+                <TextView
+                    android:id="@+id/skyAtlasLabelTextView"
+                    style="@style/DSObjectLabelTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/oithLabelTextView"
+                    android:text="@string/label_skyatlas" />
 
             </RelativeLayout>
 
@@ -116,7 +123,7 @@
                 android:id="@+id/Section2R"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.6">
+                android:layout_weight="0.55">
 
                 <TextView
                     android:id="@+id/catTextView"
@@ -166,6 +173,13 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/psaTextView" />
 
+                <TextView
+                    android:id="@+id/skyAtlasTextView"
+                    style="@style/DSObjectTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/oithTextView" />
+
             </RelativeLayout>
 
         </LinearLayout>
@@ -194,7 +208,7 @@
                 android:id="@+id/Section3L"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.4">
+                android:layout_weight="0.45">
 
                 <TextView
                     android:id="@+id/raLabelTextView"
@@ -250,7 +264,7 @@
                 android:id="@+id/Section3R"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.6">
+                android:layout_weight="0.55">
 
                 <TextView
                     android:id="@+id/raTextView"
@@ -320,7 +334,7 @@
             android:id="@+id/Section4L"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.4">
+            android:layout_weight="0.45">
 
             <TextView
                 android:id="@+id/constLabelTextView"
@@ -335,7 +349,7 @@
             android:id="@+id/Section4R"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.6">
+            android:layout_weight="0.55">
 
         <TextView
             android:id="@+id/constTextView"

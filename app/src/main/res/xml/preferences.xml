@@ -56,6 +56,14 @@
             android:title="@string/pref_list_title" />
 
         <!--<MultiSelectListPreference
+            android:defaultValue="@array/pref_list_atlas"
+            android:entries="@array/pref_list_atlas_names"
+            android:entryValues="@array/pref_list_atlas"
+            android:key="multi_pref_atlas_list"
+            android:summary="%s"
+            android:title="@string/pref_list_atlas_title" /> -->
+
+        <!--<MultiSelectListPreference
             android:defaultValue="@array/constellation_abbr"
             android:entries="@array/constellation_name"
             android:entryValues="@array/constellation_abbr"
@@ -69,11 +77,11 @@
         android:enabled="false" />
 
     <PreferenceCategory
-        android:title="EDIT USER DEFINED LOCATIONS:"/>
+        android:title="OTHER OPTIONS:"/>
 
     <PreferenceScreen
         android:key="update_location_pref_screen"
-        android:title="Update Locations">
+        android:title="Update User Defined Locations">
 
         <PreferenceCategory
             android:title="USER DEFINED LOCATIONS:"/>
@@ -263,5 +271,13 @@
         </PreferenceScreen>
 
     </PreferenceScreen>
+
+    <MultiSelectListPreference
+        android:defaultValue="@array/pref_list_atlas"
+        android:entries="@array/pref_list_atlas_names"
+        android:entryValues="@array/pref_list_atlas"
+        android:key="multi_pref_atlas_list"
+        android:summary="%s"
+        android:title="@string/pref_list_atlas_title" />
 
 </PreferenceScreen>

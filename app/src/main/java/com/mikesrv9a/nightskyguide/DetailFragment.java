@@ -4,11 +4,14 @@ package com.mikesrv9a.nightskyguide;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.InputStream;
+import java.util.Set;
+
 import com.github.chrisbanes.photoview.PhotoView;
 
 public class DetailFragment extends Fragment {
@@ -37,6 +42,10 @@ public class DetailFragment extends Fragment {
     private TextView nameTextView; // displays dsObject's Common Name
     private TextView psaTextView; // displays dsObject's PSA pages
     private TextView oithTextView; // displays dsObject's OITH pages
+    private TextView skyAtlasTextView; // display dsObject's Sky Atlas 2000 pages
+    private TextView psaTextViewLabel;
+    private TextView oithTextViewLabel;
+    private TextView skyAtlasTextViewLabel;
     private TextView catTextView;  // displays dsObject's catalogue number (e.g. NGC #)
     private TextView altTextView; // displays dsObject's altitude
     private TextView azTextView; // displays dsObject's azimuth
@@ -46,6 +55,7 @@ public class DetailFragment extends Fragment {
     private FloatingActionButton addObservationFAB;  // FAB to go to add observation record
     private PhotoView constImageView; // displays dsObject's constellation image
     private Bitmap constImage;
+    private Set<String> showAtlasLists;  // preference for altas lists
 
     // callback method implemented by MainActivity
     public interface AddObservationListener {
@@ -58,8 +68,8 @@ public class DetailFragment extends Fragment {
     // called when DetailFragment's view needs to be created
     @Override
     public View onCreateView(
-        LayoutInflater inflater, ViewGroup container,
-        Bundle savedInstanceState) {
+            LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         setHasOptionsMenu(true);  // this fragment has no menu items to display
 
@@ -84,6 +94,10 @@ public class DetailFragment extends Fragment {
         nameTextView = (TextView) view.findViewById(R.id.nameTextView);
         psaTextView = (TextView) view.findViewById(R.id.psaTextView);
         oithTextView = (TextView) view.findViewById(R.id.oithTextView);
+        skyAtlasTextView = (TextView) view.findViewById(R.id.skyAtlasTextView);
+        psaTextViewLabel = (TextView) view.findViewById(R.id.psaLabelTextView);
+        oithTextViewLabel = (TextView) view.findViewById(R.id.oithLabelTextView);
+        skyAtlasTextViewLabel = (TextView) view.findViewById(R.id.skyAtlasLabelTextView);
         catTextView = (TextView) view.findViewById(R.id.catTextView);
         altTextView = (TextView) view.findViewById(R.id.altTextView);
         azTextView = (TextView) view.findViewById(R.id.azTextView);
@@ -92,6 +106,7 @@ public class DetailFragment extends Fragment {
 
 
         // set the TextViews
+        setUserPreferences();
         objectIdTextView.setText(dsObject.getDsoObjectID());
         String typeAbbr = dsObject.getDsoType();
         typeTextView.setText(AstroCalc.getDSOType(typeAbbr));
@@ -105,18 +120,20 @@ public class DetailFragment extends Fragment {
         nameTextView.setText(dsObject.getDsoName());
         psaTextView.setText(dsObject.getDsoPSA());
         oithTextView.setText(dsObject.getDsoOITH());
+        skyAtlasTextView.setText(dsObject.getDsoSkyAtlas());
         catTextView.setText(dsObject.getDsoCatalogue());
-        altTextView.setText((Integer.toString((int)Math.round(dsObject.getDsoAlt()))) + "°");
-        azTextView.setText((Integer.toString((int)Math.round(dsObject.getDsoAz()))) + "°");
+        altTextView.setText((Integer.toString((int) Math.round(dsObject.getDsoAlt()))) + "°");
+        azTextView.setText((Integer.toString((int) Math.round(dsObject.getDsoAz()))) + "°");
         riseTextView.setText(dsObject.getDsoRiseTimeStr());
         setTextView.setText(dsObject.getDsoSetTimeStr());
 
         // display constellation image
         if (!constAbbr.equals("")) {
-        String constName = "images/" + dsObject.getDsoConst() + ".gif";
-        constImageView = (PhotoView) view.findViewById(R.id.constImageView);
-        Bitmap bm = loadConstImage(constName);   // display constellation .gif on detail screen
-        constImageView.setImageBitmap(bm);}
+            String constName = "images/" + dsObject.getDsoConst() + ".gif";
+            constImageView = (PhotoView) view.findViewById(R.id.constImageView);
+            Bitmap bm = loadConstImage(constName);   // display constellation .gif on detail screen
+            constImageView.setImageBitmap(bm);
+        }
 
         return view;
     }
@@ -146,7 +163,7 @@ public class DetailFragment extends Fragment {
             ims.close();
             return constImage;
         } catch (Exception e) {
-            Toast.makeText(getActivity(),"error", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "error", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         return constImage;
@@ -176,4 +193,31 @@ public class DetailFragment extends Fragment {
         }
     }
 
+    // show/hide atlas textviews depending upon preferences
+    public void setUserPreferences() {
+        Context context = getActivity();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        showAtlasLists = preferences.getStringSet("multi_pref_atlas_list", null);
+        if (!showAtlasLists.contains("P")) {
+            psaTextView.setVisibility(View.GONE);
+            psaTextViewLabel.setVisibility(View.GONE);}
+        else {
+            psaTextView.setVisibility(View.VISIBLE);
+            psaTextViewLabel.setVisibility(View.VISIBLE);
+        }
+        if (!showAtlasLists.contains("O")) {
+            oithTextView.setVisibility(View.GONE);
+            oithTextViewLabel.setVisibility(View.GONE);}
+        else {
+            oithTextView.setVisibility(View.VISIBLE);
+            oithTextViewLabel.setVisibility(View.VISIBLE);
+        }
+        if (!showAtlasLists.contains("S")) {
+            skyAtlasTextView.setVisibility(View.GONE);
+            skyAtlasTextViewLabel.setVisibility(View.GONE);}
+        else {
+            skyAtlasTextView.setVisibility(View.VISIBLE);
+            skyAtlasTextViewLabel.setVisibility(View.VISIBLE);
+        }
+    }
 }
