@@ -12,15 +12,15 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
-import java.util.Set;
+import java.util.Locale;
 
 public class SettingsFragment extends PreferenceFragment {
 
@@ -63,7 +63,8 @@ public class SettingsFragment extends PreferenceFragment {
     MultiSelectListPreference displayAtlasList;  // Pref:  select atlas lists to display (PSA, OITH, Sky Atlas)
     //MultiSelectListPreference displayConstList;  // Pref:  select which constellations to display objects
 
-    DecimalFormat df = new DecimalFormat("#.0000");
+    DecimalFormatSymbols dfSymbol_US = DecimalFormatSymbols.getInstance(Locale.US);
+    DecimalFormat df = new DecimalFormat("0.0000",dfSymbol_US);
 
     public Context context;
     SharedPreferences preferences;

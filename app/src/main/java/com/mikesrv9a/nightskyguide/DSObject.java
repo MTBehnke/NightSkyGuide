@@ -2,14 +2,12 @@ package com.mikesrv9a.nightskyguide;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.text.DecimalFormat;
 import java.util.Arrays;
 
 /** Creates DSObjects and updates sky position, etc.

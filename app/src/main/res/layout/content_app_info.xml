@@ -23,7 +23,8 @@ tools:context="com.mikesrv9a.nightskyguide.AppInfoActivity">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
-        android:adjustViewBounds="true"/>
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/hint_app_info_image"/>
 
     <TextView
         android:id="@+id/app_info_text"

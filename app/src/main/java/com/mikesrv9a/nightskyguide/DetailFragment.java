@@ -11,18 +11,19 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.InputStream;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Set;
 
 import com.github.chrisbanes.photoview.PhotoView;
@@ -106,11 +107,15 @@ public class DetailFragment extends Fragment {
 
 
         // set the TextViews
+        NumberFormat numberFormat = NumberFormat.getInstance(Locale.US);
+        DecimalFormat df = (DecimalFormat) numberFormat;
+        df.applyPattern("0.0");
         setUserPreferences();
         objectIdTextView.setText(dsObject.getDsoObjectID());
         String typeAbbr = dsObject.getDsoType();
         typeTextView.setText(AstroCalc.getDSOType(typeAbbr));
-        magTextView.setText(Double.toString(dsObject.getDsoMag()));
+        String magnitude = df.format(dsObject.getDsoMag());
+        magTextView.setText(magnitude);
         sizeTextView.setText(dsObject.getDsoSize());
         distTextView.setText(dsObject.getDsoDist());
         raTextView.setText(AstroCalc.convertDDToHMS(dsObject.getDsoRA()));
@@ -122,8 +127,10 @@ public class DetailFragment extends Fragment {
         oithTextView.setText(dsObject.getDsoOITH());
         skyAtlasTextView.setText(dsObject.getDsoSkyAtlas());
         catTextView.setText(dsObject.getDsoCatalogue());
-        altTextView.setText((Integer.toString((int) Math.round(dsObject.getDsoAlt()))) + "°");
-        azTextView.setText((Integer.toString((int) Math.round(dsObject.getDsoAz()))) + "°");
+        String altitude = df.format(dsObject.getDsoAlt()) + "°";
+        altTextView.setText(altitude);
+        String azimuth = df.format(dsObject.getDsoAz()) + "°";
+        azTextView.setText(azimuth);
         riseTextView.setText(dsObject.getDsoRiseTimeStr());
         setTextView.setText(dsObject.getDsoSetTimeStr());
 

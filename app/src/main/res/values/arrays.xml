@@ -9,8 +9,8 @@
     </string-array>
 
     <string-array name="pref_sort_by">
-        <item>Altitude - Setting, then Rising</item>
-        <item>Altitude - Highest to Lowest</item>
+        <item>Altitude - Setting First</item>
+        <item>Altitude - Highest First</item>
         <item>Azimuth</item>
         <item>Object ID</item>
         <item>Constellation</item>

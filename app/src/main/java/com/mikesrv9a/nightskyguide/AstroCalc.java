@@ -11,10 +11,6 @@ package com.mikesrv9a.nightskyguide;
 // Additional info at http://www.stargazing.net/kepler/altaz.html
 
 
-import android.util.Log;
-
-import java.util.concurrent.RecursiveTask;
-
 public class AstroCalc {
 
     // these values are from Table 8: Elements of the planetary orbits at epoch 2010.0 (page 123)

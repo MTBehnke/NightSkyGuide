@@ -27,8 +27,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 
 public class ObservationsFragment extends Fragment {

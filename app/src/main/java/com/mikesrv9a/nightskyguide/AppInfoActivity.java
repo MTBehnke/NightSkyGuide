@@ -1,6 +1,5 @@
 package com.mikesrv9a.nightskyguide;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -40,10 +39,11 @@ public class AppInfoActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 infoText = "\n\nDSO Observing Tips\n\n" +
-                        "Sorting by altitude will sort the list starting with the objects lowest in the western sky (setting), " +
+                        "Sorting by Altitude - Setting First will sort the list starting with the objects lowest in the western sky (setting), " +
                         "to those highest in the sky, then continuing to those lowest in the eastern sky (rising). For observing events " +
                         "or programs, such as a Messier Marathon, this sort order can help you observe objects before they set below the horizon.\n\n" +
-                        "If casual observing, generally objects that are low in the sky, at altitudes of 20° or less, can be difficult to observe. " +
+                        "If casual observing, sorting by Altitude - Highest First will sort the list highest to lowest.  Generally objects that " +
+                        "are low in the sky, at altitudes of 20° or less, can be difficult to observe. " +
                         "Objects higher in the sky provide better views because you are looking through less atmosphere.\n\n" +
                         "Brighter objects, those with lower magnitude values, are generally easier to observe. DSOs with magnitudes of 7 and lower are " +
                         "indicated with a solid circle symbol adjacent to the magnitude to help identify brighter targets.\n\n" +
@@ -86,7 +86,7 @@ public class AppInfoActivity extends AppCompatActivity {
                         "7 - Extremely Clear:\nM33 and/or M81 visible.";
                 break;
             case 4:
-                infoText = "Night Sky Guide v0.2.12 (Beta)\n" +
+                infoText = "Night Sky Guide v0.2.13 (Beta)\n" +
                         "Copyright 2018 Shiny Objects, LLC\n\n\n" +
                         "Privacy Policy:\n\nWe don’t collect, transmit or store your data, period.\n\n" +
                         "All data used by this app, including location information as enabled by ‘Use GPS/Network Location’ or entered by you, " +
