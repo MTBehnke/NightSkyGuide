@@ -86,7 +86,7 @@ public class AppInfoActivity extends AppCompatActivity {
                         "7 - Extremely Clear:\nM33 and/or M81 visible.";
                 break;
             case 4:
-                infoText = "Night Sky Guide v0.2.13 (Beta)\n" +
+                infoText = "Night Sky Guide v1.0\n" +
                         "Copyright 2018 Shiny Objects, LLC\n\n\n" +
                         "Privacy Policy:\n\nWe don’t collect, transmit or store your data, period.\n\n" +
                         "All data used by this app, including location information as enabled by ‘Use GPS/Network Location’ or entered by you, " +

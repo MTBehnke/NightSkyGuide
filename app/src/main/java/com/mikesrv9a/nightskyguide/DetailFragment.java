@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,6 +22,8 @@ import android.widget.Toast;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
@@ -32,31 +33,14 @@ public class DetailFragment extends Fragment {
 
     private DSObject dsObject;  // dsObject to display
 
-    private TextView objectIdTextView;  // displays dsObject's ID
-    private TextView typeTextView; // displays dsObject's type
-    private TextView magTextView; // displays dsObject's mag
-    private TextView sizeTextView; // displays dsObject's size
-    private TextView distTextView; // displays dsObject's distance
-    private TextView raTextView; // displays dsObject's RA
-    private TextView decTextView; // displays dsObject's Dec
-    private TextView constTextView; // displays dsObject's Constellation
-    private TextView nameTextView; // displays dsObject's Common Name
     private TextView psaTextView; // displays dsObject's PSA pages
     private TextView oithTextView; // displays dsObject's OITH pages
     private TextView skyAtlasTextView; // display dsObject's Sky Atlas 2000 pages
     private TextView psaTextViewLabel;
     private TextView oithTextViewLabel;
     private TextView skyAtlasTextViewLabel;
-    private TextView catTextView;  // displays dsObject's catalogue number (e.g. NGC #)
-    private TextView altTextView; // displays dsObject's altitude
-    private TextView azTextView; // displays dsObject's azimuth
-    private TextView riseTextView;  // displays dsObject's rise time
-    private TextView setTextView;  // displays  dsObject's set time
 
-    private FloatingActionButton addObservationFAB;  // FAB to go to add observation record
-    private PhotoView constImageView; // displays dsObject's constellation image
     private Bitmap constImage;
-    private Set<String> showAtlasLists;  // preference for altas lists
 
     // callback method implemented by MainActivity
     public interface AddObservationListener {
@@ -84,26 +68,26 @@ public class DetailFragment extends Fragment {
                 inflater.inflate(R.layout.fragment_details, container, false);
 
         // get the EditTexts
-        objectIdTextView = (TextView) view.findViewById(R.id.objectIdTextView);
-        typeTextView = (TextView) view.findViewById(R.id.typeTextView);
-        magTextView = (TextView) view.findViewById(R.id.magTextView);
-        sizeTextView = (TextView) view.findViewById(R.id.sizeTextView);
-        distTextView = (TextView) view.findViewById(R.id.distTextView);
-        raTextView = (TextView) view.findViewById(R.id.raTextView);
-        decTextView = (TextView) view.findViewById(R.id.decTextView);
-        constTextView = (TextView) view.findViewById(R.id.constTextView);
-        nameTextView = (TextView) view.findViewById(R.id.nameTextView);
-        psaTextView = (TextView) view.findViewById(R.id.psaTextView);
-        oithTextView = (TextView) view.findViewById(R.id.oithTextView);
-        skyAtlasTextView = (TextView) view.findViewById(R.id.skyAtlasTextView);
-        psaTextViewLabel = (TextView) view.findViewById(R.id.psaLabelTextView);
-        oithTextViewLabel = (TextView) view.findViewById(R.id.oithLabelTextView);
-        skyAtlasTextViewLabel = (TextView) view.findViewById(R.id.skyAtlasLabelTextView);
-        catTextView = (TextView) view.findViewById(R.id.catTextView);
-        altTextView = (TextView) view.findViewById(R.id.altTextView);
-        azTextView = (TextView) view.findViewById(R.id.azTextView);
-        riseTextView = (TextView) view.findViewById(R.id.riseTextView);
-        setTextView = (TextView) view.findViewById(R.id.setTextView);
+        TextView objectIdTextView = view.findViewById(R.id.objectIdTextView);
+        TextView typeTextView = view.findViewById(R.id.typeTextView);
+        TextView magTextView = view.findViewById(R.id.magTextView);
+        TextView sizeTextView = view.findViewById(R.id.sizeTextView);
+        TextView distTextView = view.findViewById(R.id.distTextView);
+        TextView raTextView = view.findViewById(R.id.raTextView);
+        TextView decTextView = view.findViewById(R.id.decTextView);
+        TextView constTextView = view.findViewById(R.id.constTextView);
+        TextView nameTextView = view.findViewById(R.id.nameTextView);
+        psaTextView = view.findViewById(R.id.psaTextView);
+        oithTextView = view.findViewById(R.id.oithTextView);
+        skyAtlasTextView = view.findViewById(R.id.skyAtlasTextView);
+        psaTextViewLabel = view.findViewById(R.id.psaLabelTextView);
+        oithTextViewLabel = view.findViewById(R.id.oithLabelTextView);
+        skyAtlasTextViewLabel = view.findViewById(R.id.skyAtlasLabelTextView);
+        TextView catTextView = view.findViewById(R.id.catTextView);
+        TextView altTextView = view.findViewById(R.id.altTextView);
+        TextView azTextView = view.findViewById(R.id.azTextView);
+        TextView riseTextView = view.findViewById(R.id.riseTextView);
+        TextView setTextView = view.findViewById(R.id.setTextView);
 
 
         // set the TextViews
@@ -137,7 +121,7 @@ public class DetailFragment extends Fragment {
         // display constellation image
         if (!constAbbr.equals("")) {
             String constName = "images/" + dsObject.getDsoConst() + ".gif";
-            constImageView = (PhotoView) view.findViewById(R.id.constImageView);
+            PhotoView constImageView = view.findViewById(R.id.constImageView);
             Bitmap bm = loadConstImage(constName);   // display constellation .gif on detail screen
             constImageView.setImageBitmap(bm);
         }
@@ -204,7 +188,11 @@ public class DetailFragment extends Fragment {
     public void setUserPreferences() {
         Context context = getActivity();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        showAtlasLists = preferences.getStringSet("multi_pref_atlas_list", null);
+        Set<String> showAtlasLists = preferences.getStringSet("multi_pref_atlas_list", null);
+        if(showAtlasLists ==null){
+            String[] defaultList = {"P","O","S"};
+            showAtlasLists = new HashSet<>(Arrays.asList(defaultList));
+        }
         if (!showAtlasLists.contains("P")) {
             psaTextView.setVisibility(View.GONE);
             psaTextViewLabel.setVisibility(View.GONE);}

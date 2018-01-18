@@ -7,8 +7,8 @@ android {
         applicationId "com.mikesrv9a.nightskyguide"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 4
-        versionName "0.2.13 Beta"
+        versionCode 5
+        versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
