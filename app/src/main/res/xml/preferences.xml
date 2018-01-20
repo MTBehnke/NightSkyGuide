@@ -40,6 +40,14 @@
             android:title="@string/pref_display_below_horizon" />
 
         <ListPreference
+            android:defaultValue="255"
+            android:entries="@array/pref_max_magnitude"
+            android:entryValues="@array/pref_max_magnitude_items"
+            android:key="pref_max_magnitude"
+            android:summary="%s"
+            android:title="@string/pref_max_magintude" />
+
+        <ListPreference
             android:defaultValue="1"
             android:entries="@array/pref_sort_by"
             android:entryValues="@array/pref_sort_by_items"

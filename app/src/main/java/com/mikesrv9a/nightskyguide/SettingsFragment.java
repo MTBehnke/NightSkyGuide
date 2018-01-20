@@ -58,6 +58,7 @@ public class SettingsFragment extends PreferenceFragment {
     // Display Options:
     SwitchPreference displayPrevObserved;  // Pref:  display previously observed
     SwitchPreference displayBelowHoriz;  // Pref:  display objects below horizon
+    ListPreference maxMagnitude;  // Pref:  filter out objects of magnitude above <max>
     ListPreference sortByPref;  // Pref:  sort list of objects by <list>
     MultiSelectListPreference displayObjectList;  // Pref:  select object lists to display (Planets, Messier, Caldwell)
     MultiSelectListPreference displayAtlasList;  // Pref:  select atlas lists to display (PSA, OITH, Sky Atlas)
@@ -108,6 +109,7 @@ public class SettingsFragment extends PreferenceFragment {
         // Display Options:
         displayPrevObserved = (SwitchPreference) findPreference("pref_show_observed");  // Pref:  display previously observed
         displayBelowHoriz = (SwitchPreference) findPreference("pref_show_below_horiz");  // Pref:  display objects below horizon
+        maxMagnitude = (ListPreference) findPreference("pref_max_magnitude");  // Pref:  filter out objects of magnitude above <max>
         sortByPref = (ListPreference) findPreference("pref_sort_by");  // Pref:  sort list of objects by <list>
         displayObjectList = (MultiSelectListPreference) findPreference("multi_pref_object_list");   // Pref:  select object lists to display
         displayObjectList.setSummary(updateObjectList(displayObjectList.getValues().toString()));
@@ -159,6 +161,12 @@ public class SettingsFragment extends PreferenceFragment {
             }
         });
         displayBelowHoriz.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                return true;
+            }
+        });
+        maxMagnitude.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 return true;
