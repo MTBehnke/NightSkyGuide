@@ -58,7 +58,7 @@
     <string name="hint_notes">Observation Notes</string>
     <string name="pref_show_observed">Display previously observed</string>
     <string name="pref_display_below_horizon">Display objects below horizon</string>
-    <string name="pref_max_magintude">Display objects of magnitude below:</string>
+    <string name="pref_max_magintude">Maximum magnitude to display:</string>
     <string name="loc_current_title">VIEWING LOCATION:</string>
     <string name="loc_current_lat_title">Latitude</string>
     <string name="loc_current_long_title">Longitude</string>
