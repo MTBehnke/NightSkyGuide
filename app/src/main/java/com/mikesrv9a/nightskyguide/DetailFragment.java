@@ -98,8 +98,13 @@ public class DetailFragment extends Fragment {
         objectIdTextView.setText(dsObject.getDsoObjectID());
         String typeAbbr = dsObject.getDsoType();
         typeTextView.setText(AstroCalc.getDSOType(typeAbbr));
-        String magnitude = df.format(dsObject.getDsoMag());
-        magTextView.setText(magnitude);
+        if (dsObject.getDsoMag() == null) {
+            magTextView.setVisibility(View.GONE);
+            view.findViewById(R.id.magLabelTextView).setVisibility(View.GONE);
+        } else {
+            String magnitude = df.format(dsObject.getDsoMag());
+            magTextView.setText(magnitude);
+        }
         sizeTextView.setText(dsObject.getDsoSize());
         distTextView.setText(dsObject.getDsoDist());
         raTextView.setText(AstroCalc.convertDDToHMS(dsObject.getDsoRA()));

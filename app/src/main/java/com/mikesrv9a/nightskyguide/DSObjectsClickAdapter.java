@@ -80,19 +80,23 @@ public class DSObjectsClickAdapter
         if(object.getDsoObserved()==1){observed="  √";}
                 else {observed = "";}
         String arrow;
-        String magIcon;
+        String magText = "";
         String dsoPath = "";
         Double dsoCosHA = object.getDsoOnHorizCosHA();
         if(object.getDsoAz()>= 180){arrow = "▼";}
                 else {arrow = "▲";}
-        if(object.getDsoMag()<=7.0){magIcon = " ●";}
-                else {magIcon = "";}
+        if(object.getDsoMag() != null) {
+            magText = Double.toString(object.getDsoMag());
+            if(object.getDsoMag() <= 7.0) {
+                magText += " ●";
+            }
+        }
         if(dsoCosHA < -1) {dsoPath = "○ ";}
             else if (dsoCosHA > 1) {dsoPath = "ø ";}
             else {dsoPath = "";}
         String r1c1Text = object.getDsoObjectID() + observed;
         String r1c2Text = object.getDsoConst();
-        String r1c3Text = Double.toString(object.getDsoMag()) + magIcon;
+        String r1c3Text = magText;
         String r1c4Text = dsoPath + Integer.toString((int) Math.round(object.getDsoAlt()))
                 + "°" + arrow;
 
