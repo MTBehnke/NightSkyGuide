@@ -26,8 +26,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import java.util.TimeZone;
 
 import com.github.chrisbanes.photoview.PhotoView;
+
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 public class DetailFragment extends Fragment {
 
@@ -115,8 +120,23 @@ public class DetailFragment extends Fragment {
         altTextView.setText(altitude);
         String azimuth = df.format(dsObject.getDsoAz()) + "°";
         azTextView.setText(azimuth);
-        riseTextView.setText(dsObject.getDsoRiseTimeStr());
-        setTextView.setText(dsObject.getDsoSetTimeStr());
+
+        DateTimeFormatter dtf = DateTimeFormat.shortDateTime().withZone(DateTimeZone.getDefault()).
+                withLocale(Locale.getDefault());
+        String dsoSetTimeStr;
+        String dsoRiseTimeStr;
+        if (dsObject.getDsoRiseTime() == null) {
+            dsoRiseTimeStr="This DSO never rises";
+            dsoSetTimeStr="at this latitude";
+        } else if (dsObject.getDsoSetTime() == null) {
+            dsoRiseTimeStr="Circumpolar: never";
+            dsoSetTimeStr="sets below horizon";
+        } else {
+            dsoRiseTimeStr = dsObject.getDsoRiseTime().toString(dtf);
+            dsoSetTimeStr = dsObject.getDsoSetTime().toString(dtf);
+        }
+        riseTextView.setText(dsoRiseTimeStr);
+        setTextView.setText(dsoSetTimeStr);
 
         // display constellation image
         if (!constAbbr.equals("")) {

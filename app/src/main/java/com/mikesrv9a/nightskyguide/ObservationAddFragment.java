@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -25,8 +26,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
+import java.util.Locale;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -64,9 +67,13 @@ public class ObservationAddFragment extends Fragment  {
     DateTime calendar;
     DateTime newDate;
     LocalTime newTime;
-    DateTimeFormatter dateFormat = DateTimeFormat.forPattern("M/d/yy");
-    DateTimeFormatter timeFormat = DateTimeFormat.forPattern("h:mm a");
-    DateTimeFormatter dateTimeFormat = DateTimeFormat.forPattern("M/d/yy h:mm a");
+    DateTimeFormatter dateFormat = DateTimeFormat.shortDate().withZone(DateTimeZone.getDefault())
+            .withLocale(Locale.getDefault());
+    DateTimeFormatter timeFormat = DateTimeFormat.shortTime().withZone(DateTimeZone.getDefault())
+            .withLocale(Locale.getDefault());
+    DateTimeFormatter dateTimeFormat = DateTimeFormat.shortDateTime().withZone(DateTimeZone.getDefault())
+            .withLocale(Locale.getDefault());
+    boolean is24HourView = false;
 
     @Override
     public View onCreateView(
@@ -96,6 +103,13 @@ public class ObservationAddFragment extends Fragment  {
         powerTextInputLayout = (TextInputLayout) view.findViewById(R.id.powerTextInputLayout);
         filterTextInputLayout = (TextInputLayout) view.findViewById(R.id.filterTextInputLayout);
         notesTextInputLayout = (TextInputLayout) view.findViewById(R.id.notesTextInputLayout);
+
+        // get time format locale
+        try {
+            is24HourView = (Settings.System.getInt(getActivity().getContentResolver(), Settings.System.TIME_12_24) == 24) ? true : false;
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+        }
 
         // set initial values of text entry fields
         calendar = new DateTime();
@@ -149,7 +163,7 @@ public class ObservationAddFragment extends Fragment  {
         @Override
         public void onClick(View v) {
             calendar = timeFormat.parseDateTime(timeTextInputLayout.getEditText().getText().toString());
-            TimePickerDialog timePicker = new TimePickerDialog(getContext(), android.R.style.Theme_Holo_Dialog, timeListener, calendar.getHourOfDay(), calendar.getMinuteOfHour(), false);
+            TimePickerDialog timePicker = new TimePickerDialog(getContext(), android.R.style.Theme_Holo_Dialog, timeListener, calendar.getHourOfDay(), calendar.getMinuteOfHour(), is24HourView);
             timePicker.show();
         };
     };
