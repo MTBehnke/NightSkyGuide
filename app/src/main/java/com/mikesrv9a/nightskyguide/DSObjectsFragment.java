@@ -182,7 +182,7 @@ public class DSObjectsFragment extends Fragment {
             while (!data.isAfterLast()) {
                 String dsoObjectID = data.getString(objectIdCol);
                 String dsoType = data.getString(typeCol);
-                Double dsoMag = data.getDouble(magCol);
+                Double dsoMag = (data.isNull(magCol)) ? null : data.getDouble(magCol);
                 String dsoSize = data.getString(sizeCol);
                 String dsoDist = data.getString(distCol);
                 Double dsoRA = data.getDouble(raCol);
