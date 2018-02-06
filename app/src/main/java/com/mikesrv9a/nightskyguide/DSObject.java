@@ -9,6 +9,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.Arrays;
+import java.util.Date;
 
 /** Creates DSObjects and updates sky position, etc.
  */
@@ -33,8 +34,8 @@ class DSObject implements Parcelable {
     Double dsoAz;           // DSO current azimuth in sky (ddd.ddd)
     Double dsoSortAlt;      // used to sort DSOs in viewing order (setting on horizon = 0 deg)
     Double dsoOnHorizCosHA; // used to calculate rise/set times for each object
-    String dsoRiseTimeStr;
-    String dsoSetTimeStr;
+    DateTime dsoRiseTime;
+    DateTime dsoSetTime;
 
 
     // DSObject constructor
@@ -100,9 +101,9 @@ class DSObject implements Parcelable {
 
     Double getDsoOnHorizCosHA() {return dsoOnHorizCosHA;}
 
-    String getDsoRiseTimeStr() {return dsoRiseTimeStr;}
+    DateTime getDsoRiseTime() {return dsoRiseTime;}
 
-    String getDsoSetTimeStr() {return dsoSetTimeStr;}
+    DateTime getDsoSetTime() {return dsoSetTime;}
 
     Integer getObjectIdSort() {
         Integer sort;
@@ -152,7 +153,6 @@ class DSObject implements Parcelable {
         // Temporary variables for DateTime and userLat/userLong
         // Create Joda DateTime instance and set date to desired time
         DateTime dateCal = new DateTime(DateTimeZone.UTC);
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("M/d hh:mm a");
 
         // Calculate Alt and Az
         double daysSinceJ2000 = AstroCalc.daysSinceJ2000((dateCal.getMillis()));
@@ -160,13 +160,17 @@ class DSObject implements Parcelable {
         double localST = AstroCalc.localST(greenwichST, userLong);
         double hourAngle = AstroCalc.hourAngle(localST, dsoRA);
         dsoOnHorizCosHA = AstroCalc.dsoOnHorizCosHA(dsoDec, userLat);
-        // calculate rise and set times - work in progress
+        /* calculate rise and set times - work in progress
+         * Sets dsoRiseTime = null if DSO never rises ; dsoSetTime = null if DSO never sets
+         */
         if (dsoOnHorizCosHA < -1) {
-                dsoRiseTimeStr="Circumpolar: never";
-                dsoSetTimeStr="sets below horizon";}
+                // This DSO never sets
+                dsoRiseTime = DateTime.parse("0");
+                dsoSetTime = null;}
             else if (dsoOnHorizCosHA > 1) {
-                dsoRiseTimeStr="This DSO never rises";
-                dsoSetTimeStr="at this latitude";}
+                // This DSO never rises
+                dsoRiseTime = null;
+                dsoSetTime = DateTime.parse("0");}
             else {                            // 86164.1 is number of seconds in sidereal day
                 int riseOffset = (int) ((localST - dsoRA + Math.toDegrees(
                         Math.acos(dsoOnHorizCosHA))) * 86164.1/360);
@@ -176,10 +180,8 @@ class DSObject implements Parcelable {
                     riseOffset = riseOffset - 86164;
                     setOffset = setOffset + 86164;
                 }
-                dsoRiseTimeStr = dateCal.minusSeconds(riseOffset).
-                        withZone(DateTimeZone.getDefault()).toString(dtf);
-                dsoSetTimeStr = dateCal.plusSeconds(setOffset).
-                        withZone(DateTimeZone.getDefault()).toString(dtf);
+                dsoRiseTime = dateCal.minusSeconds(riseOffset);
+                dsoSetTime = dateCal.plusSeconds(setOffset);
             }
         dsoAlt = AstroCalc.dsoAlt(dsoDec, userLat, hourAngle);
         dsoAz = AstroCalc.dsoAz(dsoDec, userLat, hourAngle, dsoAlt);
@@ -217,6 +219,9 @@ class DSObject implements Parcelable {
         parcel.writeDouble(dsoAlt);
         parcel.writeDouble(dsoAz);
         parcel.writeDouble(dsoOnHorizCosHA);
+        DateTimeFormatter dtf = DateTimeFormat.fullDateTime();
+        String dsoRiseTimeStr = (dsoRiseTime == null) ? "" : dsoRiseTime.toString(dtf);
+        String dsoSetTimeStr = (dsoSetTime == null) ? "" : dsoSetTime.toString(dtf);
         parcel.writeString(dsoRiseTimeStr);
         parcel.writeString(dsoSetTimeStr);
     }
@@ -233,8 +238,12 @@ class DSObject implements Parcelable {
         dsoOITH = in.readString();
         dsoSkyAtlas = in.readString();
         dsoCatalogue = in.readString();
-        dsoRiseTimeStr = in.readString();
-        dsoSetTimeStr = in.readString();
+
+        DateTimeFormatter dtf = DateTimeFormat.fullDateTime();
+        String dsoRiseTimeStr = in.readString();
+        String dsoSetTimeStr = in.readString();
+        dsoRiseTime = (dsoRiseTimeStr == "") ? null : dtf.parseDateTime(in.readString());
+        dsoSetTime = (dsoSetTimeStr == "") ? null : dtf.parseDateTime(in.readString());
     }
 
     // required method, not used
