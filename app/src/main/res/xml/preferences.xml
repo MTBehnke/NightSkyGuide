@@ -47,6 +47,14 @@
             android:summary="%s"
             android:title="@string/pref_sort_by_list" />
 
+        <ListPreference
+          android:defaultValue="255"
+          android:entries="@array/pref_max_magnitude"
+          android:entryValues="@array/pref_max_magnitude_items"
+          android:key="pref_max_magnitude"
+          android:summary="%s"
+          android:title="@string/pref_max_magintude" />
+
         <MultiSelectListPreference
             android:defaultValue="@array/pref_list_type"
             android:entries="@array/pref_list_type_names"

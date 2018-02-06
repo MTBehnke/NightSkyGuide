@@ -60,6 +60,7 @@ public class DSObjectsFragment extends Fragment {
     public double userLong;
     public boolean showObserved;
     public boolean showBelowHoriz;
+    public int maxMagnitude;
     public String sortPreference;
     public Set<String> showObjectLists;
 
@@ -284,6 +285,7 @@ public class DSObjectsFragment extends Fragment {
         //Toast.makeText(getContext(), userLat + " / " + userLong, Toast.LENGTH_LONG).show();
         showObserved = preferences.getBoolean("pref_show_observed", false);
         showBelowHoriz = preferences.getBoolean("pref_show_below_horiz", false);
+        maxMagnitude = Integer.valueOf(preferences.getString("pref_max_magnitude", "255"));
         sortPreference = preferences.getString("pref_sort_by", "1");
         showObjectLists = preferences.getStringSet("multi_pref_object_list", null);
         String selected = null;
@@ -300,6 +302,8 @@ public class DSObjectsFragment extends Fragment {
             Double dsoAlt = allDsObjectsArrayList.get(counter).getDsoAlt();
             if ((allDsObjectsArrayList.get(counter).getDsoObserved() == 1 && showObserved == false) || (dsoAlt < 0 && showBelowHoriz == false)) {
             } // do nothing
+            else if (allDsObjectsArrayList.get(counter).getDsoMag() > maxMagnitude) {
+                } // do nothing
             else if (allDsObjectsArrayList.get(counter).dsoType.equals("PL") && !showObjectLists.contains("P")) {
                 } // do nothing
             else if (!allDsObjectsArrayList.get(counter).dsoType.equals("PL") && allDsObjectsArrayList.get(counter).dsoObjectID.startsWith("M") && !showObjectLists.contains("M")) {
