@@ -36,6 +36,7 @@ class DSObject implements Parcelable {
     Double dsoOnHorizCosHA; // used to calculate rise/set times for each object
     DateTime dsoRiseTime;
     DateTime dsoSetTime;
+    DateTime dsoTransitTime;
 
 
     // DSObject constructor
@@ -105,6 +106,8 @@ class DSObject implements Parcelable {
 
     DateTime getDsoSetTime() {return dsoSetTime;}
 
+    DateTime getDsoTransitTime() {return dsoTransitTime;}
+
     Integer getObjectIdSort() {
         Integer sort;
         if (dsoType.equals("PL")) {sort = Arrays.asList(AstroCalc.planetName).indexOf("dsoObjectID");}    // planets first
@@ -160,28 +163,37 @@ class DSObject implements Parcelable {
         double localST = AstroCalc.localST(greenwichST, userLong);
         double hourAngle = AstroCalc.hourAngle(localST, dsoRA);
         dsoOnHorizCosHA = AstroCalc.dsoOnHorizCosHA(dsoDec, userLat);
-        /* calculate rise and set times - work in progress
+
+        /* calculate rise, transit and set times
          * Sets dsoRiseTime = null if DSO never rises ; dsoSetTime = null if DSO never sets
+         * 86164.1 is number of seconds in sidereal day
          */
+        int riseOffset = (int) ((localST - dsoRA + Math.toDegrees(
+                Math.acos(dsoOnHorizCosHA))) * 86164.1/360);
+        int setOffset = (int) ((-localST + dsoRA + Math.toDegrees(
+                Math.acos(dsoOnHorizCosHA))) * 86164.1/360);
+        int transitOffset = (int) ((localST - dsoRA) * 86164.1/360);
+        if (setOffset < 0) {   // change to next day - accounts for time zone
+            riseOffset = riseOffset - 86164;
+            setOffset = setOffset + 86164;
+            transitOffset = transitOffset - 86164;
+        }
         if (dsoOnHorizCosHA < -1) {
-                // This DSO never sets
+                // This DSO never sets (circumpolar at user's latitude)
                 dsoRiseTime = DateTime.parse("0");
-                dsoSetTime = null;}
+                dsoSetTime = null;
+                dsoTransitTime = dateCal.minusSeconds(transitOffset);
+            }
             else if (dsoOnHorizCosHA > 1) {
-                // This DSO never rises
+                // This DSO never rises above horizon (at user's latitude)
                 dsoRiseTime = null;
-                dsoSetTime = DateTime.parse("0");}
-            else {                            // 86164.1 is number of seconds in sidereal day
-                int riseOffset = (int) ((localST - dsoRA + Math.toDegrees(
-                        Math.acos(dsoOnHorizCosHA))) * 86164.1/360);
-                int setOffset = (int) ((-localST + dsoRA + Math.toDegrees(
-                        Math.acos(dsoOnHorizCosHA))) * 86164.1/360);
-                if (setOffset < 0) {   // change to next day - accounts for time zone
-                    riseOffset = riseOffset - 86164;
-                    setOffset = setOffset + 86164;
-                }
+                dsoSetTime = DateTime.parse("0");
+                dsoTransitTime = null;
+            }
+            else {
                 dsoRiseTime = dateCal.minusSeconds(riseOffset);
                 dsoSetTime = dateCal.plusSeconds(setOffset);
+                dsoTransitTime = dateCal.minusSeconds(transitOffset);
             }
         dsoAlt = AstroCalc.dsoAlt(dsoDec, userLat, hourAngle);
         dsoAz = AstroCalc.dsoAz(dsoDec, userLat, hourAngle, dsoAlt);
@@ -222,8 +234,10 @@ class DSObject implements Parcelable {
         DateTimeFormatter dtf = DateTimeFormat.fullDateTime();
         String dsoRiseTimeStr = (dsoRiseTime == null) ? "" : dsoRiseTime.toString(dtf);
         String dsoSetTimeStr = (dsoSetTime == null) ? "" : dsoSetTime.toString(dtf);
+        String dsoTransitTimeStr = (dsoTransitTime == null) ? "" : dsoTransitTime.toString(dtf);
         parcel.writeString(dsoRiseTimeStr);
         parcel.writeString(dsoSetTimeStr);
+        parcel.writeString(dsoTransitTimeStr);
     }
 
     // required method, not used
@@ -242,8 +256,10 @@ class DSObject implements Parcelable {
         DateTimeFormatter dtf = DateTimeFormat.fullDateTime();
         String dsoRiseTimeStr = in.readString();
         String dsoSetTimeStr = in.readString();
+        String dsoTransitTimeStr = in.readString();
         dsoRiseTime = (dsoRiseTimeStr == "") ? null : dtf.parseDateTime(in.readString());
         dsoSetTime = (dsoSetTimeStr == "") ? null : dtf.parseDateTime(in.readString());
+        dsoTransitTime = (dsoTransitTimeStr == "") ? null : dtf.parseDateTime(in.readString());
     }
 
     // required method, not used

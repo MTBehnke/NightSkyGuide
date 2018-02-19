@@ -242,11 +242,19 @@
                     android:text="@string/label_set" />
 
                 <TextView
+                    android:id="@+id/transitLabelTextView"
+                    style="@style/DSObjectLabelTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/setLabelTextView"
+                    android:text="@string/label_transit"/>
+
+                <TextView
                     android:id="@+id/altLabelTextView"
                     style="@style/DSObjectLabelTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/setLabelTextView"
+                    android:layout_below="@id/transitLabelTextView"
                     android:text="@string/label_alt" />
 
                 <TextView
@@ -294,11 +302,18 @@
                     android:layout_below="@id/riseTextView" />
 
                 <TextView
+                    android:id="@+id/tranitTextView"
+                    style="@style/DSObjectTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/setTextView"/>
+
+                <TextView
                     android:id="@+id/altTextView"
                     style="@style/DSObjectTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/setTextView" />
+                    android:layout_below="@id/tranitTextView" />
 
                 <TextView
                     android:id="@+id/azTextView"

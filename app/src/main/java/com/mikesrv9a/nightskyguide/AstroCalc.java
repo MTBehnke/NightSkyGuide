@@ -178,6 +178,11 @@ public class AstroCalc {
         return ha;
     }
 
+    // return altitude of object at transit from declination and user latitude - in degrees
+    public static double transitAlt(double dec, double lat) {
+        return (90 - Math.abs(lat-dec));
+    }
+
     // return Altitude of object
     public static double dsoAlt(double dec, double lat, double ha) {
         double sinAlt = (Math.sin(Math.toRadians(dec))*Math.sin(Math.toRadians(lat)))+

@@ -93,6 +93,8 @@ public class DetailFragment extends Fragment {
         TextView azTextView = view.findViewById(R.id.azTextView);
         TextView riseTextView = view.findViewById(R.id.riseTextView);
         TextView setTextView = view.findViewById(R.id.setTextView);
+        TextView transitTextViewLabel = view.findViewById(R.id.transitLabelTextView);
+        TextView transitTextView = view.findViewById(R.id.tranitTextView);
 
 
         // set the TextViews
@@ -133,15 +135,24 @@ public class DetailFragment extends Fragment {
         if (dsObject.getDsoRiseTime() == null) {
             dsoRiseTimeStr="This DSO never rises";
             dsoSetTimeStr="at this latitude";
+            transitTextViewLabel.setVisibility(View.GONE);
+            transitTextView.setVisibility(View.GONE);
         } else if (dsObject.getDsoSetTime() == null) {
             dsoRiseTimeStr="Circumpolar: never";
             dsoSetTimeStr="sets below horizon";
+            transitTextViewLabel.setVisibility(View.VISIBLE);
+            transitTextView.setVisibility(View.VISIBLE);
+            transitTextView.setText(dsObject.getDsoTransitTime().toString(dtf));
         } else {
             dsoRiseTimeStr = dsObject.getDsoRiseTime().toString(dtf);
             dsoSetTimeStr = dsObject.getDsoSetTime().toString(dtf);
+            transitTextViewLabel.setVisibility(View.VISIBLE);
+            transitTextView.setVisibility(View.VISIBLE);
+            transitTextView.setText(dsObject.getDsoTransitTime().toString(dtf));
         }
         riseTextView.setText(dsoRiseTimeStr);
         setTextView.setText(dsoSetTimeStr);
+
 
         // display constellation image
         if (!constAbbr.equals("")) {
