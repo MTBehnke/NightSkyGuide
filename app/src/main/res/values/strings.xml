@@ -11,6 +11,7 @@
     <string name="menuitem_delete">Delete</string>
     <string name="menuitem_location">Update Location</string>
     <string name="menuitem_info">App Info</string>
+    <string name="menuitem_search">Search</string>
     <string name="hint_objectid_required">Object ID (Required)</string>
     <string name="hint_type">Type</string>
     <string name="hint_mag">Magnitude</string>

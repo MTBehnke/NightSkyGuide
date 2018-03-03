@@ -4,6 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/dso_search"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_search"
+        android:orderInCategory="1"
+        android:title="@string/menuitem_search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="always|collapseActionView" />
+
+    <item
         android:id="@+id/settings_edit"
         android:enabled="true"
         android:icon="@drawable/ic_settings"
