@@ -54,6 +54,11 @@ public class DSObjectsClickAdapter
 
     private ArrayList<DSObject> dsObjectsArrayList;
 
+    public void replaceData(ArrayList<DSObject> newObjectsArrayList) {
+        dsObjectsArrayList = newObjectsArrayList;
+        this.notifyDataSetChanged();
+    }
+
     public DSObjectsClickAdapter(ArrayList<DSObject> arrayList) {
         dsObjectsArrayList = arrayList;
     }

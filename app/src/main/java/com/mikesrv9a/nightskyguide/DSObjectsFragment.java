@@ -14,12 +14,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v7.widget.SearchView;
+import android.view.*;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -225,6 +221,35 @@ public class DSObjectsFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_dsobjects_menu, menu);
+
+        final SearchView searchView = (SearchView) menu.findItem(R.id.dso_search).getActionView();
+        searchView.setOnQueryTextListener(new OnSearchTextListener());
+    }
+
+    private class OnSearchTextListener implements SearchView.OnQueryTextListener {
+
+        @Override
+        public boolean onQueryTextSubmit(String s) {
+            return false;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String s) {
+
+            String query = s.toLowerCase();
+
+            ArrayList<DSObject> filteredList = new ArrayList<>();
+            for (DSObject object : allDsObjectsArrayList) {
+                if (object.dsoObjectID.toLowerCase().contains(query)) {
+                    filteredList.add(object);
+                }
+                if (object.dsoName != null && object.dsoName.toLowerCase().contains(query)) {
+                    filteredList.add(object);
+                }
+            }
+            clickAdapter.replaceData(filteredList);
+            return true;
+        }
     }
 
     // display selected menu item
