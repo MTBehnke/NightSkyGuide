@@ -3,6 +3,10 @@ package com.mikesrv9a.nightskyguide;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
@@ -12,9 +16,23 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.CheckedTextView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
@@ -29,6 +47,7 @@ public class SettingsFragment extends PreferenceFragment {
     ListPreference viewingLocation;  //  Preference "viewing_location"  (if not GPS/Network)
     String[] viewLocItem;  // Array for viewingLocation ListPreference
     String[] viewLocList;  // Array for viewingLocation ListPreference
+    //SwitchPreference nightMode;  // Preference "night_mode"
 
     // locationParent > Edit Locations:
     PreferenceScreen updateLocParent;  // Parent to Update Locations
@@ -71,8 +90,8 @@ public class SettingsFragment extends PreferenceFragment {
     SharedPreferences preferences;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View view = super.onCreateView(inflater, container, savedInstanceState);
         setHasOptionsMenu(true);
         // load the preferences from the XML resource
         addPreferencesFromResource(R.xml.preferences);
@@ -105,6 +124,7 @@ public class SettingsFragment extends PreferenceFragment {
         // Viewing Location:
         useDeviceLocation = (SwitchPreference) findPreference("use_device_location");
         viewingLocation = (ListPreference) findPreference("viewing_location");
+        //nightMode = (SwitchPreference) findPreference("night_mode");
 
         // Display Options:
         displayPrevObserved = (SwitchPreference) findPreference("pref_show_observed");  // Pref:  display previously observed
@@ -150,6 +170,21 @@ public class SettingsFragment extends PreferenceFragment {
                 return true;
             }
         });
+
+        /* Night mode work in progress
+        nightMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                Boolean newNightMode = (Boolean) newValue;
+                if (newNightMode) {      // user turning night mode on
+                    view.setBackgroundColor(getResources().getColor(R.color.nightBackground));
+                    ViewGroup viewGroup = (ViewGroup)view;
+                    redText(viewGroup);
+                }
+                else {view.setBackgroundColor(getResources().getColor(R.color.dayBackground));
+                }
+                return true;}
+        });  */
 
         setLocationPrefListeners();  // sets Location 1 - 5 onChangePreferenceListeners
 
@@ -208,7 +243,33 @@ public class SettingsFragment extends PreferenceFragment {
                 return true;
             }
         });*/
+
+    return view;
     }
+
+    /* Work in progress - doesn't change all groups - Night Mode on hold
+    // Change all textviews to dim red - recursive
+    public void redText(ViewGroup viewGroup) {
+        for (int count=0; count < viewGroup.getChildCount(); count++) {
+            Log.d("NewLoop",": "+count+" of "+viewGroup.getChildCount());
+            View view = viewGroup.getChildAt(count);
+            Log.d("ViewName", view.getClass().getName());
+            if(view instanceof TextView) {
+                ((TextView)view).setTextColor(0xFFAA0000);
+                String text = (String) ((TextView)view).getText();
+                Log.d("TextView",": "+text);
+            }
+            if(view instanceof Button) {
+                ((TextView)view).setTextColor(0xFFAA0000);
+                Log.d("Button",": "+count);
+            }
+            else if (view instanceof ViewGroup) {
+                Log.d("ViewGroup",": "+count);
+                redText((ViewGroup)view);
+            }
+            else Log.d("None","");
+        }
+    } */
 
     // display this fragment's menu items
     @Override

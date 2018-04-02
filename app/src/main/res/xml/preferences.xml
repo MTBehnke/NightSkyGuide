@@ -18,6 +18,10 @@
             android:summary="%s"
             android:title="Location" />
 
+        <!--<SwitchPreference
+            android:key="night_mode"
+            android:title="Night Mode"/> -->
+
         <EditTextPreference
             android:enabled="false" />
 

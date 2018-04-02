@@ -14,6 +14,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -302,6 +303,10 @@ public class DSObjectsFragment extends Fragment {
             Double dsoAlt = allDsObjectsArrayList.get(counter).getDsoAlt();
             if ((allDsObjectsArrayList.get(counter).getDsoObserved() == 1 && showObserved == false) || (dsoAlt < 0 && showBelowHoriz == false)) {
             } // do nothing
+            else if (allDsObjectsArrayList.get(counter).getDsoType().equals("DN")) {  // prevents error for null DsoMag in next else if
+                if (maxMagnitude == 255) { dsObjectsArrayList.add(allDsObjectsArrayList.get(counter)); }
+                else {} //do nothing
+                }
             else if (allDsObjectsArrayList.get(counter).getDsoMag() > maxMagnitude) {
                 } // do nothing
             else if (allDsObjectsArrayList.get(counter).dsoType.equals("PL") && !showObjectLists.contains("P")) {

@@ -7,8 +7,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.internal.NavigationMenu;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,8 +21,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import java.io.InputStream;
 import java.text.DecimalFormat;
@@ -26,7 +33,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
-import java.util.TimeZone;
 
 import com.github.chrisbanes.photoview.PhotoView;
 
@@ -61,7 +67,7 @@ public class DetailFragment extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        setHasOptionsMenu(true);  // this fragment has no menu items to display
+        setHasOptionsMenu(true);
 
         // get Bundle of arguments then extract the dsObject
         Bundle arguments = getArguments();
@@ -92,6 +98,7 @@ public class DetailFragment extends Fragment {
         TextView altTextView = view.findViewById(R.id.altTextView);
         TextView azTextView = view.findViewById(R.id.azTextView);
         TextView riseTextView = view.findViewById(R.id.riseTextView);
+        TextView setTextViewLabel = view.findViewById(R.id.setLabelTextView);
         TextView setTextView = view.findViewById(R.id.setTextView);
         TextView transitTextViewLabel = view.findViewById(R.id.transitLabelTextView);
         TextView transitTextView = view.findViewById(R.id.tranitTextView);
@@ -128,27 +135,29 @@ public class DetailFragment extends Fragment {
         String azimuth = df.format(dsObject.getDsoAz()) + "°";
         azTextView.setText(azimuth);
 
-        DateTimeFormatter dtf = DateTimeFormat.shortDateTime().withZone(DateTimeZone.getDefault()).
+        DateTimeFormatter dtf = DateTimeFormat.shortTime().withZone(DateTimeZone.getDefault()).
                 withLocale(Locale.getDefault());
-        String dsoSetTimeStr;
         String dsoRiseTimeStr;
+        String dsoSetTimeStr;
         if (dsObject.getDsoRiseTime() == null) {
-            dsoRiseTimeStr="This DSO never rises";
-            dsoSetTimeStr="at this latitude";
+            dsoRiseTimeStr = "This DSO never rises";
+            dsoSetTimeStr = "at this latitude";
             transitTextViewLabel.setVisibility(View.GONE);
             transitTextView.setVisibility(View.GONE);
         } else if (dsObject.getDsoSetTime() == null) {
-            dsoRiseTimeStr="Circumpolar: never";
-            dsoSetTimeStr="sets below horizon";
+            dsoRiseTimeStr = "Circumpolar: never";
+            dsoSetTimeStr = "sets below horizon";
             transitTextViewLabel.setVisibility(View.VISIBLE);
             transitTextView.setVisibility(View.VISIBLE);
             transitTextView.setText(dsObject.getDsoTransitTime().toString(dtf));
-        } else {
+        } else {        // switch Transit Time and Set Time positions to display in order
             dsoRiseTimeStr = dsObject.getDsoRiseTime().toString(dtf);
-            dsoSetTimeStr = dsObject.getDsoSetTime().toString(dtf);
+            dsoSetTimeStr = dsObject.getDsoTransitTime().toString(dtf);
             transitTextViewLabel.setVisibility(View.VISIBLE);
             transitTextView.setVisibility(View.VISIBLE);
-            transitTextView.setText(dsObject.getDsoTransitTime().toString(dtf));
+            transitTextView.setText(dsObject.getDsoSetTime().toString(dtf));
+            setTextViewLabel.setText(getString(R.string.label_transit));
+            transitTextViewLabel.setText(getString(R.string.label_set));
         }
         riseTextView.setText(dsoRiseTimeStr);
         setTextView.setText(dsoSetTimeStr);
@@ -160,7 +169,14 @@ public class DetailFragment extends Fragment {
             PhotoView constImageView = view.findViewById(R.id.constImageView);
             Bitmap bm = loadConstImage(constName);   // display constellation .gif on detail screen
             constImageView.setImageBitmap(bm);
+
+            /*
+            // Change constellation image to night mode version
+            int colorCode = Color.argb(255,255,0,0);  // transparency and red = 255, green and blue = 0
+            constImageView.setColorFilter(colorCode, PorterDuff.Mode.MULTIPLY);  */
         }
+
+        //setNightMode(view);
 
         return view;
     }
@@ -201,6 +217,15 @@ public class DetailFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_details_menu, menu);
+
+        /* Night mode work in progress
+        for(int count = 0; count < menu.size(); count++) {
+            Drawable drawable = menu.getItem(count).getIcon();
+            if(drawable != null) {
+                drawable.mutate();
+                drawable.setColorFilter(Color.argb(255,255,0,0),PorterDuff.Mode.MULTIPLY);
+            }
+        } */
     }
 
     // display selected menu item
@@ -225,30 +250,72 @@ public class DetailFragment extends Fragment {
         Context context = getActivity();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         Set<String> showAtlasLists = preferences.getStringSet("multi_pref_atlas_list", null);
-        if(showAtlasLists ==null){
-            String[] defaultList = {"P","O","S"};
+        if (showAtlasLists == null) {
+            String[] defaultList = {"P", "O", "S"};
             showAtlasLists = new HashSet<>(Arrays.asList(defaultList));
         }
         if (!showAtlasLists.contains("P")) {
             psaTextView.setVisibility(View.GONE);
-            psaTextViewLabel.setVisibility(View.GONE);}
-        else {
+            psaTextViewLabel.setVisibility(View.GONE);
+        } else {
             psaTextView.setVisibility(View.VISIBLE);
             psaTextViewLabel.setVisibility(View.VISIBLE);
         }
         if (!showAtlasLists.contains("O")) {
             oithTextView.setVisibility(View.GONE);
-            oithTextViewLabel.setVisibility(View.GONE);}
-        else {
+            oithTextViewLabel.setVisibility(View.GONE);
+        } else {
             oithTextView.setVisibility(View.VISIBLE);
             oithTextViewLabel.setVisibility(View.VISIBLE);
         }
         if (!showAtlasLists.contains("S")) {
             skyAtlasTextView.setVisibility(View.GONE);
-            skyAtlasTextViewLabel.setVisibility(View.GONE);}
-        else {
+            skyAtlasTextViewLabel.setVisibility(View.GONE);
+        } else {
             skyAtlasTextView.setVisibility(View.VISIBLE);
             skyAtlasTextViewLabel.setVisibility(View.VISIBLE);
         }
     }
+
+    /* Night Mode work in progress
+    // Change colors for night mode
+    public void setNightMode(View view) {
+        // set background color of container (content_main) to black
+        FrameLayout contentView = getActivity().findViewById(R.id.fragmentContainer);
+        contentView.setBackgroundColor(0xFF000000);
+
+        // set toolbar colors
+        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        toolbar.setBackgroundColor(0xFF200000);
+        toolbar.setTitleTextColor(0xFFAA0000);
+
+        // sets background color of fragment_details view to black
+        view.setBackgroundColor(0xFF000000);
+
+        // set all textviews to dim red
+        ViewGroup viewGroup = (ViewGroup)view;
+        redText(viewGroup);
+
+        // misc color changes
+        View section1 = view.findViewById(R.id.Section1);
+        section1.setBackgroundColor(0xFF200000);
+        View divLine = view.findViewById(R.id.line);
+        divLine.setBackgroundColor(0xFFAA0000);
+        divLine = view.findViewById(R.id.line2);
+        divLine.setBackgroundColor(0xFFAA0000);
+    }
+
+    // Change all textviews to dim red - recursive
+    public void redText(ViewGroup viewGroup) {
+        for (int count=0; count < viewGroup.getChildCount(); count++) {
+            View view = viewGroup.getChildAt(count);
+            if(view instanceof TextView) {
+                ((TextView)view).setTextColor(0xFFAA0000);
+            }
+            else if (view instanceof ViewGroup) {
+                redText((ViewGroup)view);
+            }
+        }
+    }  */
+
 }
