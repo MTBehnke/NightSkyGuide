@@ -174,6 +174,7 @@ public class DSObjectsFragment extends Fragment {
             int oithCol = data.getColumnIndex("oith");
             int skyatlasCol = data.getColumnIndex("skyatlas");
             int catCol = data.getColumnIndex("catalogue");
+            int progCol = data.getColumnIndex("obsprogram");
             setUserPreferences();  // need user's latitude and longitude
             while (!data.isAfterLast()) {
                 String dsoObjectID = data.getString(objectIdCol);
@@ -189,6 +190,7 @@ public class DSObjectsFragment extends Fragment {
                 String dsoOITH = data.getString(oithCol);
                 String dsoSkyAtlas = data.getString(skyatlasCol);
                 String dsoCatalogue = data.getString(catCol);
+                String dsoObsProg = data.getString(progCol);
 
                 //Checks observations to determine whether DSO has been observed
                 Integer dsoObserved = 0;
@@ -198,7 +200,7 @@ public class DSObjectsFragment extends Fragment {
 
                 // creates DSObjects
                 DSObject dsObject = new DSObject(dsoObjectID, dsoType, dsoMag, dsoSize, dsoDist,
-                        dsoRA, dsoDec, dsoConst, dsoName, dsoPSA, dsoOITH, dsoSkyAtlas, dsoCatalogue, dsoObserved);
+                        dsoRA, dsoDec, dsoConst, dsoName, dsoPSA, dsoOITH, dsoSkyAtlas, dsoCatalogue, dsoObsProg, dsoObserved);
                 dsObject.setDsoAltAz(userLat, userLong);
                 allDsObjectsArrayList.add(dsObject);
 
@@ -208,7 +210,7 @@ public class DSObjectsFragment extends Fragment {
             // add planets as DSObjects  (1:Mercury thru 7: Neptune, skip 0:Earth)
             for (int planet = 1; planet < 8; planet++) {
                    DSObject dsObject = new DSObject(AstroCalc.planetName[planet],"PL",0.0,"","",null,null,
-                           "",null,"","","","",0);
+                           "",null,"","","","","",0);
                    dsObject.setPlanetCoords(planet);
                    dsObject.setDsoAltAz(userLat, userLong);
                    allDsObjectsArrayList.add(dsObject);

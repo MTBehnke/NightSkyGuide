@@ -11,7 +11,7 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 public class DSObjectDatabaseHelper extends SQLiteAssetHelper{
     private static final String DATABASE_NAME = "DSObjects.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     // constructor
     public DSObjectDatabaseHelper(Context context) {
@@ -37,7 +37,8 @@ public class DSObjectDatabaseHelper extends SQLiteAssetHelper{
                 "psa",
                 "oith",
                 "catalogue",
-                "skyatlas"
+                "skyatlas",
+                "obsprogram"
         };
         String sqlTables = "dsObjects";
 

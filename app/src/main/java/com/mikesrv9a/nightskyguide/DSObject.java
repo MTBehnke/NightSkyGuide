@@ -29,6 +29,7 @@ class DSObject implements Parcelable {
     String dsoOITH;         // DSO Page Number(s) in Objects in the Heavens
     String dsoSkyAtlas;     // DSO Page Number(s) for Sky Atlas 2000
     String dsoCatalogue;    // DSO Catalogue ID (e.g. NGC #)
+    String dsoObsProgram;   // DSO Observation Program (Messier "M###", Caldwell "C###", Hershel 400 "H400")
     Integer dsoObserved;    // DSO Observed (not observed = 0, observed = tbd)
     Double dsoAlt;          // DSO current altitude in sky (ddd.ddd)
     Double dsoAz;           // DSO current azimuth in sky (ddd.ddd)
@@ -42,7 +43,7 @@ class DSObject implements Parcelable {
     // DSObject constructor
     DSObject (String id, String type, Double mag, String size, String dist,
                      Double ra, Double dec, String cons, String name, String psa,
-                     String oith, String skyatlas, String catalogue, Integer observed) {
+                     String oith, String skyatlas, String catalogue, String obsProgram ,Integer observed) {
         dsoObjectID = id;
         dsoType = type;
         dsoMag = mag;
@@ -57,6 +58,7 @@ class DSObject implements Parcelable {
         dsoSkyAtlas = skyatlas;
         dsoCatalogue = catalogue;
         dsoObserved = observed;
+        dsoObsProgram = obsProgram;
         dsoAlt = 0.0;
         dsoAz = 0.0;
         dsoSortAlt = 0.0;
@@ -90,6 +92,8 @@ class DSObject implements Parcelable {
 
     String getDsoCatalogue()  {return dsoCatalogue;}
 
+    String getDsoObsProgram() {return dsoObsProgram;}
+
     Integer getDsoObserved() {return dsoObserved;}
 
     void setDsoObserved(Integer observed) {dsoObserved = observed;}
@@ -111,8 +115,8 @@ class DSObject implements Parcelable {
     Integer getObjectIdSort() {
         Integer sort;
         if (dsoType.equals("PL")) {sort = Arrays.asList(AstroCalc.planetName).indexOf("dsoObjectID");}    // planets first
-        else if (dsoObjectID.startsWith("M")) {sort = 100 + Integer.valueOf(dsoObjectID.substring(1));}   // Messier objects second
-        else if (dsoObjectID.startsWith("C")) {sort = 300 + Integer.valueOf(dsoObjectID.substring(1));}   // Caldwell objects third
+        //else if (dsoObjectID.startsWith("M")) {sort = 100 + Integer.valueOf(dsoObjectID.substring(1));}   // Messier objects second
+        //else if (dsoObjectID.startsWith("C")) {sort = 300 + Integer.valueOf(dsoObjectID.substring(1));}   // Caldwell objects third
         else {sort = 1000;}   // error handling
         return sort;
     }
@@ -227,6 +231,7 @@ class DSObject implements Parcelable {
         parcel.writeString(dsoOITH);
         parcel.writeString(dsoSkyAtlas);
         parcel.writeString(dsoCatalogue);
+        parcel.writeString(dsoObsProgram);
         parcel.writeInt(dsoObserved);
         parcel.writeDouble(dsoAlt);
         parcel.writeDouble(dsoAz);
@@ -252,6 +257,7 @@ class DSObject implements Parcelable {
         dsoOITH = in.readString();
         dsoSkyAtlas = in.readString();
         dsoCatalogue = in.readString();
+        dsoObsProgram = in.readString();
 
         DateTimeFormatter dtf = DateTimeFormat.fullDateTime();
         String dsoRiseTimeStr = in.readString();

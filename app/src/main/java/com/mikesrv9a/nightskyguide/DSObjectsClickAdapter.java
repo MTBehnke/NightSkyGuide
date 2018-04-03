@@ -90,7 +90,7 @@ public class DSObjectsClickAdapter
         Double dsoCosHA = object.getDsoOnHorizCosHA();
         if(object.getDsoAz()>= 180){arrow = "▼";}
                 else {arrow = "▲";}
-        if(object.getDsoMag() != null) {
+        if(object.getDsoMag() != 0) {
             magText = Double.toString(object.getDsoMag());
             if(object.getDsoMag() <= 7.0) {
                 magText += " ●";
