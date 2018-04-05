@@ -248,6 +248,9 @@ public class DSObjectsFragment extends Fragment {
                 else if (object.dsoName != null && object.dsoName.toLowerCase().contains(query)) {
                     filteredList.add(object);
                 }
+                else if (object.dsoCatalogue != null && object.dsoCatalogue.toLowerCase().contains(query)) {
+                    filteredList.add(object);
+                }
             }
             clickAdapter.replaceData(filteredList);
             return true;
