@@ -245,7 +245,7 @@ public class DSObjectsFragment extends Fragment {
                 if (object.dsoObjectID.toLowerCase().contains(query)) {
                     filteredList.add(object);
                 }
-                if (object.dsoName != null && object.dsoName.toLowerCase().contains(query)) {
+                else if (object.dsoName != null && object.dsoName.toLowerCase().contains(query)) {
                     filteredList.add(object);
                 }
             }
