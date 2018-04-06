@@ -60,6 +60,8 @@ public class DSObjectsFragment extends Fragment {
     public String sortPreference;
     public Set<String> showObjectLists;
 
+    private String searchQuery = "";
+
     // configures this fragment's GUI
     @Override
     public View onCreateView(
@@ -238,21 +240,8 @@ public class DSObjectsFragment extends Fragment {
         @Override
         public boolean onQueryTextChange(String s) {
 
-            String query = s.toLowerCase();
-
-            ArrayList<DSObject> filteredList = new ArrayList<>();
-            for (DSObject object : allDsObjectsArrayList) {
-                if (object.dsoObjectID.toLowerCase().contains(query)) {
-                    filteredList.add(object);
-                }
-                else if (object.dsoName != null && object.dsoName.toLowerCase().contains(query)) {
-                    filteredList.add(object);
-                }
-                else if (object.dsoCatalogue != null && object.dsoCatalogue.toLowerCase().contains(query)) {
-                    filteredList.add(object);
-                }
-            }
-            clickAdapter.replaceData(filteredList);
+            searchQuery = s.toLowerCase();
+            updateArrayList();
             return true;
         }
     }
@@ -327,25 +316,25 @@ public class DSObjectsFragment extends Fragment {
     // update and sort arraylist for recyclerview based on user preferences
     public void updateArrayList() {
         dsObjectsArrayList.clear();
-        for (int counter = 0; counter < allDsObjectsArrayList.size(); counter++) {
-            allDsObjectsArrayList.get(counter).setDsoAltAz(userLat, userLong);
-            Double dsoAlt = allDsObjectsArrayList.get(counter).getDsoAlt();
-            if ((allDsObjectsArrayList.get(counter).getDsoObserved() == 1 && showObserved == false) || (dsoAlt < 0 && showBelowHoriz == false)) {
+        for (DSObject object : allDsObjectsArrayList) {
+            object.setDsoAltAz(userLat, userLong);
+            Double dsoAlt = object.getDsoAlt();
+            if ((object.getDsoObserved() == 1 && showObserved == false) || (dsoAlt < 0 && showBelowHoriz == false)) {
             } // do nothing
-            else if (allDsObjectsArrayList.get(counter).getDsoType().equals("DN")) {  // prevents error for null DsoMag in next else if
-                if (maxMagnitude == 255) { dsObjectsArrayList.add(allDsObjectsArrayList.get(counter)); }
-                else {} //do nothing
-                }
-            else if (allDsObjectsArrayList.get(counter).getDsoMag() > maxMagnitude) {
+            else if (object.getDsoMag() > maxMagnitude) {
                 } // do nothing
-            else if (allDsObjectsArrayList.get(counter).dsoType.equals("PL") && !showObjectLists.contains("P")) {
+            else if (object.dsoType.equals("PL") && !showObjectLists.contains("P")) {
                 } // do nothing
-            else if (!allDsObjectsArrayList.get(counter).dsoType.equals("PL") && allDsObjectsArrayList.get(counter).dsoObjectID.startsWith("M") && !showObjectLists.contains("M")) {
+            else if (!object.dsoType.equals("PL") && object.dsoObjectID.startsWith("M") && !showObjectLists.contains("M")) {
                 } // do nothing
-            else if (!allDsObjectsArrayList.get(counter).dsoType.equals("PL") && allDsObjectsArrayList.get(counter).dsoObjectID.startsWith("C") && !showObjectLists.contains("C")) {
+            else if (!object.dsoType.equals("PL") && object.dsoObjectID.startsWith("C") && !showObjectLists.contains("C")) {
                 } // do nothing
             else {
-                dsObjectsArrayList.add(allDsObjectsArrayList.get(counter));    // passes all filters - add to recyclerview
+                if (object.dsoObjectID.toLowerCase().contains(searchQuery)
+                        || (object.dsoName != null && object.dsoName.toLowerCase().contains(searchQuery))
+                        || (object.dsoCatalogue != null && object.dsoCatalogue.toLowerCase().contains(searchQuery))) {
+                    dsObjectsArrayList.add(object);    // passes all filters - add to recyclerview
+                }
             }
         }
         if (sortPreference.equals("1")) {    // sort based on altitude - setting, then rising
