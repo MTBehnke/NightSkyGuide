@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.*;
 import android.widget.Toast;
 
@@ -79,6 +80,11 @@ public class DSObjectsFragment extends Fragment {
         // recyclerView should display items in a vertical list
         recyclerView.setLayoutManager(
                 new LinearLayoutManager(getActivity().getBaseContext()));
+
+        /* Test code - not currently implemented
+        // get screen orientation
+        int screenOrient = getActivity().getResources().getConfiguration().orientation;
+        Log.i("Orientation:"," " + screenOrient); */
 
         // create recyclerView's adapter and item click listener
         clickAdapter = new DSObjectsClickAdapter(dsObjectsArrayList);
@@ -212,7 +218,7 @@ public class DSObjectsFragment extends Fragment {
             // add planets as DSObjects  (1:Mercury thru 7: Neptune, skip 0:Earth)
             for (int planet = 1; planet < 8; planet++) {
                    DSObject dsObject = new DSObject(AstroCalc.planetName[planet],"PL",0.0,"","",null,null,
-                           "",null,"","","","","",0);
+                           "",null,"","","",AstroCalc.planetName[planet],"",0);
                    dsObject.setPlanetCoords(planet);
                    dsObject.setDsoAltAz(userLat, userLong);
                    allDsObjectsArrayList.add(dsObject);
