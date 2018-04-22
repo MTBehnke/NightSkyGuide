@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.support.v4.widget.TextViewCompat;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public class DSObjectsClickAdapter
     }
 
     private ArrayList<DSObject> dsObjectsArrayList;
+    //int screenConfig;
 
     public void replaceData(ArrayList<DSObject> newObjectsArrayList) {
         dsObjectsArrayList = newObjectsArrayList;
@@ -61,6 +63,7 @@ public class DSObjectsClickAdapter
 
     public DSObjectsClickAdapter(ArrayList<DSObject> arrayList) {
         dsObjectsArrayList = arrayList;
+        //screenConfig = screenOrient;
     }
 
     // returns the number of items that adapter binds
@@ -99,7 +102,13 @@ public class DSObjectsClickAdapter
         if(dsoCosHA < -1) {dsoPath = "○ ";}
             else if (dsoCosHA > 1) {dsoPath = "ø ";}
             else {dsoPath = "";}
-        String r1c1Text = object.getDsoObjectID() + observed;
+
+        String r1c1Text = object.getDsoCatalogue() + observed;
+        /*if (screenConfig == 1) {  If portrait mode then use DsoObjectID, else use longer DsoCatalogue
+            r1c1Text = object.getDsoObjectID() + observed;}
+        else {
+            r1c1Text = object.getDsoCatalogue() + observed;}*/
+
         String r1c2Text = object.getDsoConst();
         String r1c3Text = magText;
         String r1c4Text = dsoPath + Integer.toString((int) Math.round(object.getDsoAlt()))

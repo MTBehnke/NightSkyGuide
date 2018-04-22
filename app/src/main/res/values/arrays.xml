@@ -22,12 +22,24 @@
         <item>P</item>
         <item>M</item>
         <item>C</item>
+        <item>H</item>
+        <item>G</item>
+        <item>S</item>
+        <item>B</item>
+        <item>D</item>
+        <item>O</item>
     </string-array>
 
     <string-array name="pref_list_type_names">
         <item>Planets</item>
         <item>Messier</item>
         <item>Caldwell</item>
+        <item>Herschel 400</item>
+        <item>Galaxies</item>
+        <item>Star Clusters</item>
+        <item>Bright Nebulae</item>
+        <item>Dark Nebulae</item>
+        <item>Other</item>
     </string-array>
 
     <string name="pref_list_title">Object Lists:</string>
