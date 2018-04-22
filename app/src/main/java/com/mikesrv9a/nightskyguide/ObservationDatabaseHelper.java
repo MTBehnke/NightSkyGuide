@@ -71,16 +71,7 @@ public class ObservationDatabaseHelper extends SQLiteOpenHelper{
 
             String [] sqlSelect = {
                     "_id",
-                    ObsTable.Cols.DsoID,
-                    ObsTable.Cols.ObsDate,
-                    ObsTable.Cols.Location,
-                    ObsTable.Cols.Seeing,
-                    ObsTable.Cols.Transparency,
-                    ObsTable.Cols.Telescope,
-                    ObsTable.Cols.Eyepiece,
-                    ObsTable.Cols.Power,
-                    ObsTable.Cols.Filter,
-                    ObsTable.Cols.Notes
+                    ObsTable.Cols.DsoID
             };
 
             qb.setTables(ObsTable.NAME);
