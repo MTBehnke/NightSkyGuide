@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.*;
 import android.widget.Toast;
 
@@ -79,6 +80,11 @@ public class DSObjectsFragment extends Fragment {
         // recyclerView should display items in a vertical list
         recyclerView.setLayoutManager(
                 new LinearLayoutManager(getActivity().getBaseContext()));
+
+        /* Test code - not currently implemented
+        // get screen orientation
+        int screenOrient = getActivity().getResources().getConfiguration().orientation;
+        Log.i("Orientation:"," " + screenOrient); */
 
         // create recyclerView's adapter and item click listener
         clickAdapter = new DSObjectsClickAdapter(dsObjectsArrayList);
@@ -212,7 +218,7 @@ public class DSObjectsFragment extends Fragment {
             // add planets as DSObjects  (1:Mercury thru 7: Neptune, skip 0:Earth)
             for (int planet = 1; planet < 8; planet++) {
                    DSObject dsObject = new DSObject(AstroCalc.planetName[planet],"PL",0.0,"","",null,null,
-                           "",null,"","","","","",0);
+                           "",null,"","","",AstroCalc.planetName[planet],"",0);
                    dsObject.setPlanetCoords(planet);
                    dsObject.setDsoAltAz(userLat, userLong);
                    allDsObjectsArrayList.add(dsObject);
@@ -319,16 +325,18 @@ public class DSObjectsFragment extends Fragment {
         for (DSObject object : allDsObjectsArrayList) {
             object.setDsoAltAz(userLat, userLong);
             Double dsoAlt = object.getDsoAlt();
-            if ((object.getDsoObserved() == 1 && showObserved == false) || (dsoAlt < 0 && showBelowHoriz == false)) {
+            boolean dsoDisplay = false;
+            if (showObjectLists.contains("M") && object.dsoObsProgram.contains("M")) { dsoDisplay = true; }
+            else if (showObjectLists.contains("C") && object.dsoObsProgram.contains("C")) { dsoDisplay = true; }
+            else if (showObjectLists.contains("H") && object.dsoObsProgram.contains("H")) { dsoDisplay = true; }
+            else if (showObjectLists.contains("P") && object.dsoType.equals("PL")) { dsoDisplay = true; }
+            else if (showObjectLists.contains("G") && (object.dsoType.equals("EG") || object.dsoType.equals("GXY") || object.dsoType.equals("IG") || object.dsoType.equals("SG"))) { dsoDisplay = true; }
+            else if (showObjectLists.contains("S") && (object.dsoType.equals("C/N") || object.dsoType.equals("GC") || object.dsoType.equals("OC"))) { dsoDisplay = true; }
+            else if (showObjectLists.contains("B") && (object.dsoType.equals("BN") || object.dsoType.equals("C/N") || object.dsoType.equals("EN") || object.dsoType.equals("ER") || object.dsoType.equals("PN") || object.dsoType.equals("RN"))) { dsoDisplay = true; }
+            else if (showObjectLists.contains("D") && object.dsoType.equals("DN")) { dsoDisplay = true; }
+            else if (showObjectLists.contains("O") && (object.dsoType.equals("AST") || object.dsoType.equals("QSR") || object.dsoType.equals("SNR"))) { dsoDisplay = true; }
+            if (dsoDisplay == false || (object.getDsoObserved() == 1 && showObserved == false) || (dsoAlt < 0 && showBelowHoriz == false) || (object.getDsoMag() > maxMagnitude)) {
             } // do nothing
-            else if (object.getDsoMag() > maxMagnitude) {
-                } // do nothing
-            else if (object.dsoType.equals("PL") && !showObjectLists.contains("P")) {
-                } // do nothing
-            else if (!object.dsoType.equals("PL") && object.dsoObjectID.startsWith("M") && !showObjectLists.contains("M")) {
-                } // do nothing
-            else if (!object.dsoType.equals("PL") && object.dsoObjectID.startsWith("C") && !showObjectLists.contains("C")) {
-                } // do nothing
             else {
                 if (object.dsoObjectID.toLowerCase().contains(searchQuery)
                         || (object.dsoName != null && object.dsoName.toLowerCase().contains(searchQuery))

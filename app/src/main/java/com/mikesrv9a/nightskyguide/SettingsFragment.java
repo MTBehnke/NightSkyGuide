@@ -306,7 +306,32 @@ public class SettingsFragment extends PreferenceFragment {
             if (listNum >= 1) {objectList = objectList + ", ";}
             objectList = objectList + "Caldwell";
             listNum++;}
+        if (selected.contains("H")) {
+            if (listNum >= 1) {objectList = objectList + ", ";}
+            objectList = objectList + "Herschel 400";
+            listNum++;}
+        if (selected.contains("G")) {
+            if (listNum >= 1) {objectList = objectList + ", ";}
+            objectList = objectList + "Galaxies";
+            listNum++;}
+        if (selected.contains("S")) {
+            if (listNum >= 1) {objectList = objectList + ", ";}
+            objectList = objectList + "Star Clusters";
+            listNum++;}
+        if (selected.contains("B")) {
+            if (listNum >= 1) {objectList = objectList + ", ";}
+            objectList = objectList + "Bright Nebulae";
+            listNum++;}
+        if (selected.contains("D")) {
+            if (listNum >= 1) {objectList = objectList + ", ";}
+            objectList = objectList + "Dark Nebulae";
+            listNum++;}
+        if (selected.contains("O")) {
+            if (listNum >= 1) {objectList = objectList + ", ";}
+            objectList = objectList + "Other";
+            listNum++;}
         if (listNum == 0) {objectList = "None";}
+        if (listNum == 9) {objectList = "All";}
         return objectList;
     }
 
