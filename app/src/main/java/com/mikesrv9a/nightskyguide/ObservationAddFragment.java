@@ -194,6 +194,8 @@ public class ObservationAddFragment extends Fragment  {
         values.put(ObserveRecordsSchema.ObsTable.Cols.Power, powerTextInputLayout.getEditText().getText().toString());
         values.put(ObserveRecordsSchema.ObsTable.Cols.Filter, filterTextInputLayout.getEditText().getText().toString());
         values.put(ObserveRecordsSchema.ObsTable.Cols.Notes, notesTextInputLayout.getEditText().getText().toString());
+        values.put(ObserveRecordsSchema.ObsTable.Cols.Catalogue, dsObject.getDsoCatalogue());
+        values.put(ObserveRecordsSchema.ObsTable.Cols.Program, dsObject.getDsoObsProgram());
         observationDB.insert(ObserveRecordsSchema.ObsTable.NAME, null, values);
         observationDB.close();
         Toast.makeText(context, "Observation Saved", Toast.LENGTH_LONG).show();

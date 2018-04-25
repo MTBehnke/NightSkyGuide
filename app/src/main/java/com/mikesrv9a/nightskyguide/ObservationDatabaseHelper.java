@@ -15,9 +15,12 @@ public class ObservationDatabaseHelper extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "Observations.db";
     private static final int DATABASE_VERSION = 2;
 
+    Context context2;
+
     // constructor
     public ObservationDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        context2 = context;
     }
 
     @Override
@@ -33,7 +36,9 @@ public class ObservationDatabaseHelper extends SQLiteOpenHelper{
         ObsTable.Cols.Eyepiece + ", " +
         ObsTable.Cols.Power + ", " +
         ObsTable.Cols.Filter + ", " +
-        ObsTable.Cols.Notes + ")"
+        ObsTable.Cols.Notes + "," +
+        ObsTable.Cols.Catalogue + ", " +
+        ObsTable.Cols.Program + ")"
         );
         Log.d(String.valueOf(obsDatabase), "onActivityCreated: ");
     }
@@ -53,7 +58,9 @@ public class ObservationDatabaseHelper extends SQLiteOpenHelper{
                 ObsTable.Cols.Eyepiece,
                 ObsTable.Cols.Power,
                 ObsTable.Cols.Filter,
-                ObsTable.Cols.Notes
+                ObsTable.Cols.Notes,
+                ObsTable.Cols.Catalogue,
+                ObsTable.Cols.Program
         };
 
         qb.setTables(ObsTable.NAME);
@@ -66,6 +73,11 @@ public class ObservationDatabaseHelper extends SQLiteOpenHelper{
     public void onUpgrade(SQLiteDatabase obsDatabase, int oldVersion, int newVersion) {
 
         if (oldVersion == 1 && newVersion >= 2) {
+
+            DSObjectDatabaseHelper dsObjectDb = new DSObjectDatabaseHelper(context2);
+
+            obsDatabase.execSQL("ALTER TABLE " + ObsTable.NAME + " ADD COLUMN catalogue TEXT");
+            obsDatabase.execSQL("ALTER TABLE " + ObsTable.NAME + " ADD COLUMN program TEXT");
 
             SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
@@ -417,13 +429,30 @@ public class ObservationDatabaseHelper extends SQLiteOpenHelper{
                             value = "NGC 3195";
                             break;
                     }
+                    String dsoId;
                     if (value != null) {
                         values.put(ObserveRecordsSchema.ObsTable.Cols.DsoID, value);
-                        obsDatabase.update(ObserveRecordsSchema.ObsTable.NAME, values, "_id=" + recordNum, null);
+                        dsoId = value;
+                    }
+                    else {
+                        dsoId = obsObjectID;
                     }
 
+                    Cursor dsoCursor = dsObjectDb.queryDSObject(dsoId);
+                    int catCol = dsoCursor.getColumnIndex("catalogue");
+                    int progCol = dsoCursor.getColumnIndex("obsprogram");
+                    if(dsoCursor.getCount() > 0) {  // Messier and Caldwell Objects
+                        values.put(ObserveRecordsSchema.ObsTable.Cols.Catalogue, dsoCursor.getString(catCol));
+                        values.put(ObserveRecordsSchema.ObsTable.Cols.Program, dsoCursor.getString(progCol));
+                        obsDatabase.update(ObserveRecordsSchema.ObsTable.NAME, values, "_id=" + recordNum, null);
+                    }
+                    else if (dsoCursor.getCount() == 0) {  // Planets (not in dsObjects database so cursor is blank)
+                        values.put(ObserveRecordsSchema.ObsTable.Cols.Catalogue, dsoId);
+                        obsDatabase.update(ObserveRecordsSchema.ObsTable.NAME, values, "_id=" + recordNum, null);
+                    }
                     data.moveToNext();
                 }
+                dsObjectDb.close();
             }
         }
     }

@@ -16,10 +16,12 @@ class Observation implements Parcelable {
     String obsPower;
     String obsFilter;
     String obsNotes;
+    String obsCatalogue;
+    String obsProgram;
 
     // constructor
     Observation (Integer dbID, String id, String date, String location, String seeing, String transparency, String telescope,
-                 String eyepiece, String power, String filter, String notes) {
+                 String eyepiece, String power, String filter, String notes, String catalogue, String program) {
         obsDBid = dbID;
         obsDsoID = id;
         obsDate = date;
@@ -31,6 +33,8 @@ class Observation implements Parcelable {
         obsPower = power;
         obsFilter = filter;
         obsNotes = notes;
+        obsCatalogue = catalogue;
+        obsProgram = program;
     }
 
     // getter methods
@@ -45,7 +49,8 @@ class Observation implements Parcelable {
     String getObsPower() {return obsPower;}
     String getObsFilter() {return obsFilter;}
     String getObsNotes() {return obsNotes;}
-
+    String getObsCatalogue() {return obsCatalogue;}
+    String getObsProgram() {return obsProgram;}
 
     // Required methods for parcelable
 
@@ -65,6 +70,8 @@ class Observation implements Parcelable {
         parcel.writeString(obsPower);
         parcel.writeString(obsFilter);
         parcel.writeString(obsNotes);
+        parcel.writeString(obsCatalogue);
+        parcel.writeString(obsProgram);
     }
 
     // required method, not used
@@ -80,6 +87,8 @@ class Observation implements Parcelable {
         obsPower = in.readString();
         obsFilter = in.readString();
         obsNotes = in.readString();
+        obsCatalogue = in.readString();
+        obsProgram = in.readString();
     }
 
     // required method, not used

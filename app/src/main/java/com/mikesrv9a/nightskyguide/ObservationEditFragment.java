@@ -208,6 +208,8 @@ public class ObservationEditFragment extends Fragment  {
         values.put(ObserveRecordsSchema.ObsTable.Cols.Power, powerTextInputLayout.getEditText().getText().toString());
         values.put(ObserveRecordsSchema.ObsTable.Cols.Filter, filterTextInputLayout.getEditText().getText().toString());
         values.put(ObserveRecordsSchema.ObsTable.Cols.Notes, notesTextInputLayout.getEditText().getText().toString());
+        values.put(ObserveRecordsSchema.ObsTable.Cols.Catalogue, observation.getObsCatalogue());
+        values.put(ObserveRecordsSchema.ObsTable.Cols.Program, observation.getObsProgram());
         observationDB.update(ObserveRecordsSchema.ObsTable.NAME, values, "_id=" + recordNum, null);
         observationDB.close();
         Toast.makeText(context, "Observation Changes Saved", Toast.LENGTH_LONG).show();

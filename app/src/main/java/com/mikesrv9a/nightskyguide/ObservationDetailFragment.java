@@ -75,7 +75,7 @@ public class ObservationDetailFragment extends Fragment {
 
 
         // set the TextViews
-        objectIdTextView.setText(observation.getObsDsoID());
+        objectIdTextView.setText(observation.getObsCatalogue());
         dateTextView.setText(observation.getObsDate());
         locationTextView.setText(observation.getObsLocation());
         seeingTextView.setText(observation.getObsSeeing());

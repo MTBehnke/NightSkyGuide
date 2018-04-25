@@ -83,4 +83,6 @@
     <string name="title_settings">Settings</string>
     <string name="hint_app_info_image">Viewing Tips</string>
     <string name="label_transit">Transit Time:</string>
+    <string name="hint_catalogue">Catalogue</string>
+    <string name="hint_obs_program">AL Observation Program</string>
 </resources>

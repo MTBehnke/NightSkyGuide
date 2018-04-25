@@ -18,7 +18,8 @@ public class ObservationsClickAdapter extends RecyclerView.Adapter<ObservationsC
 
         TextView textViewR1C1;
         TextView textViewR1C2;
-        TextView textViewR1C3;
+        TextView textViewR2C1;
+        TextView textViewR2C2;
 
         // configures a RecyclerView item's ViewHolder
         public ObservationsClickViewHolder(View itemView) {
@@ -26,7 +27,8 @@ public class ObservationsClickAdapter extends RecyclerView.Adapter<ObservationsC
             itemView.setOnClickListener(this);
             textViewR1C1 = (TextView) itemView.findViewById(R.id.recyclerview1);
             textViewR1C2 = (TextView) itemView.findViewById(R.id.recyclerview2);
-            textViewR1C3 = (TextView) itemView.findViewById(R.id.recyclerview3);
+            textViewR2C1 = (TextView) itemView.findViewById(R.id.recyclerview3);
+            textViewR2C2 = (TextView) itemView.findViewById(R.id.recyclerview4);
         }
 
         @Override
@@ -64,7 +66,10 @@ public class ObservationsClickAdapter extends RecyclerView.Adapter<ObservationsC
     public void onBindViewHolder(ObservationsClickAdapter.ObservationsClickViewHolder holder, int position) {
         Observation object = observationArrayList.get(position);
 
-        String r1c1Text = object.getObsDsoID();
+        String r1c1Text = object.getObsCatalogue();
+
+        String r2c1Text = "";
+        if (object.getObsProgram() != null && !object.getObsProgram().isEmpty()) { r2c1Text = "AL: " + object.getObsProgram(); }
 
         String tempDateString = object.getObsDate();
         //Integer index = tempDateString.indexOf(" ");    // strips time portion of datetime string to display only date portion
@@ -74,11 +79,12 @@ public class ObservationsClickAdapter extends RecyclerView.Adapter<ObservationsC
         String tempLocString = object.getObsLocation();
         Integer index = tempLocString.indexOf("°");
         if (index != -1) { tempLocString = "(gps)";}
-        String r1c3Text = tempLocString;
+        String r2c2Text = tempLocString;
 
         holder.textViewR1C1.setText(r1c1Text);
         holder.textViewR1C2.setText(r1c2Text);
-        holder.textViewR1C3.setText(r1c3Text);
+        holder.textViewR2C1.setText(r2c1Text);
+        holder.textViewR2C2.setText(r2c2Text);
 
     }
 

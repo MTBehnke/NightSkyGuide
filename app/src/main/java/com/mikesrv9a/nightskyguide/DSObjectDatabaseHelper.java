@@ -48,6 +48,29 @@ public class DSObjectDatabaseHelper extends SQLiteAssetHelper{
         return c;
     }
 
+    public Cursor queryDSObject(String objId) {
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+        String searchCol = "object =?";
+
+        String [] sqlSelect = {
+                "_id",
+                "object",
+                "catalogue",
+                "obsprogram"
+        };
+
+        String sqlTables = "dsObjects";
+
+        String[] searchArg = new String[] {objId};
+
+        qb.setTables(sqlTables);
+        Cursor c = qb.query(db, sqlSelect, searchCol, searchArg, null, null, null);
+        c.moveToFirst();
+        return c;
+    }
+
     // only used to refresh database (after version error) - not normal function for app
     public static void forceDatabaseReload(Context context) {
         DSObjectDatabaseHelper dbHelper = new DSObjectDatabaseHelper(context);

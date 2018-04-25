@@ -20,6 +20,8 @@ public class ObserveRecordsSchema {
             public static final String Power = "power";
             public static final String Filter = "filter";
             public static final String Notes = "notes";
+            public static final String Catalogue = "catalogue";
+            public static final String Program = "program";
         }
     }
 }

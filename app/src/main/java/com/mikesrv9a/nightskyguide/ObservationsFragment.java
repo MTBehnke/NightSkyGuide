@@ -50,6 +50,8 @@ public class ObservationsFragment extends Fragment {
     int powerCol;
     int filterCol;
     int notesCol;
+    int catalogueCol;
+    int programCol;
 
     final int REQUEST_STORAGE = 3;
 
@@ -148,6 +150,8 @@ public class ObservationsFragment extends Fragment {
             powerCol = data.getColumnIndex(ObserveRecordsSchema.ObsTable.Cols.Power);
             filterCol = data.getColumnIndex(ObserveRecordsSchema.ObsTable.Cols.Filter);
             notesCol = data.getColumnIndex(ObserveRecordsSchema.ObsTable.Cols.Notes);
+            catalogueCol = data.getColumnIndex(ObserveRecordsSchema.ObsTable.Cols.Catalogue);
+            programCol = data.getColumnIndex(ObserveRecordsSchema.ObsTable.Cols.Program);
             while (!data.isAfterLast()) {
                 Integer obsDbId = data.getInt(obsDbIdCol);  // database record #, column 0
                 String obsObjectID = data.getString(objectIdCol);
@@ -160,10 +164,12 @@ public class ObservationsFragment extends Fragment {
                 String obsPower = data.getString(powerCol);
                 String obsFilter = data.getString(filterCol);
                 String obsNotes = data.getString(notesCol);
+                String obsCatalogue = data.getString(catalogueCol);
+                String obsProgram = data.getString(programCol);
 
                 // creates Observation objects
                 Observation observation = new Observation(obsDbId, obsObjectID, obsDate, obsLocation, obsSeeing, obsTransparency,
-                        obsTelescope, obsEyepiece, obsPower, obsFilter, obsNotes);
+                        obsTelescope, obsEyepiece, obsPower, obsFilter, obsNotes, obsCatalogue, obsProgram);
                 allObservationsArrayList.add(observation);
 
                 data.moveToNext();
@@ -246,13 +252,13 @@ public class ObservationsFragment extends Fragment {
             CSVWriter csvWrite = new CSVWriter(new OutputStreamWriter(file));
             String arrHeaderStr[] = {getString(R.string.hint_objectID), getString(R.string.hint_date), getString(R.string.hint_location),
                     getString(R.string.hint_seeing), getString(R.string.hint_transparency), getString(R.string.hint_telescope),
-                    getString(R.string.hint_eyepiece), getString(R.string.hint_power), getString(R.string.hint_filter), getString(R.string.hint_notes)};
+                    getString(R.string.hint_eyepiece), getString(R.string.hint_power), getString(R.string.hint_filter), getString(R.string.hint_notes), getString(R.string.hint_catalogue), getString(R.string.hint_obs_program)};
             csvWrite.writeNext(arrHeaderStr);
             data.moveToFirst();
             while (!data.isAfterLast()) {
                 String arrStr[] = {data.getString(objectIdCol), data.getString(dateCol), data.getString(locationCol), data.getString(seeingCol),
                         data.getString(transparencyCol), data.getString(telescopeCol), data.getString(eyepieceCol), data.getString(powerCol),
-                        data.getString(filterCol), data.getString(notesCol)};
+                        data.getString(filterCol), data.getString(notesCol), data.getString(catalogueCol), data.getString(programCol)};
                 csvWrite.writeNext(arrStr);
                 data.moveToNext();
             }
