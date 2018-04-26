@@ -6,8 +6,16 @@
     <item
         android:id="@+id/export_csv"
         android:enabled="true"
-        android:orderInCategory="1"
+        android:orderInCategory="2"
         android:title="@string/export_csv"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/app_info_logbook"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:orderInCategory="1"
+        android:title="@string/menuitem_info"
+        app:showAsAction="ifRoom" />
 
 </menu>
