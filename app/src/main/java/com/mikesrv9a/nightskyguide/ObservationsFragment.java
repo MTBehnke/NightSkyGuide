@@ -2,6 +2,7 @@ package com.mikesrv9a.nightskyguide;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -190,6 +191,11 @@ public class ObservationsFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.export_csv:
                 checkPermissions();
+                return true;
+            case R.id.app_info_logbook:
+                Intent info = new Intent(getActivity(), AppInfoActivity.class);
+                info.putExtra("appInfoKey", 5);
+                startActivity(info);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
