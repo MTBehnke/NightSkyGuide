@@ -28,6 +28,7 @@ class DSObject implements Parcelable {
     String dsoPSA;          // DSO Page Number(s) in S&T Pocket Sky Atlas
     String dsoOITH;         // DSO Page Number(s) in Objects in the Heavens
     String dsoSkyAtlas;     // DSO Page Number(s) for Sky Atlas 2000
+    String dsoTurnLeft;     // DSO Page Number for Turn Left At Orion
     String dsoCatalogue;    // DSO Catalogue ID (e.g. NGC #)
     String dsoObsProgram;   // DSO Observation Program (Messier "M###", Caldwell "C###", Hershel 400 "H400")
     Integer dsoObserved;    // DSO Observed (not observed = 0, observed = tbd)
@@ -43,7 +44,7 @@ class DSObject implements Parcelable {
     // DSObject constructor
     DSObject (String id, String type, Double mag, String size, String dist,
                      Double ra, Double dec, String cons, String name, String psa,
-                     String oith, String skyatlas, String catalogue, String obsProgram ,Integer observed) {
+                     String oith, String skyatlas, String turnleft, String catalogue, String obsProgram ,Integer observed) {
         dsoObjectID = id;
         dsoType = type;
         dsoMag = mag;
@@ -56,6 +57,7 @@ class DSObject implements Parcelable {
         dsoPSA = psa;
         dsoOITH = oith;
         dsoSkyAtlas = skyatlas;
+        dsoTurnLeft = turnleft;
         dsoCatalogue = catalogue;
         dsoObserved = observed;
         dsoObsProgram = obsProgram;
@@ -89,6 +91,8 @@ class DSObject implements Parcelable {
     String getDsoOITH() {return dsoOITH;}
 
     String getDsoSkyAtlas() {return dsoSkyAtlas;}
+
+    String getDsoTurnLeft() {return dsoTurnLeft;}
 
     String getDsoCatalogue()  {return dsoCatalogue;}
 
@@ -230,6 +234,7 @@ class DSObject implements Parcelable {
         parcel.writeString(dsoPSA);
         parcel.writeString(dsoOITH);
         parcel.writeString(dsoSkyAtlas);
+        parcel.writeString(dsoTurnLeft);
         parcel.writeString(dsoCatalogue);
         parcel.writeString(dsoObsProgram);
         parcel.writeInt(dsoObserved);
@@ -256,6 +261,7 @@ class DSObject implements Parcelable {
         dsoPSA = in.readString();
         dsoOITH = in.readString();
         dsoSkyAtlas = in.readString();
+        dsoTurnLeft = in.readString();
         dsoCatalogue = in.readString();
         dsoObsProgram = in.readString();
 

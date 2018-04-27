@@ -47,9 +47,11 @@ public class DetailFragment extends Fragment {
     private TextView psaTextView; // displays dsObject's PSA pages
     private TextView oithTextView; // displays dsObject's OITH pages
     private TextView skyAtlasTextView; // display dsObject's Sky Atlas 2000 pages
+    private TextView turnLeftTextView; // display dsObject's Turn Left At Orion pages
     private TextView psaTextViewLabel;
     private TextView oithTextViewLabel;
     private TextView skyAtlasTextViewLabel;
+    private TextView turnLeftTextViewLabel;
 
     private Bitmap constImage;
 
@@ -91,9 +93,11 @@ public class DetailFragment extends Fragment {
         psaTextView = view.findViewById(R.id.psaTextView);
         oithTextView = view.findViewById(R.id.oithTextView);
         skyAtlasTextView = view.findViewById(R.id.skyAtlasTextView);
+        turnLeftTextView = view.findViewById(R.id.turnLeftTextView);
         psaTextViewLabel = view.findViewById(R.id.psaLabelTextView);
         oithTextViewLabel = view.findViewById(R.id.oithLabelTextView);
         skyAtlasTextViewLabel = view.findViewById(R.id.skyAtlasLabelTextView);
+        turnLeftTextViewLabel = view.findViewById(R.id.turnLeftLabelTextView);
         TextView catTextView = view.findViewById(R.id.catTextView);
         TextView altTextView = view.findViewById(R.id.altTextView);
         TextView azTextView = view.findViewById(R.id.azTextView);
@@ -129,6 +133,7 @@ public class DetailFragment extends Fragment {
         psaTextView.setText(dsObject.getDsoPSA());
         oithTextView.setText(dsObject.getDsoOITH());
         skyAtlasTextView.setText(dsObject.getDsoSkyAtlas());
+        turnLeftTextView.setText(dsObject.getDsoTurnLeft());
         catTextView.setText(dsObject.getDsoCatalogue());
         String altitude = df.format(dsObject.getDsoAlt()) + "°";
         altTextView.setText(altitude);
@@ -274,6 +279,13 @@ public class DetailFragment extends Fragment {
         } else {
             skyAtlasTextView.setVisibility(View.VISIBLE);
             skyAtlasTextViewLabel.setVisibility(View.VISIBLE);
+        }
+        if (!showAtlasLists.contains("T")) {
+            turnLeftTextView.setVisibility(View.GONE);
+            turnLeftTextViewLabel.setVisibility(View.GONE);
+        } else {
+            turnLeftTextView.setVisibility(View.VISIBLE);
+            turnLeftTextViewLabel.setVisibility(View.VISIBLE);
         }
     }
 

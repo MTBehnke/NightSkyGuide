@@ -349,6 +349,10 @@ public class SettingsFragment extends PreferenceFragment {
             if (listNum >= 1) {objectList = objectList + ", ";}
             objectList = objectList + "Sky Atlas 2000.0";
             listNum++;}
+        if (selected.contains("T")) {
+            if (listNum >= 1) {objectList = objectList + ", ";}
+            objectList = objectList + "Turn Left At Orion";
+            listNum++;}
         if (listNum == 0) {objectList = "None";}
         return objectList;
     }

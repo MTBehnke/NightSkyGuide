@@ -181,6 +181,7 @@ public class DSObjectsFragment extends Fragment {
             int psaCol = data.getColumnIndex("psa");
             int oithCol = data.getColumnIndex("oith");
             int skyatlasCol = data.getColumnIndex("skyatlas");
+            int turnleftCol = data.getColumnIndex("turnleft");
             int catCol = data.getColumnIndex("catalogue");
             int progCol = data.getColumnIndex("obsprogram");
             setUserPreferences();  // need user's latitude and longitude
@@ -197,6 +198,7 @@ public class DSObjectsFragment extends Fragment {
                 String dsoPSA = data.getString(psaCol);
                 String dsoOITH = data.getString(oithCol);
                 String dsoSkyAtlas = data.getString(skyatlasCol);
+                String dsoTurnLeft = data.getString(turnleftCol);
                 String dsoCatalogue = data.getString(catCol);
                 String dsoObsProg = data.getString(progCol);
 
@@ -208,7 +210,7 @@ public class DSObjectsFragment extends Fragment {
 
                 // creates DSObjects
                 DSObject dsObject = new DSObject(dsoObjectID, dsoType, dsoMag, dsoSize, dsoDist,
-                        dsoRA, dsoDec, dsoConst, dsoName, dsoPSA, dsoOITH, dsoSkyAtlas, dsoCatalogue, dsoObsProg, dsoObserved);
+                        dsoRA, dsoDec, dsoConst, dsoName, dsoPSA, dsoOITH, dsoSkyAtlas, dsoTurnLeft, dsoCatalogue, dsoObsProg, dsoObserved);
                 dsObject.setDsoAltAz(userLat, userLong);
                 allDsObjectsArrayList.add(dsObject);
 
@@ -218,7 +220,7 @@ public class DSObjectsFragment extends Fragment {
             // add planets as DSObjects  (1:Mercury thru 7: Neptune, skip 0:Earth)
             for (int planet = 1; planet < 8; planet++) {
                    DSObject dsObject = new DSObject(AstroCalc.planetName[planet],"PL",0.0,"","",null,null,
-                           "",null,"","","",AstroCalc.planetName[planet],"",0);
+                           "",null,"","","","",AstroCalc.planetName[planet],"",0);
                    dsObject.setPlanetCoords(planet);
                    dsObject.setDsoAltAz(userLat, userLong);
                    allDsObjectsArrayList.add(dsObject);

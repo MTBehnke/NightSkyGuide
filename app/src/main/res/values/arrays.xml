@@ -48,12 +48,14 @@
         <item>P</item>
         <item>O</item>
         <item>S</item>
+        <item>T</item>
     </string-array>
 
     <string-array name="pref_list_atlas_names">
         <item>Pocket Sky Atlas</item>
         <item>Objects in the Heavens</item>
         <item>Sky Atlas 2000.0</item>
+        <item>Turn Left At Orion</item>
     </string-array>
 
     <string name="pref_list_atlas_title">Select Sky Atlases:</string>

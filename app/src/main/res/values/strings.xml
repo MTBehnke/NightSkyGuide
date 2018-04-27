@@ -38,6 +38,7 @@
     <string name="label_psa">Pocket Sky Atlas:</string>
     <string name="label_oith">OITH Fieldbook:</string>
     <string name="label_skyatlas">Sky Atlas 2000:</string>
+    <string name="label_turnleft">Turn Left/Orion:</string>
     <string name="label_observed">Observed:</string>
     <string name="label_alt">Altitude:</string>
     <string name="label_az">Azimuth:</string>
