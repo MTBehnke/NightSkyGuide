@@ -9,7 +9,6 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.Arrays;
-import java.util.Date;
 
 /** Creates DSObjects and updates sky position, etc.
  */
