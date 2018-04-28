@@ -3,10 +3,6 @@ package com.mikesrv9a.nightskyguide;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
@@ -16,23 +12,12 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.CheckedTextView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
@@ -348,6 +333,10 @@ public class SettingsFragment extends PreferenceFragment {
         if (selected.contains("S")) {
             if (listNum >= 1) {objectList = objectList + ", ";}
             objectList = objectList + "Sky Atlas 2000.0";
+            listNum++;}
+        if (selected.contains("T")) {
+            if (listNum >= 1) {objectList = objectList + ", ";}
+            objectList = objectList + "Turn Left At Orion";
             listNum++;}
         if (listNum == 0) {objectList = "None";}
         return objectList;

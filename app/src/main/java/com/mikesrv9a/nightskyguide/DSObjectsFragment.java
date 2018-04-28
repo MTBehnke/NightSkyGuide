@@ -15,7 +15,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.*;
 import android.widget.Toast;
 
@@ -181,6 +180,7 @@ public class DSObjectsFragment extends Fragment {
             int psaCol = data.getColumnIndex("psa");
             int oithCol = data.getColumnIndex("oith");
             int skyatlasCol = data.getColumnIndex("skyatlas");
+            int turnleftCol = data.getColumnIndex("turnleft");
             int catCol = data.getColumnIndex("catalogue");
             int progCol = data.getColumnIndex("obsprogram");
             setUserPreferences();  // need user's latitude and longitude
@@ -197,6 +197,7 @@ public class DSObjectsFragment extends Fragment {
                 String dsoPSA = data.getString(psaCol);
                 String dsoOITH = data.getString(oithCol);
                 String dsoSkyAtlas = data.getString(skyatlasCol);
+                String dsoTurnLeft = data.getString(turnleftCol);
                 String dsoCatalogue = data.getString(catCol);
                 String dsoObsProg = data.getString(progCol);
 
@@ -208,7 +209,7 @@ public class DSObjectsFragment extends Fragment {
 
                 // creates DSObjects
                 DSObject dsObject = new DSObject(dsoObjectID, dsoType, dsoMag, dsoSize, dsoDist,
-                        dsoRA, dsoDec, dsoConst, dsoName, dsoPSA, dsoOITH, dsoSkyAtlas, dsoCatalogue, dsoObsProg, dsoObserved);
+                        dsoRA, dsoDec, dsoConst, dsoName, dsoPSA, dsoOITH, dsoSkyAtlas, dsoTurnLeft, dsoCatalogue, dsoObsProg, dsoObserved);
                 dsObject.setDsoAltAz(userLat, userLong);
                 allDsObjectsArrayList.add(dsObject);
 
@@ -218,7 +219,7 @@ public class DSObjectsFragment extends Fragment {
             // add planets as DSObjects  (1:Mercury thru 7: Neptune, skip 0:Earth)
             for (int planet = 1; planet < 8; planet++) {
                    DSObject dsObject = new DSObject(AstroCalc.planetName[planet],"PL",0.0,"","",null,null,
-                           "",null,"","","",AstroCalc.planetName[planet],"",0);
+                           "",null,"","","","",AstroCalc.planetName[planet],"",0);
                    dsObject.setPlanetCoords(planet);
                    dsObject.setDsoAltAz(userLat, userLong);
                    allDsObjectsArrayList.add(dsObject);
@@ -411,6 +412,7 @@ public class DSObjectsFragment extends Fragment {
         qb.setTables(sqlTables);
         observations = qb.query(observationDB, sqlSelect, null, null, null, null, null);   // cursor of observations
         observations.moveToFirst();
+        observationDB.close();
 
         // create ObservedList arraylist
         if (observations != null && observations.getCount() > 0) {

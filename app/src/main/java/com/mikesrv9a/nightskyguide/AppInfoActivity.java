@@ -49,7 +49,8 @@ public class AppInfoActivity extends AppCompatActivity {
                         "indicated with a solid circle symbol adjacent to the magnitude to help identify brighter targets.\n\n" +
                         "With some telescopes, particularly dobsonians, finding objects that are near the zenith (straight up) can be difficult. " +
                         "For objects that are at an altitude of 80° or higher it may be easier to observe lower objects for a little while. " +
-                        "As the Earth turns under the night sky, those higher objects will soon be a little lower.\n";
+                        "As the Earth turns under the night sky, those higher objects will soon be a little lower.\n\n" +
+                        "When sorting by Object Id, the objects are sorted as follows:\n- Planets\n- Messier\n- NGC\n- IC\n- All Other" ;
                 break;
             case 2:
                 infoText = "Rise, transit and set times are shown for the current time zone of your phone or tablet, " +
@@ -63,6 +64,7 @@ public class AppInfoActivity extends AppCompatActivity {
                         "PSA refers to Sky & Telescope's Pocket Sky Atlas\n\n" +
                         "OITH refers to Objects in the Heavens ed.5.2 by Peter Birren\n\n" +
                         "Sky Atlas 2000 refers to Sky Atlas 2000.0 by Tirion & Sinnott\n\n" +
+                        "Turn Left/Orion refers to Turn Left At Orion, 4th ed. by Cambridge University Press\n\n" +
                         "Clicking on the + icon will allow you to create a record of your observations, including " +
                         "information generally required for various observing programs, such as those sponsored " +
                         "by the Astronomical League.\n";

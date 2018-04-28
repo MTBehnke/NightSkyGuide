@@ -117,6 +117,14 @@
                     android:layout_below="@id/oithLabelTextView"
                     android:text="@string/label_skyatlas" />
 
+                <TextView
+                    android:id="@+id/turnLeftLabelTextView"
+                    style="@style/DSObjectLabelTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/skyAtlasLabelTextView"
+                    android:text="@string/label_turnleft" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -180,6 +188,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/oithTextView" />
+
+                <TextView
+                    android:id="@+id/turnLeftTextView"
+                    style="@style/DSObjectTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/skyAtlasTextView" />
 
             </RelativeLayout>
 

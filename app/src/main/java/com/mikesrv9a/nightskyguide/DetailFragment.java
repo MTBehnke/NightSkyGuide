@@ -7,13 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.internal.NavigationMenu;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,10 +16,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v7.widget.Toolbar;
 
 import java.io.InputStream;
 import java.text.DecimalFormat;
@@ -47,9 +40,11 @@ public class DetailFragment extends Fragment {
     private TextView psaTextView; // displays dsObject's PSA pages
     private TextView oithTextView; // displays dsObject's OITH pages
     private TextView skyAtlasTextView; // display dsObject's Sky Atlas 2000 pages
+    private TextView turnLeftTextView; // display dsObject's Turn Left At Orion pages
     private TextView psaTextViewLabel;
     private TextView oithTextViewLabel;
     private TextView skyAtlasTextViewLabel;
+    private TextView turnLeftTextViewLabel;
 
     private Bitmap constImage;
 
@@ -91,9 +86,11 @@ public class DetailFragment extends Fragment {
         psaTextView = view.findViewById(R.id.psaTextView);
         oithTextView = view.findViewById(R.id.oithTextView);
         skyAtlasTextView = view.findViewById(R.id.skyAtlasTextView);
+        turnLeftTextView = view.findViewById(R.id.turnLeftTextView);
         psaTextViewLabel = view.findViewById(R.id.psaLabelTextView);
         oithTextViewLabel = view.findViewById(R.id.oithLabelTextView);
         skyAtlasTextViewLabel = view.findViewById(R.id.skyAtlasLabelTextView);
+        turnLeftTextViewLabel = view.findViewById(R.id.turnLeftLabelTextView);
         TextView catTextView = view.findViewById(R.id.catTextView);
         TextView altTextView = view.findViewById(R.id.altTextView);
         TextView azTextView = view.findViewById(R.id.azTextView);
@@ -112,10 +109,7 @@ public class DetailFragment extends Fragment {
         objectIdTextView.setText(dsObject.getDsoObjectID());
         String typeAbbr = dsObject.getDsoType();
         typeTextView.setText(AstroCalc.getDSOType(typeAbbr));
-        if (dsObject.getDsoMag() == null) {
-            magTextView.setVisibility(View.GONE);
-            view.findViewById(R.id.magLabelTextView).setVisibility(View.GONE);
-        } else {
+        if (dsObject.getDsoMag() != 0) {
             String magnitude = df.format(dsObject.getDsoMag());
             magTextView.setText(magnitude);
         }
@@ -129,6 +123,7 @@ public class DetailFragment extends Fragment {
         psaTextView.setText(dsObject.getDsoPSA());
         oithTextView.setText(dsObject.getDsoOITH());
         skyAtlasTextView.setText(dsObject.getDsoSkyAtlas());
+        turnLeftTextView.setText(dsObject.getDsoTurnLeft());
         catTextView.setText(dsObject.getDsoCatalogue());
         String altitude = df.format(dsObject.getDsoAlt()) + "°";
         altTextView.setText(altitude);
@@ -274,6 +269,13 @@ public class DetailFragment extends Fragment {
         } else {
             skyAtlasTextView.setVisibility(View.VISIBLE);
             skyAtlasTextViewLabel.setVisibility(View.VISIBLE);
+        }
+        if (!showAtlasLists.contains("T")) {
+            turnLeftTextView.setVisibility(View.GONE);
+            turnLeftTextViewLabel.setVisibility(View.GONE);
+        } else {
+            turnLeftTextView.setVisibility(View.VISIBLE);
+            turnLeftTextViewLabel.setVisibility(View.VISIBLE);
         }
     }
 
