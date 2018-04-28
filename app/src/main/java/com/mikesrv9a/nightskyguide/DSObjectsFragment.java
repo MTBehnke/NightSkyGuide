@@ -413,6 +413,7 @@ public class DSObjectsFragment extends Fragment {
         qb.setTables(sqlTables);
         observations = qb.query(observationDB, sqlSelect, null, null, null, null, null);   // cursor of observations
         observations.moveToFirst();
+        observationDB.close();
 
         // create ObservedList arraylist
         if (observations != null && observations.getCount() > 0) {

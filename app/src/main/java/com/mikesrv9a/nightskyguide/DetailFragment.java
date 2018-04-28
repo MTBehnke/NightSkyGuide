@@ -15,6 +15,7 @@ import android.preference.PreferenceManager;
 import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -116,10 +117,7 @@ public class DetailFragment extends Fragment {
         objectIdTextView.setText(dsObject.getDsoObjectID());
         String typeAbbr = dsObject.getDsoType();
         typeTextView.setText(AstroCalc.getDSOType(typeAbbr));
-        if (dsObject.getDsoMag() == null) {
-            magTextView.setVisibility(View.GONE);
-            view.findViewById(R.id.magLabelTextView).setVisibility(View.GONE);
-        } else {
+        if (dsObject.getDsoMag() != 0) {
             String magnitude = df.format(dsObject.getDsoMag());
             magTextView.setText(magnitude);
         }
