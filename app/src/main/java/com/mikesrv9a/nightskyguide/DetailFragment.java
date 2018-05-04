@@ -7,9 +7,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,6 +51,7 @@ public class DetailFragment extends Fragment {
     private TextView turnLeftTextViewLabel;
 
     private Bitmap constImage;
+    private Bitmap telrad;
 
     // callback method implemented by MainActivity
     public interface AddObservationListener {
@@ -163,7 +168,9 @@ public class DetailFragment extends Fragment {
             String constName = "images/" + dsObject.getDsoConst() + ".gif";
             PhotoView constImageView = view.findViewById(R.id.constImageView);
             Bitmap bm = loadConstImage(constName);   // display constellation .gif on detail screen
-            constImageView.setImageBitmap(bm);
+            Bitmap tr = telradImage();
+            constImageView.setImageBitmap(combineTwoBitmaps(bm,tr));
+            //constImageView.setImageBitmap(combineTwoBitmaps(bm,tr));
 
             /*
             // Change constellation image to night mode version
@@ -205,6 +212,37 @@ public class DetailFragment extends Fragment {
             e.printStackTrace();
         }
         return constImage;
+    }
+
+    private Bitmap telradImage() {
+        try {
+            // get input stream
+            String filename = "images/Telrad.gif";
+            InputStream ims = getActivity().getAssets().open(filename);
+            telrad = BitmapFactory.decodeStream(ims);
+            ims.close();
+            return telrad;
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), "error", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+        return telrad;
+    }
+
+    private Bitmap combineTwoBitmaps(Bitmap background, Bitmap foreground) {
+        float objectLoc[] = AstroCalc.constImageConv(dsObject.dsoConst, dsObject.getDsoRA(), dsObject.getDsoDec());
+        Matrix matrix = new Matrix();
+        float targetX = objectLoc[0] - 82;
+        float targetY = objectLoc[1] - 82;
+        matrix.setTranslate(targetX, targetY);
+        //matrix.postRotate(45,objectLoc[0],objectLoc[1]);
+        matrix.postScale(objectLoc[2],objectLoc[2],objectLoc[0],objectLoc[1]);
+        Bitmap combinedBitmap = Bitmap.createBitmap(background.getWidth(), background.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(combinedBitmap);
+        Paint paint = new Paint(Paint.FILTER_BITMAP_FLAG);
+        canvas.drawBitmap(background, 0, 0, paint);
+        canvas.drawBitmap(foreground, matrix, paint);
+        return combinedBitmap;
     }
 
     // display this fragment's menu items
