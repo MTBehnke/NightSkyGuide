@@ -11,7 +11,7 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 public class DSObjectDatabaseHelper extends SQLiteAssetHelper{
     private static final String DATABASE_NAME = "DSObjects.db";
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
 
     // constructor
     public DSObjectDatabaseHelper(Context context) {

@@ -8,8 +8,11 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -217,7 +220,7 @@ public class DetailFragment extends Fragment {
     private Bitmap telradImage() {
         try {
             // get input stream
-            String filename = "images/Telrad.gif";
+            String filename = "images/Telrad.png";
             InputStream ims = getActivity().getAssets().open(filename);
             telrad = BitmapFactory.decodeStream(ims);
             ims.close();

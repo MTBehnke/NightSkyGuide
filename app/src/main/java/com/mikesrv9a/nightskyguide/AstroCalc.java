@@ -218,11 +218,13 @@ public class AstroCalc {
     // convert degrees from double format to dms string format
     public static String convertDDToDMS(double dd) {
         int deg = (int) dd;
+        String minusSign = "";
+        if (deg == 0 && dd < 0) {minusSign = "-";}
         int min = (int) ((dd-deg)*60.0);
         long sec =  Math.round ((dd-deg-(min/60.0))*3600);
         if(sec == 60) {sec = 0; min++;if (min == 60) {min = 0; deg ++;
             if (deg == 360) {deg = 0;}}}
-        return deg + "° " + String.format("%02d",Math.abs(min)) + "' " +
+        return minusSign + deg + "° " + String.format("%02d",Math.abs(min)) + "' " +
                 String.format("%02d",Math.abs(sec)) + "\"";
     }
 

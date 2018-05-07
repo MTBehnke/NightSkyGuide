@@ -60,14 +60,16 @@ public class AppInfoActivity extends AppCompatActivity {
                         "The constellation charts will provide a general location of many of the DSOs, however " +
                         "not all DSOs listed are shown in these charts and " +
                         "it is likely that you will need a sky atlas to find many of these objects.  The page numbers " +
-                        "for three common atlases are listed on the detail pages.\n\n" +
+                        "for four common atlases are listed on the detail pages.\n\n" +
                         "PSA refers to Sky & Telescope's Pocket Sky Atlas\n\n" +
                         "OITH refers to Objects in the Heavens ed.5.2 by Peter Birren\n\n" +
                         "Sky Atlas 2000 refers to Sky Atlas 2000.0 by Tirion & Sinnott\n\n" +
                         "Turn Left/Orion refers to Turn Left At Orion, 4th ed. by Cambridge University Press\n\n" +
                         "Clicking on the + icon will allow you to create a record of your observations, including " +
                         "information generally required for various observing programs, such as those sponsored " +
-                        "by the Astronomical League.\n";
+                        "by the Astronomical League.\n\n" +
+                        "Telrad circles highlight the location of the selected object with the outer circle representing a 4° field of view, " +
+                        "the next circle representing a 2° field of view and the smallest circle representing a 0.5° field of view.";
                 break;
             case 3:
                 infoText = "Astronomical Seeing:\n\n" +
@@ -90,7 +92,7 @@ public class AppInfoActivity extends AppCompatActivity {
                         "page accessible at the top of the Observation Log page.\n";
                 break;
             case 4:
-                infoText = "Night Sky Guide v2.0\n" +
+                infoText = "Night Sky Guide v2.1\n" +
                         "Copyright 2018 Shiny Objects, LLC\n\n\n" +
                         "Privacy Policy:\n\nWe don’t collect, transmit or store your data, period.\n\n" +
                         "All data used by this app, including location information as enabled by ‘Use GPS/Network Location’ or entered by you, " +
