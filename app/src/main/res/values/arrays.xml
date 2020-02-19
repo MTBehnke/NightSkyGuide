@@ -20,9 +20,11 @@
 
     <string-array name="pref_list_type">
         <item>P</item>
+        <item>1</item>
         <item>M</item>
         <item>C</item>
         <item>H</item>
+        <item>2</item>
         <item>G</item>
         <item>S</item>
         <item>B</item>
@@ -32,9 +34,11 @@
 
     <string-array name="pref_list_type_names">
         <item>Planets</item>
+        <item>Stars</item>
         <item>Messier</item>
         <item>Caldwell</item>
         <item>Herschel 400</item>
+        <item>Double Stars</item>
         <item>Galaxies</item>
         <item>Star Clusters</item>
         <item>Bright Nebulae</item>

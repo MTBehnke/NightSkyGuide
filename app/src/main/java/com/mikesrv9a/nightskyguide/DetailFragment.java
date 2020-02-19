@@ -15,7 +15,8 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
+//import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -52,6 +53,14 @@ public class DetailFragment extends Fragment {
     private TextView oithTextViewLabel;
     private TextView skyAtlasTextViewLabel;
     private TextView turnLeftTextViewLabel;
+    private TextView dblmagTextView;
+    private TextView dblsepTextView;
+    private TextView dblangleTextView;
+    private TextView dblyearTextView;
+    private TextView dblmagTextViewLabel;
+    private TextView dblsepTextViewLabel;
+    private TextView dblangleTextViewLabel;
+    private TextView dblyearTextViewLabel;
 
     private Bitmap constImage;
     private Bitmap telrad;
@@ -87,6 +96,14 @@ public class DetailFragment extends Fragment {
         TextView magTextView = view.findViewById(R.id.magTextView);
         TextView sizeTextView = view.findViewById(R.id.sizeTextView);
         TextView distTextView = view.findViewById(R.id.distTextView);
+        dblmagTextView = view.findViewById(R.id.dblmagTextView);
+        dblsepTextView = view.findViewById(R.id.dblsepTextView);
+        dblangleTextView = view.findViewById(R.id.dblangleTextView);
+        dblyearTextView = view.findViewById(R.id.dblyearTextView);
+        dblmagTextViewLabel = view.findViewById(R.id.dblmagLabelTextView);
+        dblsepTextViewLabel = view.findViewById(R.id.dblsepLabelTextView);
+        dblangleTextViewLabel = view.findViewById(R.id.dblangleLabelTextView);
+        dblyearTextViewLabel = view.findViewById(R.id.dblyearLabelTextView);
         TextView raTextView = view.findViewById(R.id.raTextView);
         TextView decTextView = view.findViewById(R.id.decTextView);
         TextView constTextView = view.findViewById(R.id.constTextView);
@@ -117,7 +134,7 @@ public class DetailFragment extends Fragment {
         objectIdTextView.setText(dsObject.getDsoObjectID());
         String typeAbbr = dsObject.getDsoType();
         typeTextView.setText(AstroCalc.getDSOType(typeAbbr));
-        if (dsObject.getDsoMag() != 0) {
+        if (dsObject.getDsoMag() != 99.0) {
             String magnitude = df.format(dsObject.getDsoMag());
             magTextView.setText(magnitude);
         }
@@ -137,6 +154,29 @@ public class DetailFragment extends Fragment {
         altTextView.setText(altitude);
         String azimuth = df.format(dsObject.getDsoAz()) + "°";
         azTextView.setText(azimuth);
+
+        if (dsObject.getDsoType().equals("DST")) {
+            dblmagTextView.setText(dsObject.getDsoDblMag());
+            dblsepTextView.setText(dsObject.getDsoDblSeparation());
+            dblangleTextView.setText(dsObject.getDsoDblAngle());
+            dblyearTextView.setText(dsObject.getDsoDblYear());
+            dblmagTextView.setVisibility(View.VISIBLE);
+            dblsepTextView.setVisibility(View.VISIBLE);
+            dblangleTextView.setVisibility(View.VISIBLE);
+            dblyearTextView.setVisibility(View.VISIBLE);
+            dblmagTextViewLabel.setVisibility(View.VISIBLE);
+            dblsepTextViewLabel.setVisibility(View.VISIBLE);
+            dblangleTextViewLabel.setVisibility(View.VISIBLE);
+            dblyearTextViewLabel.setVisibility(View.VISIBLE); }
+        else {
+            dblmagTextView.setVisibility(View.GONE);
+            dblsepTextView.setVisibility(View.GONE);
+            dblangleTextView.setVisibility(View.GONE);
+            dblyearTextView.setVisibility(View.GONE);
+            dblmagTextViewLabel.setVisibility(View.GONE);
+            dblsepTextViewLabel.setVisibility(View.GONE);
+            dblangleTextViewLabel.setVisibility(View.GONE);
+            dblyearTextViewLabel.setVisibility(View.GONE); }
 
         DateTimeFormatter dtf = DateTimeFormat.shortTime().withZone(DateTimeZone.getDefault()).
                 withLocale(Locale.getDefault());

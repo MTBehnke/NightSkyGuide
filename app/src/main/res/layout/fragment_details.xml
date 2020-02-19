@@ -94,11 +94,43 @@
                     android:text="@string/label_dist" />
 
                 <TextView
-                    android:id="@+id/psaLabelTextView"
+                    android:id="@+id/dblmagLabelTextView"
                     style="@style/DSObjectLabelTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/distLabelTextView"
+                    android:text="@string/label_dblmag" />
+
+                <TextView
+                    android:id="@+id/dblsepLabelTextView"
+                    style="@style/DSObjectLabelTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/dblmagLabelTextView"
+                    android:text="@string/label_dblsep" />
+
+                <TextView
+                    android:id="@+id/dblangleLabelTextView"
+                    style="@style/DSObjectLabelTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/dblsepLabelTextView"
+                    android:text="@string/label_dblangle" />
+
+                <TextView
+                    android:id="@+id/dblyearLabelTextView"
+                    style="@style/DSObjectLabelTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/dblangleLabelTextView"
+                    android:text="@string/label_dblyear" />
+
+                <TextView
+                    android:id="@+id/psaLabelTextView"
+                    style="@style/DSObjectLabelTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/dblyearLabelTextView"
                     android:text="@string/label_psa" />
 
                 <TextView
@@ -169,11 +201,39 @@
                     android:layout_below="@id/sizeTextView" />
 
                 <TextView
-                    android:id="@+id/psaTextView"
+                    android:id="@+id/dblmagTextView"
                     style="@style/DSObjectTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/distTextView" />
+
+                <TextView
+                    android:id="@+id/dblsepTextView"
+                    style="@style/DSObjectTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/dblmagTextView" />
+
+                <TextView
+                    android:id="@+id/dblangleTextView"
+                    style="@style/DSObjectTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/dblsepTextView" />
+
+                <TextView
+                    android:id="@+id/dblyearTextView"
+                    style="@style/DSObjectTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/dblangleTextView" />
+
+                <TextView
+                    android:id="@+id/psaTextView"
+                    style="@style/DSObjectTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/dblyearTextView" />
 
                 <TextView
                     android:id="@+id/oithTextView"

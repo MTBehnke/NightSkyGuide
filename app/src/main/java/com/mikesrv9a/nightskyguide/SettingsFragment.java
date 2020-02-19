@@ -283,6 +283,10 @@ public class SettingsFragment extends PreferenceFragment {
         if (selected.contains("P")) {
             objectList="Planets";
             listNum++;}
+        if (selected.contains("1")) {
+            if (listNum >= 1) {objectList = objectList + ", ";}
+            objectList = objectList + "Stars";
+            listNum++;}
         if (selected.contains("M")) {
             if (listNum >= 1) {objectList = objectList + ", ";}
             objectList = objectList + "Messier";
@@ -294,6 +298,10 @@ public class SettingsFragment extends PreferenceFragment {
         if (selected.contains("H")) {
             if (listNum >= 1) {objectList = objectList + ", ";}
             objectList = objectList + "Herschel 400";
+            listNum++;}
+        if (selected.contains("2")) {
+            if (listNum >= 1) {objectList = objectList + ", ";}
+            objectList = objectList + "Double Stars";
             listNum++;}
         if (selected.contains("G")) {
             if (listNum >= 1) {objectList = objectList + ", ";}
@@ -316,7 +324,7 @@ public class SettingsFragment extends PreferenceFragment {
             objectList = objectList + "Other";
             listNum++;}
         if (listNum == 0) {objectList = "None";}
-        if (listNum == 9) {objectList = "All";}
+        if (listNum == 11) {objectList = "All";}
         return objectList;
     }
 

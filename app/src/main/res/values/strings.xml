@@ -31,6 +31,10 @@
     <string name="label_mag">Magnitude:</string>
     <string name="label_size">Size:</string>
     <string name="label_dist">Distance:</string>
+    <string name="label_dblmag">Dbl Magnitudes:</string>
+    <string name="label_dblsep">Dbl Separation:</string>
+    <string name="label_dblangle">Dbl Pos Angle:</string>
+    <string name="label_dblyear">Dbl Year:</string>
     <string name="label_RA">RA:</string>
     <string name="label_dec">DEC:</string>
     <string name="label_const">Constellation:</string>

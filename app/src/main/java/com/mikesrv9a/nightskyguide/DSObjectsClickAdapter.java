@@ -2,7 +2,8 @@
 
 package com.mikesrv9a.nightskyguide;
 
-import android.support.v7.widget.RecyclerView;
+//import android.support.v7.widget.RecyclerView;
+import 	androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,8 +93,11 @@ public class DSObjectsClickAdapter
         Double dsoCosHA = object.getDsoOnHorizCosHA();
         if(object.getDsoAz()>= 180){arrow = "▼";}
                 else {arrow = "▲";}
-        if(object.getDsoMag() != 0) {
-            magText = Double.toString(object.getDsoMag());
+        if(object.getDsoMag() != 99.0) {
+            if (object.getDsoType().equals("DST"))
+                {magText = object.getDsoDblMag();}
+                else
+                    {magText = Double.toString(object.getDsoMag());}
             if(object.getDsoMag() <= 7.0) {
                 magText += " ●";
             }
@@ -116,8 +120,10 @@ public class DSObjectsClickAdapter
         //String r1c4Text = Double.toString(object.getDsoAlt());
         String r2c1Text = object.getDsoName();
         String r2c2Text = object.getDsoType();
-        if (r2c2Text=="PL") {r2c2Text="";}
-        String r2c3Text = object.getDsoSize();
+        if (r2c2Text.equals("PL")) {r2c2Text="";}
+        String r2c3Text;
+        if (r2c2Text.equals("DST")) {r2c3Text = object.getDsoDblSeparation();}
+            else {r2c3Text = object.getDsoSize();}
         String r2c4Text = Integer.toString((int) Math.round(object.getDsoAz())) + "°";
         //String r2c4Text = Double.toString(object.getDsoAz());
 

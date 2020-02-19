@@ -3,8 +3,10 @@ package com.mikesrv9a.nightskyguide;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+//import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+//import android.support.v7.widget.Toolbar;
+import 	androidx.appcompat.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -92,8 +94,8 @@ public class AppInfoActivity extends AppCompatActivity {
                         "page accessible at the top of the Observation Log page.\n";
                 break;
             case 4:
-                infoText = "Night Sky Guide v2.1\n" +
-                        "Copyright 2018 Shiny Objects, LLC\n\n\n" +
+                infoText = "Night Sky Guide v2.2 Beta\n" +
+                        "Copyright 2020 Shiny Objects, LLC\n\n\n" +
                         "Privacy Policy:\n\nWe don’t collect, transmit or store your data, period.\n\n" +
                         "All data used by this app, including location information as enabled by ‘Use GPS/Network Location’ or entered by you, " +
                         "is stored locally on your device.  If you choose to ‘Export Log to CSV’, this data will be written to a file stored " +

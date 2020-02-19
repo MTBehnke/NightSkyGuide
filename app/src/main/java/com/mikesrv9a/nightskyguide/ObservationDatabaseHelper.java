@@ -40,7 +40,7 @@ public class ObservationDatabaseHelper extends SQLiteOpenHelper{
         ObsTable.Cols.Catalogue + ", " +
         ObsTable.Cols.Program + ")"
         );
-        Log.d(String.valueOf(obsDatabase), "onActivityCreated: ");
+        //Log.d(String.valueOf(obsDatabase), "onActivityCreated: ");
     }
 
     public Cursor getObservations() {

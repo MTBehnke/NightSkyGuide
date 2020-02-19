@@ -375,10 +375,10 @@ public class AstroCalc {
             -11.6622,-11.5668};
 
     public static String getDSOType (String abbr) {
-        String[] typeAbbrs = {"AST","BN", "C/N","DN","EG","EN","ER","GC","GXY","IG","OC","PL","PN","QSR","RN","SG","SNR"};
-        String[] typeNames = {"Asterism","Bright Nebula","Cluster w/Nebulosity","Dark Nebula","Elliptical Galaxy",
+        String[] typeAbbrs = {"AST","BN", "C/N","DN","DST","EG","EN","ER","GC","GXY","IG","OC","PL","PN","QSR","RN","SG","SNR","ST"};
+        String[] typeNames = {"Asterism","Bright Nebula","Cluster w/Nebulosity","Dark Nebula","Double Star","Elliptical Galaxy",
                 "Emission Nebula","Em./Refl. Nebula","Globular Cluster","Galaxy","Irregular Galaxy","Open Cluster","Planet","Planetary Nebula",
-                "Quasar","Reflection Nebula","Spiral Galaxy","Supernova Remnant"};
+                "Quasar","Reflection Nebula","Spiral Galaxy","Supernova Remnant","Star"};
         String typeName = "";
         for (int i=0; i<typeAbbrs.length;i++) {
             if(typeAbbrs[i].equals(abbr)) {

@@ -11,10 +11,14 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+//import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+//import android.support.v4.app.ActivityCompat;
+import androidx.core.app.ActivityCompat;
+//import android.support.v7.app.AppCompatActivity;
+import 	androidx.appcompat.app.AppCompatActivity;
+//import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.ApiException;

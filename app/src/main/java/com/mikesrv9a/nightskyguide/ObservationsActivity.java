@@ -2,9 +2,12 @@ package com.mikesrv9a.nightskyguide;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+//import android.support.v4.app.FragmentTransaction;
+import 	androidx.fragment.app.FragmentTransaction;
+//import android.support.v7.app.AppCompatActivity;
+import 	androidx.appcompat.app.AppCompatActivity;
+//import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 
 
 public class ObservationsActivity extends AppCompatActivity implements ObservationsFragment.ObservationsFragmentListener,

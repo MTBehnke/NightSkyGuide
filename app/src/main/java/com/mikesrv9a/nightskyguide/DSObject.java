@@ -30,6 +30,10 @@ class DSObject implements Parcelable {
     String dsoTurnLeft;     // DSO Page Number for Turn Left At Orion
     String dsoCatalogue;    // DSO Catalogue ID (e.g. NGC #)
     String dsoObsProgram;   // DSO Observation Program (Messier "M###", Caldwell "C###", Hershel 400 "H400")
+    String dsoDblMag;       // DSO Double Star Magnitude
+    String dsoDblSeparation;// DSO Double Star Separation
+    String dsoDblAngle;     // DSO Double Star Angle
+    String dsoDblYear;      // DSO Double Star Year
     Integer dsoObserved;    // DSO Observed (not observed = 0, observed = tbd)
     Double dsoAlt;          // DSO current altitude in sky (ddd.ddd)
     Double dsoAz;           // DSO current azimuth in sky (ddd.ddd)
@@ -41,9 +45,9 @@ class DSObject implements Parcelable {
 
 
     // DSObject constructor
-    DSObject (String id, String type, Double mag, String size, String dist,
-                     Double ra, Double dec, String cons, String name, String psa,
-                     String oith, String skyatlas, String turnleft, String catalogue, String obsProgram ,Integer observed) {
+    DSObject (String id, String type, Double mag, String size, String dist, Double ra, Double dec, String cons, String name,
+              String psa, String oith, String skyatlas, String turnleft, String catalogue, String obsProgram,
+              String dblMag, String dblSeparation, String dblAngle, String dblYear, Integer observed) {
         dsoObjectID = id;
         dsoType = type;
         dsoMag = mag;
@@ -60,6 +64,10 @@ class DSObject implements Parcelable {
         dsoCatalogue = catalogue;
         dsoObserved = observed;
         dsoObsProgram = obsProgram;
+        dsoDblMag = dblMag;
+        dsoDblSeparation = dblSeparation;
+        dsoDblAngle = dblAngle;
+        dsoDblYear = dblYear;
         dsoAlt = 0.0;
         dsoAz = 0.0;
         dsoSortAlt = 0.0;
@@ -96,6 +104,14 @@ class DSObject implements Parcelable {
     String getDsoCatalogue()  {return dsoCatalogue;}
 
     String getDsoObsProgram() {return dsoObsProgram;}
+
+    String getDsoDblMag() {return dsoDblMag;}
+
+    String getDsoDblSeparation() {return dsoDblSeparation;}
+
+    String getDsoDblAngle() {return dsoDblAngle;}
+
+    String getDsoDblYear() {return dsoDblYear;}
 
     Integer getDsoObserved() {return dsoObserved;}
 
@@ -236,6 +252,10 @@ class DSObject implements Parcelable {
         parcel.writeString(dsoTurnLeft);
         parcel.writeString(dsoCatalogue);
         parcel.writeString(dsoObsProgram);
+        parcel.writeString(dsoDblMag);
+        parcel.writeString(dsoDblSeparation);
+        parcel.writeString(dsoDblAngle);
+        parcel.writeString(dsoDblYear);
         parcel.writeInt(dsoObserved);
         parcel.writeDouble(dsoAlt);
         parcel.writeDouble(dsoAz);
@@ -263,7 +283,10 @@ class DSObject implements Parcelable {
         dsoTurnLeft = in.readString();
         dsoCatalogue = in.readString();
         dsoObsProgram = in.readString();
-
+        dsoDblMag = in.readString();
+        dsoDblSeparation = in.readString();
+        dsoDblAngle = in.readString();
+        dsoDblYear = in.readString();
         DateTimeFormatter dtf = DateTimeFormat.fullDateTime();
         String dsoRiseTimeStr = in.readString();
         String dsoSetTimeStr = in.readString();

@@ -11,10 +11,15 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
+//import android.support.v4.app.Fragment;
+import 	androidx.fragment.app.Fragment;
+//import android.support.v7.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+//import android.support.v7.widget.RecyclerView;
+import 	androidx.recyclerview.widget.RecyclerView;
+//import android.support.v7.widget.SearchView;
+import 	androidx.appcompat.widget.SearchView;
+import android.util.Log;
 import android.view.*;
 import android.widget.Toast;
 
@@ -183,11 +188,20 @@ public class DSObjectsFragment extends Fragment {
             int turnleftCol = data.getColumnIndex("turnleft");
             int catCol = data.getColumnIndex("catalogue");
             int progCol = data.getColumnIndex("obsprogram");
+            int dblMagCol = data.getColumnIndex("dblmag");
+            int dblSepCol = data.getColumnIndex("dblseparation");
+            int dblAngleCol = data.getColumnIndex("dblangle");
+            int dblYearCol = data.getColumnIndex("dblyear");
             setUserPreferences();  // need user's latitude and longitude
             while (!data.isAfterLast()) {
                 String dsoObjectID = data.getString(objectIdCol);
                 String dsoType = data.getString(typeCol);
-                Double dsoMag = (data.isNull(magCol)) ? null : data.getDouble(magCol);
+                Double dsoMag;
+                if (data.getString(magCol).isEmpty()) { dsoMag = 99.0; }
+                    else {dsoMag = data.getDouble(magCol); }
+                //Double dsoMag = data.getDouble(magCol);
+                //if (data.isNull(magCol)) { dsoMag = null; }
+                //    else {dsoMag = data.getDouble(magCol); }
                 String dsoSize = data.getString(sizeCol);
                 String dsoDist = data.getString(distCol);
                 Double dsoRA = data.getDouble(raCol);
@@ -200,6 +214,12 @@ public class DSObjectsFragment extends Fragment {
                 String dsoTurnLeft = data.getString(turnleftCol);
                 String dsoCatalogue = data.getString(catCol);
                 String dsoObsProg = data.getString(progCol);
+                String dsoDblMag = data.getString(dblMagCol);
+                String dsoDblSeparation = data.getString(dblSepCol);
+                String dsoDblAngle = data.getString(dblAngleCol);
+                String dsoDblYear = data.getString(dblYearCol);
+
+                if (dsoObsProg.equals("DS")) {dsoObsProg = dsoObsProg + " - " + dsoName; }
 
                 //Checks observations to determine whether DSO has been observed
                 Integer dsoObserved = 0;
@@ -208,18 +228,19 @@ public class DSObjectsFragment extends Fragment {
                 }
 
                 // creates DSObjects
-                DSObject dsObject = new DSObject(dsoObjectID, dsoType, dsoMag, dsoSize, dsoDist,
-                        dsoRA, dsoDec, dsoConst, dsoName, dsoPSA, dsoOITH, dsoSkyAtlas, dsoTurnLeft, dsoCatalogue, dsoObsProg, dsoObserved);
+                DSObject dsObject = new DSObject(dsoObjectID, dsoType, dsoMag, dsoSize, dsoDist, dsoRA, dsoDec,
+                        dsoConst, dsoName, dsoPSA, dsoOITH, dsoSkyAtlas, dsoTurnLeft, dsoCatalogue, dsoObsProg,
+                        dsoDblMag, dsoDblSeparation, dsoDblAngle, dsoDblYear, dsoObserved);
                 dsObject.setDsoAltAz(userLat, userLong);
                 allDsObjectsArrayList.add(dsObject);
-
                 data.moveToNext();
             }
 
             // add planets as DSObjects  (1:Mercury thru 7: Neptune, skip 0:Earth)
             for (int planet = 1; planet < 8; planet++) {
                    DSObject dsObject = new DSObject(AstroCalc.planetName[planet],"PL",0.0,"","",null,null,
-                           "",null,"","","","",AstroCalc.planetName[planet],"",0);
+                           "",null,"","","","",AstroCalc.planetName[planet],"",
+                           "", "", "", "" ,0);
                    dsObject.setPlanetCoords(planet);
                    dsObject.setDsoAltAz(userLat, userLong);
                    allDsObjectsArrayList.add(dsObject);
@@ -327,15 +348,17 @@ public class DSObjectsFragment extends Fragment {
             object.setDsoAltAz(userLat, userLong);
             Double dsoAlt = object.getDsoAlt();
             boolean dsoDisplay = false;
-            if (showObjectLists.contains("M") && object.dsoObsProgram.contains("M")) { dsoDisplay = true; }
-            else if (showObjectLists.contains("C") && object.dsoObsProgram.contains("C")) { dsoDisplay = true; }
-            else if (showObjectLists.contains("H") && object.dsoObsProgram.contains("H")) { dsoDisplay = true; }
+            if (showObjectLists.contains("M") && object.dsoObsProgram.startsWith("M")) { dsoDisplay = true; }
+            else if (showObjectLists.contains("C") && object.dsoObsProgram.startsWith("C")) { dsoDisplay = true; }
+            else if (showObjectLists.contains("H") && object.dsoObsProgram.startsWith("H")) { dsoDisplay = true; }
             else if (showObjectLists.contains("P") && object.dsoType.equals("PL")) { dsoDisplay = true; }
             else if (showObjectLists.contains("G") && (object.dsoType.equals("EG") || object.dsoType.equals("GXY") || object.dsoType.equals("IG") || object.dsoType.equals("SG"))) { dsoDisplay = true; }
             else if (showObjectLists.contains("S") && (object.dsoType.equals("C/N") || object.dsoType.equals("GC") || object.dsoType.equals("OC"))) { dsoDisplay = true; }
             else if (showObjectLists.contains("B") && (object.dsoType.equals("BN") || object.dsoType.equals("C/N") || object.dsoType.equals("EN") || object.dsoType.equals("ER") || object.dsoType.equals("PN") || object.dsoType.equals("RN"))) { dsoDisplay = true; }
             else if (showObjectLists.contains("D") && object.dsoType.equals("DN")) { dsoDisplay = true; }
             else if (showObjectLists.contains("O") && (object.dsoType.equals("AST") || object.dsoType.equals("QSR") || object.dsoType.equals("SNR"))) { dsoDisplay = true; }
+            else if (showObjectLists.contains("1") && (object.dsoType.equals("ST") || object.dsoType.equals("DST"))) {dsoDisplay = true;}
+            else if (showObjectLists.contains("2") && object.dsoType.equals("DST")) {dsoDisplay = true;}
             if (dsoDisplay == false || (object.getDsoObserved() == 1 && showObserved == false) || (dsoAlt < 0 && showBelowHoriz == false) || (object.getDsoMag() > maxMagnitude)) {
             } // do nothing
             else {
